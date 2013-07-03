@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<extension key="com.osseed.eventcalendar" type="module">
+  <file>eventcalendar</file>
+  <name>Event Calendar</name>
+  <description>Show CiviCRM Events in Calendar</description>
+  <license></license>
+  <maintainer>
+    <author>OSSeed</author>
+    <email>hello@osseed.com</email>
+  </maintainer>
+  <releaseDate>2013-03-14</releaseDate>
+  <version>1.0</version>
+  <develStage>alpha</develStage>
+  <compatibility>
+    <ver>4.3</ver>
+  </compatibility>
+  <comments>Show CiviCRM Event in Calendar</comments>
+  <civix>
+    <namespace>CRM/Eventcalendar</namespace>
+  </civix>
+</extension>

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<menu>
+  <item>
+    <path>civicrm/showevents</path>
+    <page_callback>CRM_Eventcalendar_Page_ShowEvents</page_callback>
+    <title>Show Events</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/eventcalendarsettings</path>
+    <page_callback>CRM_Eventcalendar_Form_EventSettings</page_callback>
+    <title>Event Calendar Settings</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+</menu>
