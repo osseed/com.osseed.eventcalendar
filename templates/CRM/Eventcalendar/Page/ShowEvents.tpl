@@ -1,5 +1,3 @@
-
-<h3>Event Calendar</h3>
 <div id="calendar"></div>
 
 {crmScript ext=com.osseed.eventcalendar file=fullcalendar.js}

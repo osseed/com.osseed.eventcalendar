@@ -75,37 +75,43 @@ function setDefaultValues() {
         $defaults[$key] = $key; 
       }
     }
- if(isset($config->civicrm_events_event_past)) { 
-  $defaults['show_past_event'] = $config->civicrm_events_event_past;
- } else {
+  if(isset($config->civicrm_event_calendar_title)) { 
+    $defaults['event_calendar_title'] = $config->civicrm_event_calendar_title;
+  } else {
+    $config->civicrm_event_calendar_title = 'Event Calendar';
+    $defaults['event_calendar_title'] = 'Event Calendar';
+   }
+  if(isset($config->civicrm_events_event_past)) { 
+    $defaults['show_past_event'] = $config->civicrm_events_event_past;
+  } else {
     $config->civicrm_events_event_past = 1;
     $defaults['show_past_event'] = 1;
    } 
- if(isset($config->civicrm_events_event_is_public)) { 
-  $defaults['event_is_public'] = $config->civicrm_events_event_is_public;
- } else {
+  if(isset($config->civicrm_events_event_is_public)) { 
+    $defaults['event_is_public'] = $config->civicrm_events_event_is_public;
+  } else {
     $config->civicrm_events_event_is_public = 1;
     $defaults['event_is_public'] = 1;
-   } 
+  } 
   if(isset($config->civicrm_events_event_end_date)) { 
-  $defaults['show_end_date'] = $config->civicrm_events_event_end_date;
- } else {
+    $defaults['show_end_date'] = $config->civicrm_events_event_end_date;
+  } else {
     $config->civicrm_events_event_end_date = 1; 
     $defaults['show_end_date'] = 1;
-   } 
- if(isset($config->civicrm_events_event_months)) { 
-  $defaults['events_event_month'] = $config->civicrm_events_event_months;
- } else {
+  } 
+  if(isset($config->civicrm_events_event_months)) { 
+    $defaults['events_event_month'] = $config->civicrm_events_event_months;
+  } else {
     $config->civicrm_events_event_months = 0;
     $defaults['events_event_month'] = 0;
-   }
+  }
   if(isset($config->show_event_from_month)) { 
-  $defaults['show_event_from_month'] = $config->show_event_from_month;
- } else {
+    $defaults['show_event_from_month'] = $config->show_event_from_month;
+  } else {
     $config->show_event_from_month = '';
     $defaults['show_event_from_month'] = '';
-   }
- return $defaults; 
+  }
+   return $defaults; 
 }
 
 
@@ -119,6 +125,7 @@ public function buildQuickForm( ){
   parent::buildQuickForm( );
   $config = CRM_Core_Config::singleton();
   $this->add('text', 'show_event_from_month', ts('Show Events from how many months from current month '), array('size' => 50));
+  $this->add('text', 'event_calendar_title', ts('Calendar Title'), array('size' => 50));
   $this->addElement('checkbox', 'show_end_date', ts('Show End Date'));
   $this->addElement('checkbox', 'event_is_public', ts('Is Public'));
   $this->addElement('checkbox', 'events_event_month', ts('Events By Month'));
@@ -165,6 +172,11 @@ public function postProcess() {
     } 
   }  
   $configParams['civicrm_events_event_types'] = $event_type;
+  if( isset($params['event_calendar_title']) ) {
+    $configParams['civicrm_event_calendar_title'] = $params['event_calendar_title'];
+  } else {
+    $configParams['civicrm_event_calendar_title'] = 'Event Calendar';
+  }
   if( isset($params['show_past_event']) && $params['show_past_event'] == 1 ) {
     $configParams['civicrm_events_event_past'] = $params['show_past_event'];
   } else {

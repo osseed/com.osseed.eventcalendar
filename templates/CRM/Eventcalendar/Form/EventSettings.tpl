@@ -34,6 +34,11 @@
 <div class="crm-submit-buttons">{include file="CRM/common/formButtons.tpl" location="top"}</div>
 
   <table class="form-layout-compressed">
+       <tr class="crm-event-extension-event_calendar_title">
+    		<td>&nbsp;</td>
+    		<td>{$form.event_calendar_title.label}<br />{$form.event_calendar_title.html} <br />
+    		<span class="description">{ts}Set Title for Event calendar.{/ts}</span></td>
+    	</tr>
       <tr class="crm-event-extension-show_end_date">
     		<td>&nbsp;</td>
     		<td>{$form.show_end_date.html} {$form.show_end_date.label}<br />

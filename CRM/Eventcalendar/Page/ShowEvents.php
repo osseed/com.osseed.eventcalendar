@@ -38,8 +38,12 @@ require_once 'CRM/Core/Page.php';
 class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
   function run() {
   // Example: Set the page-title dynamically; alternatively, declare a static title in xml/Menu/*.xml
-  CRM_Utils_System::setTitle(ts('Show Events'));
   $config = CRM_Core_Config::singleton();
+  if(isset($config->civicrm_event_calendar_title) && !empty($config->civicrm_event_calendar_title)) {
+    CRM_Utils_System::setTitle(ts($config->civicrm_event_calendar_title));
+  } else {
+    CRM_Utils_System::setTitle(ts('Event Calendar'));
+  } 
   $whereCondition = '';
   $eventTypes = array(); 
   $colorevents = array(); 
