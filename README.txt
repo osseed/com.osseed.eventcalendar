@@ -16,4 +16,7 @@ Usage
 1. Click Administrator->CiviEvent->Event Calendar Settings menu (civicrm/eventCalendarsettings) -- change the setting if required.
 2. Click Events->Show Events menu (civicrm/showevents) -- to view Event Calendar with Events as per settings.
 
+Note
+-----
+If you are using Joomla CMS then copy the folder "yourextensiondirectory/com.osseed.eventcalendar/joomla/EventCalendar" to "joomlarootdirectory/components/com_civicrm/views/" which will add menu item type for Event Calendar.
 

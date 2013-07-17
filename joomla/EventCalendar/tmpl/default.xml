@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+  <layout title="Event Calendar">
+    <message>
+    </message>
+  </layout>
+  <state>
+    <name>EventCalendar</name>
+    <creationDate>04/01/2008</creationDate>
+    <copyright></copyright>
+    <author>OSSeed</author>
+    <authorEmail>hello@osseed.com</authorEmail>
+    <authorUrl></authorUrl>
+    <version>2.2</version>
+    <description>Event Calendar</description>
+    <config>
+    <fields name="params">
+    <fieldset name="advanced"> 
+      <field name="task" type="hidden" default="civicrm/showevents" />
+      <field name="reset" type="hidden" size="5" default="1"  />
+    </fieldset>
+    </fields>
+    </config>
+  </state>
+</metadata>
