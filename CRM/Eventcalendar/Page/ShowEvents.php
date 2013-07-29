@@ -119,6 +119,7 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
           $eventData['backgroundColor'] = '#'.$config->$colorevents[$dao->event_type].'';
         }
        }
+       $eventData['url'] = html_entity_decode($eventData['url']);
        $events['events'][] = $eventData;
     }
     $events['header']['left'] = 'prev,next today';
