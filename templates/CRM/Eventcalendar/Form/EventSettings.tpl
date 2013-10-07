@@ -37,7 +37,7 @@
        <tr class="crm-event-extension-event_calendar_title">
     		<td>&nbsp;</td>
     		<td>{$form.event_calendar_title.label}<br />{$form.event_calendar_title.html} <br />
-    		<span class="description">{ts}Set Title for Event calendar.{/ts}</span></td>
+    		<span class="description">{ts}Set title for event calendar.{/ts}</span></td>
     	</tr>
       <tr class="crm-event-extension-show_end_date">
     		<td>&nbsp;</td>
@@ -67,7 +67,7 @@
       {foreach from=$event_type item="label" key="eventname"}
      <tr class="crm-event-extension-{$label}">
     		<td>&nbsp;</td>
-    		<td>{$form.$eventname.html} {$form.$eventname.label}{$form.$label.html}<br /><input class="color" onchange="updatecolor('{$label}',this.color.toString());" value="{$config->$label}" /></td>
+    		<td>{$form.$eventname.html}&nbsp;{$form.$eventname.label}<br />{$form.$label.html}</td>
     	</tr> 
      {/foreach}
   
@@ -81,6 +81,10 @@
 <script type="text/javascript">
 
 cj( function( ) {
+   {/literal}{foreach from=$show_hide_color item=memType key=opId}{literal}
+   var event_id = {/literal}{$opId}{literal}
+   showhidecolorbox(event_id); 
+   {/literal}{/foreach}{literal} 
    if(!cj("#events_event_month").is( ':checked')) {
     cj('.crm-event-extension-show_event_from_month').hide();
    }
@@ -97,6 +101,18 @@ cj( function( ) {
  function updatecolor(label,color)
 {
 cj('input[name="'+label+'"]').val( color );
+}
+function showhidecolorbox(event_id) 
+{
+ var n = "eventcolorid_".concat(event_id); 
+ var m = "event_".concat(event_id); 
+ if(!cj("#"+m).is( ':checked')) {
+    cj("#"+n).hide();
+  }
+   else {
+    cj("#"+n).show();
+   }   
+  
 }
 </script>
 {/literal}

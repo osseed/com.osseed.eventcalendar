@@ -55,26 +55,23 @@ class CRM_Eventcalendar_Form_EventSettings extends CRM_Admin_Form
 
 function setDefaultValues() {
  $defaults = parent::setDefaultValues();
- 
  $config = CRM_Core_Config::singleton();
  require_once 'CRM/Event/PseudoConstant.php';
  $event_type = CRM_Event_PseudoConstant::eventType();
  if(!empty($config->civicrm_events_event_types)) {
    foreach($config->civicrm_events_event_types as $key => $val) {
+     $val = str_replace(" ","_",$val);
+     $eventtype_id = 'eventtype_' . $key;
     if(!empty($config->$val)) {
       $config->$val = $config->$val;
+    } 
+    if(!empty($eventtype_id)) {
+      $defaults[$eventtype_id] = $config->$eventtype_id;
     } else {
-        $config->$val = '3366CC';
+    	$defaults[$eventtype_id] = 0;
       }
-    $defaults[$key] = $key; 
    }
- } else if(empty($config->civicrm_events_event_types)) {
-   } else {
-      $config->civicrm_events_event_types = $event_type;
-      foreach($event_type as $key => $val) {
-        $defaults[$key] = $key; 
-      }
-    }
+ } 
   if(isset($config->civicrm_event_calendar_title)) { 
     $defaults['event_calendar_title'] = $config->civicrm_event_calendar_title;
   } else {
@@ -125,25 +122,48 @@ public function buildQuickForm( ){
   parent::buildQuickForm( );
   $config = CRM_Core_Config::singleton();
   $this->add('text', 'show_event_from_month', ts('Show Events from how many months from current month '), array('size' => 50));
-  $this->add('text', 'event_calendar_title', ts('Calendar Title'), array('size' => 50));
+  $this->add('text', 'event_calendar_title', ts('Calendar title'), array('size' => 50));
   $this->addElement('checkbox', 'show_end_date', ts('Show End Date'));
   $this->addElement('checkbox', 'event_is_public', ts('Is Public'));
   $this->addElement('checkbox', 'events_event_month', ts('Events By Month'));
   $this->addElement('checkbox', 'show_past_event', ts('Show Past Events'));
   require_once 'CRM/Event/PseudoConstant.php';
+  $original_events = array();
   $event_type = CRM_Event_PseudoConstant::eventType();
+  $original_events = $event_type;
+  foreach($event_type as $key => $val) {
+    	$val = str_replace(" ","_",$val);
+    	$event_type[$key] = $val;
+    }
   if( !isset($config->civicrm_events_event_types) ) {
     $config->civicrm_events_event_types = $event_type;
+    foreach($config->civicrm_events_event_types as $key => $val) {
+    	$config->$val = '3366CC';
+    	$eventname = 'eventtype_' . $key;
+    	$config->$eventname = 0;
+    }
   }
-  if( isset($config->civicrm_events_event_types) && empty($config->civicrm_events_event_types)) {
-    $config->civicrm_events_event_types = array();
+  if( isset($config->civicrm_events_event_types) ) {
+    $new_event_type = array_diff_key($event_type,$config->civicrm_events_event_types);
+    if(!empty($new_event_type)) {
+    	foreach($new_event_type as $key => $value) {
+    	  $config->$val = '3366CC';
+    	  $eventname = 'eventtype_' . $key;
+    	  $config->$eventname = 0;
+    	}
+    }
   }
   $colors = array();
+  $event_types = array();
   foreach($event_type as $key => $val) {
-    $this->addElement('checkbox', $key, ts($val));
-    $this->addElement('hidden', $val,'');
+    $eventname = 'eventtype_' . $key;
+    $colortextbox = 'eventcolor_' . $key;
+    $this->addElement('checkbox', $eventname, ts($original_events[$key]) , NULL , array('onclick' => "showhidecolorbox('$key')",'id' =>'event_' . $key ));
+    $this->addElement('text', $colortextbox,'',array('onchange' => "updatecolor('$colortextbox',this.value);", 'class'=>'color','id' => 'eventcolorid_' . $key, 'value'=> $config->$val));
+    $event_types['eventtype_' . $key] = 'eventcolor_' . $key;
   }
-  $this->assign('event_type', $event_type);
+  $this->assign('event_type', $event_types);
+  $this->assign('show_hide_color', $original_events);
 }
 
 /**
@@ -160,14 +180,21 @@ public function postProcess() {
   $event_type = CRM_Event_PseudoConstant::eventType();
   $colorevents = $event_type;
   foreach($event_type as $k => $v) {
-    if(!empty($params[$v])) {
-      $configParams[$v] = $params[$v];
+    $v = str_replace(" ","_",$v); 
+    $evnt_color = 'eventcolor_' . $k; 
+    $eventname = 'eventtype_' . $k;
+    if(!empty($params[$evnt_color]) && !empty($params[$eventname])) {
+      $configParams[$v] = $params[$evnt_color];
+      $configParams[$eventname] = $params[$eventname];
     } else {
-      $configParams[$v] = $config->$v; 
-    } 
+        $configParams[$v] = '3366CC'; 
+        $configParams[$eventname] = 0;
+      } 
+      $event_type[$k] = $v;
    }
   foreach($event_type as $k => $v) {
-    if(!array_key_exists($k,$params) ) {
+    $evnt_key = 'eventtype_' . $k; 
+    if(!array_key_exists($evnt_key,$params) ) {
       unset($event_type[$k]);
     } 
   }  
