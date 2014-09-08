@@ -32,7 +32,7 @@ CiviCRM_For_WordPress Class
 --------------------------------------------------------------------------------
 */
 
-class CiviCRM_For_WordPress {
+class CiviCRM_Event_WordPress extends CiviCRM_For_WordPress {
 
 
   /**
@@ -1242,50 +1242,3 @@ jQuery(function ($) {
 
 
 } // class CiviCRM_For_WordPress ends
-
-
-/*
---------------------------------------------------------------------------------
-Procedures start here
---------------------------------------------------------------------------------
-*/
-
-
-/**
- * The main function responsible for returning the CiviCRM_For_WordPress instance
- * to functions everywhere.
- *
- * Use this function like you would a global variable, except without needing
- * to declare the global.
- *
- * Example: $civi = civi_wp();
- *
- * @return CiviCRM_For_WordPress instance
- */
-function civi_wp() {
-  return CiviCRM_For_WordPress::singleton();
-}
-
-/**
- * Hook CiviCRM_For_WordPress early onto the 'plugins_loaded' action.
- *
- * This gives all other plugins the chance to load before CiviCRM, to get their
- * actions, filters, and overrides setup without CiviCRM being in the way.
- */
-if ( defined( 'CIVICRM_LATE_LOAD' ) ) {
-  add_action( 'plugins_loaded', 'civi_wp', (int) CIVICRM_LATE_LOAD );
-
-// initialize
-} else {
-  civi_wp();
-}
-
-
-// tell WordPress to call plugin activation method, although it's still directed
-// at the legacy callback, in case there are situations where the function is
-// called from elsewhere. Should perhaps be:
-// register_activation_hook( 'CiviCRM_For_WordPress, 'civicrm_activate' );
-register_activation_hook( __FILE__, 'civicrm_activate' );
-
-
-
