@@ -13,7 +13,7 @@
 	<url desc="Documentation">https://raw.github.com/osseed/com.osseed.eventcalendar/master/README.txt</url>
 </urls>
   <releaseDate>2013-07-03</releaseDate>
-  <version>1.0</version>
+  <version>1.1</version>
   <develStage>alpha</develStage>
   <compatibility>
     <ver>4.4</ver>
