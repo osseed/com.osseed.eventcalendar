@@ -23,7 +23,7 @@ add_action( 'admin_footer', 'event_calendar_add_form_button_html' );
 add_shortcode( 'event_calendar', 'event_calendar_shortcode_handler' );
 
 // invoke CiviCRM when a shortcode is detected in the post content.
-add_filter('get_header', 'event_calendar_shortcode_includes');
+add_action('wp', 'event_calendar_shortcode_includes');
 
 
 function event_calendar_add_form_button($context) {
@@ -126,8 +126,10 @@ function event_calendar_shortcode_handler( $atts ) {
 
     // Call wp_frontend with $shortcode param.
     if (class_exists('CiviCRM_For_WordPress')) {
-      $cw = new CiviCRM_For_WordPress;
-      return $cw->wp_frontend( TRUE );
+      ob_start(); // start buffering
+      civi_wp()->invoke();
+      $content = ob_get_clean(); // save the output and flush the buffer
+      return $content;
     }
     else {
       return civicrm_wp_frontend(TRUE);
@@ -146,7 +148,16 @@ function event_calendar_shortcode_includes() {
     if (!civicrm_initialize()) {
       return;
     }
-    // add CiviCRM core resources.
-    CRM_Core_Resources::singleton()->addCoreResources();
+    // do we have functionality provided by plugin version 4.6+ present?
+    $civi = civi_wp();
+    if (method_exists($civi, 'front_end_page_load')) {
+      // add core resources for front end
+      add_action('wp', array($civi, 'front_end_page_load'), 100);
+    } else {
+      // add CiviCRM core resources.
+      CRM_Core_Resources::singleton()->addCoreResources();
+      $config = CRM_Core_Config::singleton();
+      $config->userFrameworkFrontend = $front_end;
+    }
   }
 }
