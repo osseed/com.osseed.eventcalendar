@@ -28,6 +28,9 @@ add_filter('get_header', 'event_calendar_shortcode_includes');
 
 function event_calendar_add_form_button($context) {
 
+  if (!civicrm_initialize()) {
+    return;
+  }
   $config  = CRM_Core_Config::singleton();
   $imageBtnURL = $config->resourceBase . 'i/logo16px.png';
 
