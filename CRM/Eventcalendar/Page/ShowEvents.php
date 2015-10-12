@@ -58,13 +58,10 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
     $colorevents = array_flip($eventTypes);
     if(!empty($eventTypes)) {
      $whereCondition .= ' AND civicrm_event.event_type_id in (' . implode(",", $eventTypes) . ')';
-    } else {
-     $whereCondition .= ' AND civicrm_event.event_type_id in (0)';
     }
-     
-    
+
     //Show/Hide Past Events.
-    $pastEvents = '';  
+    $pastEvents = '';
     $currentDate =  date("Y-m-d h:i:s", time());
     if(isset($config->civicrm_events_event_past)) {
       $pastEvents = $config->civicrm_events_event_past;
