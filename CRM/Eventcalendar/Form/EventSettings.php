@@ -108,6 +108,12 @@ function setDefaultValues() {
     $config->show_event_from_month = '';
     $defaults['show_event_from_month'] = '';
   }
+  if(isset($config->enable_filter)) { 
+    $defaults['enable_event_config'] = $config->enable_event_config;
+  } else {
+    $config->enable_event_config = 0;
+    $defaults['enable_event_config'] = 0;
+  }
    return $defaults; 
 }
 
@@ -127,6 +133,7 @@ public function buildQuickForm( ){
   $this->addElement('checkbox', 'event_is_public', ts('Is Public'));
   $this->addElement('checkbox', 'events_event_month', ts('Events By Month'));
   $this->addElement('checkbox', 'show_past_event', ts('Show Past Events'));
+  $this->addElement('checkbox', 'enable_event_config', ts('Enable Event Configuration Links on Calendar'));
   require_once 'CRM/Event/PseudoConstant.php';
   $original_events = array();
   $event_type = CRM_Event_PseudoConstant::eventType();
@@ -228,6 +235,11 @@ public function postProcess() {
     $configParams['show_event_from_month'] = $params['show_event_from_month']; 
   } else {
     $configParams['show_event_from_month'] = ''; 
+  }
+  if( isset($params['enable_event_config']) ) { 
+    $configParams['enable_event_config'] = $params['enable_event_config']; 
+  } else {
+    $configParams['enable_event_config'] = 0; 
   }
   CRM_Core_BAO_ConfigSetting::create($configParams);
   CRM_Core_Session::setStatus(" ", ts('The value has been saved.'), "success" );

@@ -93,7 +93,7 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
   
     $query .= $whereCondition; 
     $events['events'] = array();
-   
+    $event_links_active = 0;
     $dao = CRM_Core_DAO::executeQuery( $query, CRM_Core_DAO::$_nullArray );
     $eventCalendarParams = array ('title' => 'title', 'start' => 'start', 'url' => 'url');
     if(isset($config->civicrm_events_event_end_date) && !empty($config->civicrm_events_event_end_date)) {
@@ -116,7 +116,34 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
           $eventData['backgroundColor'] = '#'.$config->$colorevents[$dao->event_type].'';
         }
        }
-       $eventData['url'] = html_entity_decode($eventData['url']);
+      $eventData['url'] = html_entity_decode($eventData['url']);
+      //build mousehover data.
+      $urlParams = '&action=update&id=' . $dao->id;
+      if (CRM_Core_Permission::check('edit all events')){
+        $event_links_active = 1;
+        $event_links['manage_event'] =  CRM_Utils_System::href('Manage Event', 'civicrm/event/manage/settings', 'action=upadate&id=' . $dao->id);
+        $event_links['event_location'] =  CRM_Utils_System::href('Change Event Location', 'civicrm/event/manage/location', $urlParams);
+        $event_links['event_fee'] =  CRM_Utils_System::href('Change Fee', 'civicrm/event/manage/fee', $urlParams);
+        $event_links['event_registration'] = CRM_Utils_System::href('Online Registration' ,'civicrm/event/manage/registration', $urlParams);
+        $event_links['event_reminders'] =  CRM_Utils_System::href('Schedule Reminders', 'civicrm/event/manage/reminder','reset=1&action=browse&setTab=1&id=' .$dao->id);
+        $event_links['event_reoccuring_schedule'] = CRM_Utils_System::href('Schedule Reoccurring Event', 'civicrm/event/manage/repeat', $urlParams);
+        $event_links['event_register_participant'] = CRM_Utils_System::href('Register Participant', 'civicrm/participant/add', 'reset=1&action=add&context=standalone&eid=' .$dao->id);
+        $event_links['event_tell_friend'] = CRM_Utils_System::href('Manage Tell a Friend', 'civicrm/event/manage/friend', $urlParams);
+        $event_links['event_campaigns'] =  CRM_Utils_System::href( 'Manage Personal Campaigns', 'civicrm/event/manage/pcp',$urlParams );
+        $events['event_details_links'][$dao->id] = '
+          <div class="event-info-details fc-event" style="background: #ffffff">
+            <div>'.$event_links['manage_event'].'</div>
+            <div>'.$event_links['event_location'].'</div>
+            <div>'.$event_links['event_fee'].'</div>
+            <div>'.$event_links['event_registration'].'</div>
+            <div>'.$event_links['event_reminders'].'</div>
+            <div>'.$event_links['event_reoccuring_schedule'].'</div>
+            <div>'.$event_links['event_register_participant'].'</div>
+            <div>'.$event_links['event_tell_friend'].'</div>
+            <div>'.$event_links['event_campaigns'].'</div>
+        </div>';
+
+      }
        $events['events'][] = $eventData;
     }
     $events['header']['left'] = 'prev,next today';
@@ -124,6 +151,7 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
     $events['header']['right'] = 'month,basicWeek,basicDay';
     //send Events array to calendar.
     $this->assign('civicrm_events', json_encode($events));
+    $this->assign('event_links_active', $event_links_active);
     parent::run();
   }
 }

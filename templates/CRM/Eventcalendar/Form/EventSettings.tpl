@@ -64,6 +64,11 @@
     		<td>{$form.show_event_from_month.html}<br /> {$form.show_event_from_month.label}<br />
     		<span class="description">{ts}Will filter the events with start date less then defined number of months from current month.{/ts}</span></td>
     	</tr>
+      <tr class="crm-event-extension-events_enable_event_config">
+        <td>&nbsp;</td>
+        <td>{$form.enable_event_config.html} {$form.enable_event_config.label}<br />
+        <span class="description">{ts}Will show event configuration links on Calendar for each event on hover of title. It will will be avaible for user with edit all event permission.{/ts}</span></td>
+      </tr>
       {foreach from=$event_type item="label" key="eventname"}
      <tr class="crm-event-extension-{$label}">
     		<td>&nbsp;</td>
