@@ -108,7 +108,7 @@ function setDefaultValues() {
     $config->show_event_from_month = '';
     $defaults['show_event_from_month'] = '';
   }
-  if(isset($config->enable_filter)) { 
+  if(isset($config->enable_event_config)) { 
     $defaults['enable_event_config'] = $config->enable_event_config;
   } else {
     $config->enable_event_config = 0;
