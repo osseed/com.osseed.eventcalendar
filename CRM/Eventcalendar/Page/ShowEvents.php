@@ -102,29 +102,28 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
     if(isset($config->civicrm_events_event_end_date) && !empty($config->civicrm_events_event_end_date)) {
       $eventCalendarParams['end'] = 'end';
     }
-    while ( $dao->fetch( ) ) {
-      if ( $dao->title ) { 
-        if( isset($startDate) ) {
-          $startDate = date("Y,n,j", strtotime( $dao->start_date ) );
-        }
-        if( isset($endDate) ) {
-	        $endDate = date("Y,n,j", strtotime( $dao->end_date ) );
-        }
-        	$dao->url =   CRM_Utils_System::url( 'civicrm/event/info', 'id=' . $dao->id );
-      }
-      $eventData = array();
-      foreach ($eventCalendarParams as  $k) {
-        $eventData[$k] = $dao->$k; 
-        if(!empty($colorevents) && isset($config->$colorevents[$dao->event_type])) {     
-          $eventData['backgroundColor'] = '#'.$config->$colorevents[$dao->event_type].'';
-        }
-       }
+    while ($dao->fetch()) {
+      if ( !$dao->title ) continue;
+      $eventData = array(
+		'allDay' => true,
+      );
+	  if( isset($dao->start) ) $dao->start = date("Y-m-d\TH:i:s", strtotime($dao->start) );
+	  if( isset($dao->end) ) $dao->end = date("Y-m-d\TH:i:s", strtotime($dao->end) );
+	  if( isset($dao->start) && isset($dao->end)) $eventData['allDay'] = false;
+	  $dao->url =   CRM_Utils_System::url( 'civicrm/event/info', 'id=' . $dao->id );
+	  if(!empty($colorevents) && isset($config->$colorevents[$dao->event_type])) $eventData['backgroundColor'] = '#'.$config->$colorevents[$dao->event_type].'';
+      foreach ($eventCalendarParams as  $k) $eventData[$k] = $dao->$k; 
        $eventData['url'] = html_entity_decode($eventData['url']);
        $events['events'][] = $eventData;
     }
     $events['header']['left'] = 'prev,next today';
     $events['header']['center'] = 'title';
-    $events['header']['right'] = 'month,basicWeek,basicDay';
+    $views = array();
+    foreach (EventCalendarDefines::$fullcalendarviews as $view => $viewName) {
+		if (!$config->{'calendar_views_'.$view}) continue;
+		$views[] = $view;
+	}
+	$events['header']['right'] = empty($views) ? 'month,basicWeek,basicDay' : implode(',',$views);
     //send Events array to calendar.
     $this->assign('civicrm_events', json_encode($events));
     parent::run();

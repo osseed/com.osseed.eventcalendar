@@ -44,7 +44,8 @@ class CRM_Eventcalendar_Form_EventSettings extends CRM_Admin_Form
 {
    protected $_roles = array(); 
    protected $_types = array(); 
-   function preProcess( ) {
+      
+   function preProcess () {
        
     parent::preProcess( );
     $session = CRM_Core_Session::singleton();
@@ -108,7 +109,27 @@ function setDefaultValues() {
     $config->show_event_from_month = '';
     $defaults['show_event_from_month'] = '';
   }
-   return $defaults; 
+  $viewset = false;
+  foreach (EventCalendarDefines::$fullcalendarviews as $view => $viewName) {
+	 if(isset($config->{'calendar_views_'.$view})) { 
+		 $viewset = true;
+		$defaults['calendar_views_'.$view] = $config->{'calendar_views_'.$view};
+	  } else {
+		$config->{'calendar_views_'.$view} = 0;
+		$defaults['calendar_views_'.$view] = 0;
+	  }   
+  }
+  if (!$viewset) {
+	$config->{'calendar_views_month'} = 1;
+	$defaults['calendar_views_month'] = 1;
+	$config->{'calendar_views_basicWeek'} = 1;
+	$defaults['calendar_views_basicWeek'] = 1;
+	$config->{'calendar_views_basicDay'} = 1;
+	$defaults['calendar_views_basicDay'] = 1;
+  }
+  
+  
+  return $defaults; 
 }
 
 
@@ -164,6 +185,10 @@ public function buildQuickForm( ){
   }
   $this->assign('event_type', $event_types);
   $this->assign('show_hide_color', $original_events);
+  $this->assign('fullcalendarviews', EventCalendarDefines::$fullcalendarviews);
+  foreach (EventCalendarDefines::$fullcalendarviews as $view => $viewName) {
+	  $this->addElement('checkbox', 'calendar_views_'.$view, ts($viewName));	  
+  }
 }
 
 /**
@@ -228,6 +253,13 @@ public function postProcess() {
     $configParams['show_event_from_month'] = $params['show_event_from_month']; 
   } else {
     $configParams['show_event_from_month'] = ''; 
+  }
+  foreach (EventCalendarDefines::$fullcalendarviews as $view => $viewName) {
+	  if( isset($params['calendar_views_'.$view]) ) { 
+		$configParams['calendar_views_'.$view] = $params['calendar_views_'.$view]; 
+	  } else {
+		$configParams['calendar_views_'.$view] = 0; 
+	  } 
   }
   CRM_Core_BAO_ConfigSetting::create($configParams);
   CRM_Core_Session::setStatus(" ", ts('The value has been saved.'), "success" );

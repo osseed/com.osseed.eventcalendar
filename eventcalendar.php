@@ -82,3 +82,13 @@ function eventcalendar_civicrm_upgrade($op, CRM_Queue_Queue $queue = NULL) {
 function eventcalendar_civicrm_managed(&$entities) {
   return _eventcalendar_civix_civicrm_managed($entities);
 }
+
+class EventCalendarDefines {
+	public static  $fullcalendarviews = array(
+		'month' => 'Month',
+		'basicWeek' => 'Basic Week',
+		'basicDay' => 'Basic Day',
+		'agendaWeek' => 'Agenda Week',
+		'agendaDay' => 'Agenda Day',
+	);
+}
