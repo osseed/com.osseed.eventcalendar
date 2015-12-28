@@ -54,8 +54,22 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
        require_once 'CRM/Event/PseudoConstant.php';
        $all_events = CRM_Event_PseudoConstant::eventType();
        $eventTypes = array_flip($all_events); 
-      }
+     }
     $colorevents = array_flip($eventTypes);
+    
+    $eventTypesColors = array();
+     if (!empty($colorevents)) {
+		foreach ($colorevents as $etid => $eventType) {
+			$eventTypesColors[$etid] = array(
+				'id' => $etid,
+				'color' => empty($config->$eventType) ? 'transparent' : '#'.$config->$eventType.'',
+				'name' => str_replace('_',' ',$eventType),
+				'code' => $eventType,
+			);
+		}
+	}
+    $this->assign('eventTypesColors',$eventTypesColors);
+    
     if(!empty($eventTypes)) {
      $whereCondition .= ' AND civicrm_event.event_type_id in (' . implode(",", $eventTypes) . ')';
     } else {
@@ -104,17 +118,15 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
     }
     while ($dao->fetch()) {
       if ( !$dao->title ) continue;
-      $eventData = array(
-		'allDay' => true,
-      );
+      $eventData = array( 'allDay' => true, );
 	  if( isset($dao->start) ) $dao->start = date("Y-m-d\TH:i:s", strtotime($dao->start) );
 	  if( isset($dao->end) ) $dao->end = date("Y-m-d\TH:i:s", strtotime($dao->end) );
 	  if( isset($dao->start) && isset($dao->end)) $eventData['allDay'] = false;
-	  $dao->url =   CRM_Utils_System::url( 'civicrm/event/info', 'id=' . $dao->id );
+	  $dao->url =   CRM_Utils_System::url( 'civicrm/event/info', 'id='.$dao->id );
 	  if(!empty($colorevents) && isset($config->$colorevents[$dao->event_type])) $eventData['backgroundColor'] = '#'.$config->$colorevents[$dao->event_type].'';
       foreach ($eventCalendarParams as  $k) $eventData[$k] = $dao->$k; 
-       $eventData['url'] = html_entity_decode($eventData['url']);
-       $events['events'][] = $eventData;
+      $eventData['url'] = html_entity_decode($eventData['url']);
+      $events['events'][] = $eventData;
     }
     $events['header']['left'] = 'prev,next today';
     $events['header']['center'] = 'title';
