@@ -119,10 +119,12 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
     $events['events'] = array();
    
     $dao = CRM_Core_DAO::executeQuery( $query, CRM_Core_DAO::$_nullArray );
+    
     $eventCalendarParams = array ('title' => 'title', 'start' => 'start', 'url' => 'url');
     if(isset($config->civicrm_events_event_end_date) && !empty($config->civicrm_events_event_end_date)) {
       $eventCalendarParams['end'] = 'end';
     }
+    
     while ($dao->fetch()) {
       if ( !$dao->title ) continue;
       $eventData = array( 'allDay' => true, );
@@ -135,12 +137,15 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
       $eventData['url'] = html_entity_decode($eventData['url']);
       $events['events'][] = $eventData;
     }
+    
     $events['header']['left'] = 'prev,next today';
     $events['header']['center'] = 'title';
-    $views = array();
-    foreach (EventCalendarDefines::$fullcalendarviews as $view => $viewName) {
-		if (empty($config->{'calendar_views_'.$view})) continue;
-		$views[] = $view;
+    $views = array_intersect(array_keys(EventCalendarDefines::$fullcalendarviews), empty($_REQUEST['civicrm_event_calendar_views']) ? array() : $_REQUEST['civicrm_event_calendar_views']);
+    if (empty($views)) {
+		foreach (EventCalendarDefines::$fullcalendarviews as $view => $viewName) {
+			if (empty($config->{'calendar_views_'.$view})) continue;
+			$views[] = $view;
+		}
 	}
 	if (empty($views)) $views = array('month','basicWeek','basicDay');
 	$events['header']['right'] = implode(',',$views);
