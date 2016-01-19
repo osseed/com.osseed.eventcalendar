@@ -70,6 +70,19 @@
     		<td>{$form.$eventname.html}&nbsp;{$form.$eventname.label}<br />{$form.$label.html}</td>
     	</tr> 
      {/foreach}
+     
+     <tr class="crm-event-extension-fullcalendarviews">
+    		<td>Calendar Views</td>
+    		<td>
+				{foreach from=$fullcalendarviews item="viewName" key="view"}
+					{assign var="view_variable" value="calendar_views_$view"}
+					{$form.$view_variable.html}
+					{$form.$view_variable.label}
+					<br>
+				{/foreach}
+				<span class="description">{ts}Will show theses views on the calendar in the top right.{/ts}</span>
+			</td>
+    	</tr> 
   
  </table>
  

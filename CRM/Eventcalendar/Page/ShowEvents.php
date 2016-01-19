@@ -44,6 +44,13 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
   } else {
     CRM_Utils_System::setTitle(ts('Event Calendar'));
   } 
+  
+  // add assets
+  CRM_Core_Resources::singleton()->addScriptFile('com.osseed.eventcalendar', 'js/fullcalendar.js', 10);
+  CRM_Core_Resources::singleton()->addScriptFile('com.osseed.eventcalendar', 'js/civicrm_events.js', 11);
+  CRM_Core_Resources::singleton()->addStyleFile('com.osseed.eventcalendar', 'css/fullcalendar.css');
+  CRM_Core_Resources::singleton()->addStyleFile('com.osseed.eventcalendar', 'css/civicrm_events.css');
+  
   $whereCondition = '';
   $eventTypes = array(); 
   $colorevents = array(); 
@@ -54,8 +61,22 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
        require_once 'CRM/Event/PseudoConstant.php';
        $all_events = CRM_Event_PseudoConstant::eventType();
        $eventTypes = array_flip($all_events); 
-      }
+     }
     $colorevents = array_flip($eventTypes);
+    
+    $eventTypesColors = array();
+     if (!empty($colorevents)) {
+		foreach ($colorevents as $etid => $eventType) {
+			$eventTypesColors[$etid] = array(
+				'id' => $etid,
+				'color' => empty($config->$eventType) ? 'transparent' : '#'.$config->$eventType.'',
+				'name' => str_replace('_',' ',$eventType),
+				'code' => $eventType,
+			);
+		}
+	}
+    $this->assign('eventTypesColors',$eventTypesColors);
+    
     if(!empty($eventTypes)) {
      $whereCondition .= ' AND civicrm_event.event_type_id in (' . implode(",", $eventTypes) . ')';
     } else {
@@ -98,33 +119,46 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
     $events['events'] = array();
    
     $dao = CRM_Core_DAO::executeQuery( $query, CRM_Core_DAO::$_nullArray );
+    
     $eventCalendarParams = array ('title' => 'title', 'start' => 'start', 'url' => 'url');
     if(isset($config->civicrm_events_event_end_date) && !empty($config->civicrm_events_event_end_date)) {
       $eventCalendarParams['end'] = 'end';
     }
-    while ( $dao->fetch( ) ) {
-      if ( $dao->title ) { 
-        if( isset($startDate) ) {
-          $startDate = date("Y,n,j", strtotime( $dao->start_date ) );
-        }
-        if( isset($endDate) ) {
-	        $endDate = date("Y,n,j", strtotime( $dao->end_date ) );
-        }
-        	$dao->url =   CRM_Utils_System::url( 'civicrm/event/info', 'id=' . $dao->id );
-      }
-      $eventData = array();
-      foreach ($eventCalendarParams as  $k) {
-        $eventData[$k] = $dao->$k; 
-        if(!empty($colorevents) && isset($config->$colorevents[$dao->event_type])) {     
-          $eventData['backgroundColor'] = '#'.$config->$colorevents[$dao->event_type].'';
-        }
-       }
-       $eventData['url'] = html_entity_decode($eventData['url']);
-       $events['events'][] = $eventData;
+    
+    while ($dao->fetch()) {
+      if ( !$dao->title ) continue;
+      $eventData = array( 'allDay' => true, );
+	  if( isset($dao->start) ) $dao->start = date("Y-m-d\TH:i:s", strtotime($dao->start) );
+	  if( isset($dao->end) ) $dao->end = date("Y-m-d\TH:i:s", strtotime($dao->end) );
+	  if( isset($dao->start) && isset($dao->end)) $eventData['allDay'] = false;
+	  $dao->url =   CRM_Utils_System::url( 'civicrm/event/info', 'id='.$dao->id );
+	  if(!empty($colorevents) && isset($config->$colorevents[$dao->event_type])) $eventData['backgroundColor'] = '#'.$config->$colorevents[$dao->event_type].'';
+      foreach ($eventCalendarParams as  $k) $eventData[$k] = $dao->$k; 
+      $eventData['url'] = html_entity_decode($eventData['url']);
+      $events['events'][] = $eventData;
     }
+    
     $events['header']['left'] = 'prev,next today';
     $events['header']['center'] = 'title';
-    $events['header']['right'] = 'month,basicWeek,basicDay';
+    $views = array_intersect(array_keys(EventCalendarDefines::$fullcalendarviews), empty($_REQUEST['civicrm_event_calendar_views']) ? array() : $_REQUEST['civicrm_event_calendar_views']);
+    if (empty($views)) {
+		foreach (EventCalendarDefines::$fullcalendarviews as $view => $viewName) {
+			if (empty($config->{'calendar_views_'.$view})) continue;
+			$views[] = $view;
+		}
+	}
+	if (empty($views)) $views = array('month','basicWeek','basicDay');
+	$events['header']['right'] = implode(',',$views);
+	
+	$events['defaultView'] = reset($views);
+	$requestDefaultView = CRM_Utils_Request::retrieve('civicrm_event_calendar_defaultView','String');
+	if (!empty($requestDefaultView)) {
+		$events['defaultView'] = $requestDefaultView;
+	} elseif (!empty($config->civicrm_event_calendar_defaultView)) {
+		$events['defaultView'] = $config->civicrm_event_calendar_defaultView;
+	}
+	$events['defaultView'] = !empty($events['defaultView'])&&in_array($events['defaultView'],$views)?$events['defaultView']:reset($views);
+	
     //send Events array to calendar.
     $this->assign('civicrm_events', json_encode($events));
     parent::run();
