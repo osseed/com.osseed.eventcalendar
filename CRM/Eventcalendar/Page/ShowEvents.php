@@ -132,10 +132,21 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
     $events['header']['center'] = 'title';
     $views = array();
     foreach (EventCalendarDefines::$fullcalendarviews as $view => $viewName) {
-		if (!$config->{'calendar_views_'.$view}) continue;
+		if (empty($config->{'calendar_views_'.$view})) continue;
 		$views[] = $view;
 	}
-	$events['header']['right'] = empty($views) ? 'month,basicWeek,basicDay' : implode(',',$views);
+	if (empty($views)) $views = array('month','basicWeek','basicDay');
+	$events['header']['right'] = implode(',',$views);
+	
+	$events['defaultView'] = reset($views);
+	$requestDefaultView = CRM_Utils_Request::retrieve('civicrm_event_calendar_defaultView','String');
+	if (!empty($requestDefaultView)) {
+		$events['defaultView'] = $requestDefaultView;
+	} elseif (!empty($config->civicrm_event_calendar_defaultView)) {
+		$events['defaultView'] = $config->civicrm_event_calendar_defaultView;
+	}
+	$events['defaultView'] = !empty($events['defaultView'])&&in_array($events['defaultView'],$views)?$events['defaultView']:reset($views);
+	
     //send Events array to calendar.
     $this->assign('civicrm_events', json_encode($events));
     parent::run();
