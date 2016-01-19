@@ -8,32 +8,94 @@ class CRM_Eventcalendar_Upgrader extends CRM_Eventcalendar_Upgrader_Base {
   // By convention, functions that look like "function upgrade_NNNN()" are
   // upgrade tasks. They are executed in order (like Drupal's hook_update_N).
 
-  /**
-   * Example: Run an external SQL script when the module is installed
-   *
+ /**
+   * Example: Run an external SQL script when the module is installed.
+   */
   public function install() {
-    $this->executeSqlFile('sql/myinstall.sql');
+    //~ $this->executeSqlFile('sql/myinstall.sql');
+    try {
+		$dashlet =  civicrm_api3('Dashboard','get',array(
+			'name' => 'eventcalendardashlet',
+		));
+		if (empty($dashlet['id'])) {
+			$dashlet = civicrm_api3('Dashboard','create',array(
+				'name' => 'eventcalendardashlet',
+				'label' => 'Events Calendar',
+				'url' => 'civicrm/showevents?civicrm_event_calendar_defaultView=agendaDay&reset=1&snippet=5',
+				'fullscreen_url' => 'civicrm/showevents?civicrm_event_calendar_defaultView=agendaDay&reset=1&snippet=5',
+				'permission' => 'view event info',
+			));
+		}
+	} catch(Exception $e) {
+		die(__METHOD__ .' error: '.$e->getMessage());
+	}	
   }
 
   /**
-   * Example: Run an external SQL script when the module is uninstalled
-   *
+   * Example: Run an external SQL script when the module is uninstalled.
+   */
   public function uninstall() {
-   $this->executeSqlFile('sql/myuninstall.sql');
+   //~ $this->executeSqlFile('sql/myuninstall.sql');
+   try {
+		$dashlet =  civicrm_api3('Dashboard','get',array(
+			'name' => 'eventcalendardashlet',
+		));
+		if (!empty($dashlet['id'])) {
+			civicrm_api3('Dashboard','delete',array(
+				'id' => $dashlet['id'],
+			));
+		}
+	} catch(Exception $e) {
+		die(__METHOD__ .' error: '.$e->getMessage());
+	}	
   }
 
   /**
-   * Example: Run a simple query when a module is enabled
-   *
+   * Example: Run a simple query when a module is enabled.
+   */
   public function enable() {
-    CRM_Core_DAO::executeQuery('UPDATE foo SET is_active = 1 WHERE bar = "whiz"');
+    //~ CRM_Core_DAO::executeQuery('UPDATE foo SET is_active = 1 WHERE bar = "whiz"');
+    
+    $this->executeSqlFile('sql/enable.sql');
+    CRM_Core_Invoke::rebuildMenuAndCaches();
+    
+    try {
+		$dashlet =  civicrm_api3('Dashboard','get',array(
+			'name' => 'eventcalendardashlet',
+		));
+		if (!empty($dashlet['id'])) {
+			civicrm_api3('Dashboard','create',array(
+				'id' => $dashlet['id'],
+				'is_active' => 1,
+			));
+		}
+	} catch(Exception $e) {
+		die(__METHOD__ .' error: '.$e->getMessage());
+	}	
   }
 
   /**
-   * Example: Run a simple query when a module is disabled
-   *
+   * Example: Run a simple query when a module is disabled.
+   */
   public function disable() {
-    CRM_Core_DAO::executeQuery('UPDATE foo SET is_active = 0 WHERE bar = "whiz"');
+    //~ CRM_Core_DAO::executeQuery('UPDATE foo SET is_active = 0 WHERE bar = "whiz"');
+    
+    $this->executeSqlFile('sql/disable.sql');
+    CRM_Core_Invoke::rebuildMenuAndCaches();
+    
+    try {
+		$dashlet =  civicrm_api3('Dashboard','get',array(
+			'name' => 'eventcalendardashlet',
+		));
+		if (!empty($dashlet['id'])) {
+			civicrm_api3('Dashboard','create',array(
+				'id' => $dashlet['id'],
+				'is_active' => 0,
+			));
+		}
+	} catch(Exception $e) {
+		die(__METHOD__ .' error: '.$e->getMessage());
+	}	
   }
 
   /**

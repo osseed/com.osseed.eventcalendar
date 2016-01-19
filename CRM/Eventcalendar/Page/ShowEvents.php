@@ -44,6 +44,13 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
   } else {
     CRM_Utils_System::setTitle(ts('Event Calendar'));
   } 
+  
+  // add assets
+  CRM_Core_Resources::singleton()->addScriptFile('com.osseed.eventcalendar', 'js/fullcalendar.js', 10);
+  CRM_Core_Resources::singleton()->addScriptFile('com.osseed.eventcalendar', 'js/civicrm_events.js', 11);
+  CRM_Core_Resources::singleton()->addStyleFile('com.osseed.eventcalendar', 'css/fullcalendar.css');
+  CRM_Core_Resources::singleton()->addStyleFile('com.osseed.eventcalendar', 'css/civicrm_events.css');
+  
   $whereCondition = '';
   $eventTypes = array(); 
   $colorevents = array(); 
