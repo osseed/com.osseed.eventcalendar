@@ -5217,4 +5217,4 @@ function HorizontalPositionCache(getElement) {
 	
 }
 
-})(jQuery);
+})(CRM.$);
