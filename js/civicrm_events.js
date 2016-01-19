@@ -1,6 +1,8 @@
 (function ($, _) {
 	$(function() {
-		var events_data = $(".full-calendar").data('events-data');
-		$(".full-calendar").fullCalendar(events_data);		
+		$(".full-calendar").each(function(){
+			if ($(this).data('fullCalendar')) return;
+			$(this).fullCalendar($(this).data('events-data'));	
+		});	
 	});
 }(CRM.$, CRM._));

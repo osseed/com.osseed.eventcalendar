@@ -22,7 +22,7 @@ class CRM_Eventcalendar_Upgrader extends CRM_Eventcalendar_Upgrader_Base {
 				'name' => 'eventcalendardashlet',
 				'label' => 'Events Calendar',
 				'url' => 'civicrm/showevents?civicrm_event_calendar_defaultView=agendaDay&reset=1&snippet=5',
-				'fullscreen_url' => 'civicrm/showevents?civicrm_event_calendar_defaultView=agendaDay&reset=1&snippet=5',
+				'fullscreen_url' => 'civicrm/showevents?civicrm_event_calendar_defaultView=month&reset=1&snippet=5',
 				'permission' => 'view event info',
 			));
 		}
