@@ -58,60 +58,60 @@ function setDefaultValues() {
  $config = CRM_Core_Config::singleton();
  require_once 'CRM/Event/PseudoConstant.php';
  $event_type = CRM_Event_PseudoConstant::eventType();
- if(!empty($config->civicrm_events_event_types)) {
-   foreach($config->civicrm_events_event_types as $key => $val) {
+ if(NULL != (Civi::settings()->get('civicrm_events_event_types'))) {
+   foreach(Civi::settings()->get('civicrm_events_event_types') as $key => $val) {
      $val = str_replace(" ","_",$val);
      $eventtype_id = 'eventtype_' . $key;
     if(!empty($config->$val)) {
       $config->$val = $config->$val;
     } 
     if(!empty($eventtype_id)) {
-      $defaults[$eventtype_id] = $config->$eventtype_id;
+      $defaults[$eventtype_id] = Civi::settings()->get($eventtype_id);
     } else {
-    	$defaults[$eventtype_id] = 0;
+      $defaults[$eventtype_id] = 0;
       }
    }
  } 
-  if(isset($config->civicrm_event_calendar_title)) { 
-    $defaults['event_calendar_title'] = $config->civicrm_event_calendar_title;
+  if(NULL != Civi::settings()->get('civicrm_events_calendar_title') ) {
+    $defaults['event_calendar_title'] = Civi::settings()->get('civicrm_events_calendar_title');
   } else {
-    $config->civicrm_event_calendar_title = 'Event Calendar';
+    Civi::settings()->set('civicrm_events_calendar_title', 'Event Calendar');
     $defaults['event_calendar_title'] = 'Event Calendar';
    }
-  if(isset($config->civicrm_events_event_past)) { 
-    $defaults['show_past_event'] = $config->civicrm_events_event_past;
+  if (NULL != Civi::settings()->get('civicrm_events_event_past') ) { 
+    $defaults['show_past_event'] = Civi::settings()->get('civicrm_events_event_past');
   } else {
-    $config->civicrm_events_event_past = 1;
+    Civi::settings()->set('civicrm_events_event_past',1);
     $defaults['show_past_event'] = 1;
    } 
-  if(isset($config->civicrm_events_event_is_public)) { 
-    $defaults['event_is_public'] = $config->civicrm_events_event_is_public;
+  if (NULL != Civi::settings()->get('civicrm_events_event_is_public')) {
+    $defaults['event_is_public'] = Civi::settings()->get('civicrm_events_event_is_public');
   } else {
-    $config->civicrm_events_event_is_public = 1;
+    Civi::settings()->set('civicrm_events_event_is_public',1);
     $defaults['event_is_public'] = 1;
   } 
-  if(isset($config->civicrm_events_event_end_date)) { 
-    $defaults['show_end_date'] = $config->civicrm_events_event_end_date;
+  if(NULL != Civi::settings()->get('civicrm_events_event_end_date')) {
+    $defaults['show_end_date'] = Civi::settings()->get('civicrm_events_event_end_date');
   } else {
-    $config->civicrm_events_event_end_date = 1; 
+    Civi::settings()->set('civicrm_events_event_end_date',1); 
     $defaults['show_end_date'] = 1;
   } 
-  if(isset($config->civicrm_events_event_months)) { 
-    $defaults['events_event_month'] = $config->civicrm_events_event_months;
+  if(NULL != Civi::settings()->get('civicrm_events_event_months')) {
+    $defaults['events_event_month'] = Civi::settings()->get('civicrm_events_event_months');
   } else {
-    $config->civicrm_events_event_months = 0;
+    Civi::settings()->set('civicrm_events_event_months',0);
     $defaults['events_event_month'] = 0;
   }
-  if(isset($config->show_event_from_month)) { 
-    $defaults['show_event_from_month'] = $config->show_event_from_month;
+  if (NULL != Civi::settings()->get('show_event_from_month')) {
+    $defaults['show_event_from_month'] = Civi::settings()->get('show_event_from_month');
   } else {
-    $config->show_event_from_month = '';
+    Civi::settings()->set('show_event_from_month','');
     $defaults['show_event_from_month'] = '';
   }
-  if(isset($config->enable_event_config)) { 
-    $defaults['enable_event_config'] = $config->enable_event_config;
+  if (NULL != Civi::settings()->get('enable_event_config')) {
+    $defaults['enable_event_config'] = Civi::settings()->get('enable_event_config');
   } else {
-    $config->enable_event_config = 0;
+    Civi::settings()->set('enable_event_config',0);
     $defaults['enable_event_config'] = 0;
   }
    return $defaults; 
@@ -139,25 +139,25 @@ public function buildQuickForm( ){
   $event_type = CRM_Event_PseudoConstant::eventType();
   $original_events = $event_type;
   foreach($event_type as $key => $val) {
-    	$val = str_replace(" ","_",$val);
-    	$event_type[$key] = $val;
+      $val = str_replace(" ","_",$val);
+      $event_type[$key] = $val;
     }
-  if( !isset($config->civicrm_events_event_types) ) {
-    $config->civicrm_events_event_types = $event_type;
-    foreach($config->civicrm_events_event_types as $key => $val) {
-    	$config->$val = '3366CC';
-    	$eventname = 'eventtype_' . $key;
-    	$config->$eventname = 0;
+  if( NULL == Civi::settings()->get('civicrm_events_event_types') ) {
+    Civi::settings()->set('civicrm_events_event_types', $event_type);
+    foreach(Civi::settings()->get('civicrm_events_event_types') as $key => $val) {
+      Civi::settings()->set($val, '3366cc');
+      $eventname = 'eventtype_' . $key;
+      Civi::settings()->set($eventname, 0);
     }
   }
-  if( isset($config->civicrm_events_event_types) ) {
-    $new_event_type = array_diff_key($event_type,$config->civicrm_events_event_types);
+  if( NULL != Civi::settings()->get('civicrm_events_event_types') ) {
+    $new_event_type = array_diff_key($event_type,Civi::settings()->get('civicrm_events_event_types') );
     if(!empty($new_event_type)) {
-    	foreach($new_event_type as $key => $value) {
-    	  $config->$val = '3366CC';
-    	  $eventname = 'eventtype_' . $key;
-    	  $config->$eventname = 0;
-    	}
+      foreach($new_event_type as $key => $value) {
+        Civi::settings()->set($val, '3366cc');
+        $eventname = 'eventtype_' . $key;
+        Civi::settings()->set($eventname, 0);
+      }
     }
   }
   $colors = array();
@@ -166,7 +166,7 @@ public function buildQuickForm( ){
     $eventname = 'eventtype_' . $key;
     $colortextbox = 'eventcolor_' . $key;
     $this->addElement('checkbox', $eventname, ts($original_events[$key]) , NULL , array('onclick' => "showhidecolorbox('$key')",'id' =>'event_' . $key ));
-    $this->addElement('text', $colortextbox,'',array('onchange' => "updatecolor('$colortextbox',this.value);", 'class'=>'color','id' => 'eventcolorid_' . $key, 'value'=> $config->$val));
+    $this->addElement('text', $colortextbox,'',array('onchange' => "updatecolor('$colortextbox',this.value);", 'class'=>'color','id' => 'eventcolorid_' . $key, 'value'=> Civi::settings()->get($val)));
     $event_types['eventtype_' . $key] = 'eventcolor_' . $key;
   }
   $this->assign('event_type', $event_types);
@@ -241,7 +241,9 @@ public function postProcess() {
   } else {
     $configParams['enable_event_config'] = 0; 
   }
-  CRM_Core_BAO_ConfigSetting::create($configParams);
-  CRM_Core_Session::setStatus(" ", ts('The value has been saved.'), "success" );
+  foreach($configParams as $key => $val) {
+    Civi::settings()->set($key, $val);
+  }
+  CRM_Core_Session::setStatus(" ", ts('The values have been saved.'), "success" );
  }
 }
