@@ -112,6 +112,7 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
 			if( isset($dao->start) ) $dao->start = date("Y-m-d\TH:i:s", strtotime($dao->start) );
 			if( isset($dao->end) ) $dao->end = date("Y-m-d\TH:i:s", strtotime($dao->end) );
 			if( isset($dao->start) && isset($dao->end)) $eventData['allDay'] = false;
+			$eventData['event_id'] = $dao->id;
 			$dao->url =   CRM_Utils_System::url( 'civicrm/event/info', 'id='.$dao->id );
 			if(!empty($eventTypesColors[$dao->event_type])) $eventData['backgroundColor'] = $eventTypesColors[$dao->event_type]['color'].'';
 			foreach ($eventCalendarParams as  $k) $eventData[$k] = $dao->$k; 
