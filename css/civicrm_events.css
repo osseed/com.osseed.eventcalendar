@@ -16,3 +16,13 @@
 	vertical-align: baseline;
 	border-radius: 0.25em;
 }
+.fc-multiple-add, .fc-view-event {
+	padding: 0 3px; 
+	cursor: pointer; 
+	position: relative; 
+	z-index: 10;
+}
+/* fix bug on display in widget */
+.fc-agenda .fc-agenda-axis {
+	width: 50px !important;
+}

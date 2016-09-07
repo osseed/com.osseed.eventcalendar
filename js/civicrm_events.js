@@ -9,8 +9,8 @@
 						e.preventDefault();
 					});					
 					element.find('.fc-event-inner').prepend(
-						'<span class="fc-multiple-add pull-right pointer hidden-print" style="padding: 0 3px; cursor: pointer;" title="Register participants"><i class="fa fa-plus-square-o"></i></span>'+
-						'<span class="fc-view-event pull-right pointer hidden-print" style="padding: 0 3px; cursor: pointer;" title="View event details"><i class="fa fa-share"></i></span>'
+						'<span class="fc-multiple-add pull-right pointer hidden-print" title="Register participants"><i class="fa fa-plus-square-o"></i></span>'+
+						'<span class="fc-view-event pull-right pointer hidden-print" title="View event details"><i class="fa fa-share"></i></span>'
 					);
 					element.find('.fc-multiple-add').on('click',function(){
 						document.location.href = CRM.url('civicrm/lalgbt/multipleregister', {
