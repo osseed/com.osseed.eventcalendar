@@ -110,7 +110,7 @@ class CRM_Eventcalendar_Form_EventSettings extends CRM_Admin_Form {
 
 		if (!empty($defaults)) {
 			foreach ($defaults as $key => $val) {
-				if (isset($allParams[$key])) $params[$key] = $allParams[$key];
+				$params[$key] = isset($allParams[$key]) ? $allParams[$key] : 0;
 			}
 		}
 		
