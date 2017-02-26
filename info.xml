@@ -20,6 +20,6 @@
   </compatibility>
   <comments>Show CiviCRM Event in Calendar</comments>
   <civix>
-    <namespace>CRM/Eventcalendar</namespace>
+    <namespace>CRM/EventCalendar</namespace>
   </civix>
 </extension>
