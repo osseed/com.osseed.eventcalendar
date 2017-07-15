@@ -7,7 +7,7 @@ require_once 'CRM/Core/Form.php';
  *
  * @see http://wiki.civicrm.org/confluence/display/CRMDOC43/QuickForm+Reference
  */
-class CRM_EventCalendar_Form_EventCalendarSettings extends CRM_Core_Form {
+class CRM_Eventcalendar_Form_EventCalendarSettings extends CRM_Core_Form {
   private $_settingFilter = array('group' => 'eventcalendar');
   private $_submittedValues = array();
   private $_settings = array();
