@@ -144,9 +144,11 @@ class CRM_Eventcalendar_Form_EventCalendarSettings extends CRM_Core_Form {
     $domainID = CRM_Core_Config::domainID();
     foreach ($existing['values'][$domainID] as $name => $value) {
       $defaults[$name] = $value;
-      // set event type color
-      foreach(json_decode($value, true) as $eventType) {
-        $defaults['eventtype_'.$eventType['id']] = $eventType['color'];
+      if ($name == 'eventcalendar_event_types') {
+        // set event type color
+        foreach(json_decode($value, true) as $eventType) {
+          $defaults['eventtype_'.$eventType['id']] = $eventType['color'];
+        }
       }
     }
     return $defaults;
