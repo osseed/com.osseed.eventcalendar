@@ -101,12 +101,6 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
 		//Sho/Hide Public Events.
 		if(!empty($config['event_is_public'])) $whereCondition .= " AND civicrm_event.is_public = 1";
 		
-		// only show events for department
-		if (class_exists('CRM_Lalgbtseniors_Acl') && !CRM_Core_Permission::check('administer CiviCRM')) {
-			$deptq = CRM_Lalgbtseniors_Acl::getEventDepartmentQuery();
-			$whereCondition .= " AND civicrm_event.id IN (".$deptq.")";
-		}
-
 		$query = "SELECT `id`, `title`, `start_date` as start, `end_date`  as end ,`event_type_id` as event_type FROM `civicrm_event` WHERE civicrm_event.is_active = 1 AND civicrm_event.is_template = 0";
 
 		$query .= $whereCondition; 
