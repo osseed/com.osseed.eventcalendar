@@ -93,18 +93,23 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
 		if(empty($config['show_past_event'])) $whereCondition .= " AND civicrm_event.start_date > '" .$currentDate . "'";
 
 		// Show events according to number of next months.
-		if(!empty($config['events_event_month'])) {
-			$monthEventsDate = date("Y-m-d h:i:s",strtotime(date("Y-m-d h:i:s", strtotime($config['show_event_from_month'])) . "+".$config['show_event_from_month']." month"));
-			$whereCondition .= " AND civicrm_event.start_date < '" .$monthEventsDate . "'";
+		if(!empty($config['events_event_month']) && !empty($config['show_event_from_month'])) {
+			$past = (new DateTime())->modify("-".$config['show_event_from_month']." month")->format('Y-m-d H:i:s');
+			$future = (new DateTime())->modify("+".$config['show_event_from_month']." month")->format('Y-m-d H:i:s');
+			$whereCondition .= " AND civicrm_event.start_date BETWEEN '" .$past . "' AND '" .$future . "' ";
 		}
 
 		//Sho/Hide Public Events.
 		if(!empty($config['event_is_public'])) $whereCondition .= " AND civicrm_event.is_public = 1";
 		
-		$query = "SELECT `id`, `title`, `start_date` as start, `end_date`  as end ,`event_type_id` as event_type FROM `civicrm_event` WHERE civicrm_event.is_active = 1 AND civicrm_event.is_template = 0";
+		$query = "
+			SELECT `id`, `title`, `start_date` as start, `end_date`  as end ,`event_type_id` as event_type 
+			FROM `civicrm_event` 
+			WHERE civicrm_event.is_active = 1 AND civicrm_event.is_template = 0
+		";
 
 		$query .= $whereCondition; 
-		//~ die($query);
+		echo pre($query);
 		
 		$events['events'] = array();
 
@@ -133,7 +138,7 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
 			$eventData['url'] = html_entity_decode($eventData['url']);
 			$events['events'][] = $eventData;
 		}
-		//~ echo pre($events['events']);
+		echo pre($events['events']);
 
 		$events['header']['left'] = 'prev,next today';
 		$events['header']['center'] = 'title';
