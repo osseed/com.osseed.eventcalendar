@@ -109,7 +109,7 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
 		";
 
 		$query .= $whereCondition; 
-		echo pre($query);
+		// echo pre($query);
 		
 		$events['events'] = array();
 
@@ -138,7 +138,7 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
 			$eventData['url'] = html_entity_decode($eventData['url']);
 			$events['events'][] = $eventData;
 		}
-		echo pre($events['events']);
+		// echo pre($events['events']);
 
 		$events['header']['left'] = 'prev,next today';
 		$events['header']['center'] = 'title';
