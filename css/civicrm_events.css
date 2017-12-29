@@ -1,0 +1,39 @@
+.fc-event-time, .fc-event-title {
+	color:#fff;
+}
+#calendarKey {
+	margin-bottom: 15px;
+}
+.event-type-key {
+	display: inline;
+	padding: 0.2em 0.6em 0.3em;
+	font-size: 75%;
+	font-weight: 700;
+	line-height: 1;
+	color: #FFF;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: baseline;
+	border-radius: 0.25em;
+}
+.fc-event-inner {
+	position: relative;
+}
+.fc-event-head .fc-event-time {
+	padding: 0 40px 0 10px;
+}
+.fc-multiple-add, .fc-view-event {
+	padding: 0 3px; 
+	cursor: pointer; 
+	position: absolute;
+	top: 0; 
+	right: 3px;
+	z-index: 10;
+}
+.fc-multiple-add {
+	right: 20px
+}
+/* fix bug on display in widget */
+.fc-agenda .fc-agenda-axis {
+	width: 50px !important;
+}

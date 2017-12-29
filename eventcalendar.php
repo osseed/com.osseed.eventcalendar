@@ -22,28 +22,14 @@ function eventcalendar_civicrm_xmlMenu(&$files) {
  * Implementation of hook_civicrm_install
  */
 function eventcalendar_civicrm_install() {
-  $cividiscountRoot = dirname(__FILE__) . DIRECTORY_SEPARATOR;
-  $cividiscountSQL = $cividiscountRoot . DIRECTORY_SEPARATOR . 'install.sql';
-
-  CRM_Utils_File::sourceSQLFile(CIVICRM_DSN, $cividiscountSQL);
-
-  // rebuild the menu so our path is picked up
-  CRM_Core_Invoke::rebuildMenuAndCaches();
- // return _eventcalendar_civix_civicrm_install();
+  return _eventcalendar_civix_civicrm_install();
 }
 
 /**
  * Implementation of hook_civicrm_uninstall
  */
 function eventcalendar_civicrm_uninstall() {
-  $cividiscountRoot = dirname(__FILE__) . DIRECTORY_SEPARATOR;
-  $cividiscountSQL = $cividiscountRoot . DIRECTORY_SEPARATOR . 'uninstall.sql';
-
-  CRM_Utils_File::sourceSQLFile(CIVICRM_DSN, $cividiscountSQL);
-
-  // rebuild the menu so our path is picked up
-  CRM_Core_Invoke::rebuildMenuAndCaches();
-  //return _eventcalendar_civix_civicrm_uninstall();
+  return _eventcalendar_civix_civicrm_uninstall();
 }
 
 /**
@@ -81,4 +67,14 @@ function eventcalendar_civicrm_upgrade($op, CRM_Queue_Queue $queue = NULL) {
  */
 function eventcalendar_civicrm_managed(&$entities) {
   return _eventcalendar_civix_civicrm_managed($entities);
+}
+
+class EventCalendarDefines {
+	public static  $fullcalendarviews = array(
+		'month' => 'Month',
+		'basicWeek' => 'Basic Week',
+		'basicDay' => 'Basic Day',
+		'agendaWeek' => 'Agenda Week',
+		'agendaDay' => 'Agenda Day',
+	);
 }
