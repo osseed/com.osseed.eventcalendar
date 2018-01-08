@@ -11,6 +11,11 @@ If you are new to CiviCRM Extension you can get help about extension from
 
 http://wiki.civicrm.org/confluence/display/CRMDOC42/Extensions
 
+Library
+---------------
+Extension uses the fullcalendar library.
+Add the fullcalendar library https://github.com/fullcalendar/fullcalendar/releases/tag/v1.6.7
+
 Usage
 ---------------
 1. Click Administrator->CiviEvent->Event Calendar Settings menu (civicrm/eventCalendarsettings) -- change the setting if required.

@@ -60,13 +60,13 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
     else {
       $whereCondition .= ' AND civicrm_event.event_type_id in (0)';
     }
-    
+
     //Show/Hide Past Events
     $currentDate = date("Y-m-d h:i:s", time());
     if (empty($settings['event_past'])) {
       $whereCondition .= " AND civicrm_event.start_date > '" .$currentDate . "'";
     }
-    
+
     // Show events according to number of next months
     if(!empty($settings['event_from_month'])) {
       $monthEvents = $settings['event_from_month'];
@@ -74,22 +74,22 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
         strtotime(date("Y-m-d h:i:s", strtotime($currentDate))."+".$monthEvents." month"));
       $whereCondition .= " AND civicrm_event.start_date < '" .$monthEventsDate . "'";
     }
-    
+
     //Show/Hide Public Events
     if(!empty($settings['event_is_public'])) {
       $whereCondition .= " AND civicrm_event.is_public = 1";
     }
 
     $query = "
-      SELECT `id`, `title`, `start_date` start, `end_date` end ,`event_type_id` event_type 
-      FROM `civicrm_event` 
-      WHERE civicrm_event.is_active = 1 
+      SELECT `id`, `title`, `start_date` start, `end_date` end ,`event_type_id` event_type
+      FROM `civicrm_event`
+      WHERE civicrm_event.is_active = 1
         AND civicrm_event.is_template = 0
     ";
-  
-    $query .= $whereCondition; 
+
+    $query .= $whereCondition;
     $events['events'] = array();
-   
+
     $dao = CRM_Core_DAO::executeQuery($query);
     $eventCalendarParams = array ('title' => 'title', 'start' => 'start', 'url' => 'url');
 
