@@ -1,4 +1,4 @@
-<?xml version="2.0"?>
+<?xml version="1.0"?>
 <extension key="com.osseed.eventcalendar" type="module">
   <file>eventcalendar</file>
   <name>Event Calendar</name>
