@@ -10,16 +10,16 @@ class CRM_Eventcalendar_Upgrader extends CRM_Eventcalendar_Upgrader_Base {
 
   /**
    * Example: Run an external SQL script when the module is installed
-   */
+   *
   public function install() {
-    $this->executeSqlFile('sql/install.sql');
+    $this->executeSqlFile('sql/myinstall.sql');
   }
 
   /**
    * Example: Run an external SQL script when the module is uninstalled
-   */
+   *
   public function uninstall() {
-   $this->executeSqlFile('sql/uninstall.sql');
+   $this->executeSqlFile('sql/myuninstall.sql');
   }
 
   /**
