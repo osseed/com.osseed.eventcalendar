@@ -2,6 +2,10 @@
 
 This is a [CiviCRM](https://civicrm.ord) extension that allows you to view all CiviCRM events in a calendar by month, day, or week. It uses the [FullCalendar](https://fullcalendar.io) javascript library to produce a full-featured calendar. The settings page allows you to specify event types that should be shown on the calendar, and indicate a color for each event type. 
 
+## Requirements
+
+* Your CMS version of jQuery must be 1.7.1 or higher. (On Drupal you may need to install [jquery_update](https://www.drupal.org/project/jquery_update).)
+
 ## Installation
 
 1. Move the downloaded extension to your extensions folder.

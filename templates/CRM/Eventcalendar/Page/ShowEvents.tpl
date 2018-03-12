@@ -1,7 +1,4 @@
 <div id="calendar"></div>
-{crmScript ext=com.osseed.eventcalendar file=fullcalendar.js}
-{crmStyle ext=com.osseed.eventcalendar file=fullcalendar.css}
-{crmStyle ext=com.osseed.eventcalendar file=civicrm_events.css}
 
 {literal}
 <script type="text/javascript">

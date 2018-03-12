@@ -38,9 +38,10 @@ require_once 'CRM/Core/Page.php';
 class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
 
   function run() {
-    CRM_Core_Resources::singleton()->addScriptFile('com.osseed.eventcalendar', 'js/fullcalendar.js');
+    CRM_Core_Resources::singleton()->addScriptFile('com.osseed.eventcalendar', 'js/moment.js',5);
+    CRM_Core_Resources::singleton()->addScriptFile('com.osseed.eventcalendar', 'js/fullcalendar.min.js',10);
     CRM_Core_Resources::singleton()->addStyleFile('com.osseed.eventcalendar', 'css/civicrm_events.css');
-    CRM_Core_Resources::singleton()->addStyleFile('com.osseed.eventcalendar', 'css/fullcalendar.css');
+    CRM_Core_Resources::singleton()->addStyleFile('com.osseed.eventcalendar', 'css/fullcalendar.min.css');
 
     $config = CRM_Core_Config::singleton();
 
@@ -106,6 +107,7 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
 
         if(!empty($eventTypes)) {
           $eventData['backgroundColor'] = "#{$eventTypes[$dao->event_type]}";
+          $eventData['textColor'] = '#FFF';
         }
       }
       $events['events'][] = $eventData;
