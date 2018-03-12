@@ -117,6 +117,7 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
     $events['header']['left'] = 'prev,next today';
     $events['header']['center'] = 'title';
     $events['header']['right'] = 'month,basicWeek,basicDay';
+    $events['displayEventEnd'] = 'true';
 
     //send Events array to calendar.
     $this->assign('civicrm_events', json_encode($events));
