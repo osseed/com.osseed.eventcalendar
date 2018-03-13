@@ -5,7 +5,7 @@
     <page_callback>CRM_Eventcalendar_Page_ShowEvents</page_callback>
     <title>Show Events</title>
     <access_arguments>view event info</access_arguments>
-    <is_public>true</is_public>
+    <is_public>false</is_public>
   </item>
   <item>
     <path>civicrm/eventcalendarsettings</path>

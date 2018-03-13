@@ -14,4 +14,4 @@ SELECT @adminCampaignWeight := MAX(weight)+1 FROM civicrm_navigation where paren
 INSERT INTO civicrm_navigation
     ( domain_id, url, label, name, permission, permission_operator, parent_id, is_active, has_separator, weight )
 VALUES     
-    ( @domain_id,'civicrm/eventcalendarsettings', 'Event Calendar Settings', 'Event Calendar Settings', 'view event info', 'AND', @administerID, '1', NULL, @adminCampaignWeight );
+    ( @domain_id,'civicrm/eventcalendarsettings', 'Event Calendar Settings', 'Event Calendar Settings', 'administer CiviCRM', 'AND', @administerID, '1', NULL, @adminCampaignWeight );
