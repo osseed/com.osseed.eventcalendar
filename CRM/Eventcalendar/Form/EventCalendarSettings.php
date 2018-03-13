@@ -128,6 +128,14 @@ class CRM_Eventcalendar_Form_EventCalendarSettings extends CRM_Core_Form {
     }
     $this->_submittedValues['eventcalendar_event_types'] = json_encode($eventTypes);
 
+    foreach ($settings as $settingName => $settingDate) {
+      if ($settingDate['html_type'] === 'checkbox' &&
+        empty($this->_submittedValues[$settingName])
+      ) {
+        $this->_submittedValues[$settingName] = 0;
+      }
+    }
+
     $values = array_intersect_key($this->_submittedValues, $settings);
     //Civi::log()->debug('saveSettings', array('values' => $values));
     civicrm_api3('setting', 'create', $values);
