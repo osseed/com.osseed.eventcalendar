@@ -32,7 +32,7 @@ function event_calendar_add_form_button($context) {
     return;
   }
   $config  = CRM_Core_Config::singleton();
-  $imageBtnURL = $config->resourceBase . 'i/logo16px.png';
+  $imageBtnURL = $config->resourceBase . 'i/smallLogo.png';
 
   // append the icon.
   $context .= '<a href="#TB_inline?width=480&inlineId=calendar_frontend_pages" class="button thickbox" id="add_civi" style="padding-left: 4px;" title="' . __( 'Add CiviCRM Event Calendar Public Pages', 'civicrm-wordpress' ) . '"><img src="' . $imageBtnURL . '" height="15" width="15" alt="' . __( 'Add CiviCRM Event Calendar Public Pages', 'civicrm-wordpress' ) . '" />Event Calendar</a>';
