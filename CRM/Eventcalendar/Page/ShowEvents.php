@@ -38,6 +38,7 @@ require_once 'CRM/Core/Page.php';
 class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
 
   function run() {
+    CRM_Core_Resources::singleton()->addScriptFile('com.osseed.eventcalendar', 'js/moment.js');
     CRM_Core_Resources::singleton()->addScriptFile('com.osseed.eventcalendar', 'js/fullcalendar.js');
     CRM_Core_Resources::singleton()->addStyleFile('com.osseed.eventcalendar', 'css/civicrm_events.css');
     CRM_Core_Resources::singleton()->addStyleFile('com.osseed.eventcalendar', 'css/fullcalendar.css');
@@ -115,6 +116,7 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
     $events['header']['left'] = 'prev,next today';
     $events['header']['center'] = 'title';
     $events['header']['right'] = 'month,basicWeek,basicDay';
+    $events['displayEventEnd'] = 'true';
 
     //send Events array to calendar.
     $this->assign('civicrm_events', json_encode($events));
