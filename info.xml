@@ -3,7 +3,7 @@
   <file>eventcalendar</file>
   <name>Event Calendar</name>
   <description>Show CiviCRM Events in Calendar</description>
-  <license></license>
+  <license>AGPL-3.0</license>
   <maintainer>
     <author>OSSeed</author>
     <email>hello@osseed.com</email>
