@@ -108,8 +108,7 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
           $eventData['backgroundColor'] = "#{$eventTypes[$dao->event_type]}";
         }
       }
-      $timeDisplay = $settings['event_time'];
-      $events['timeDisplay'] = $timeDisplay;
+      $events['timeDisplay'] = $settings['event_time'];
 
       $events['events'][] = $eventData;
     }
