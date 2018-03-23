@@ -38,7 +38,8 @@ require_once 'CRM/Core/Page.php';
 class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
 
   function run() {
-    CRM_Core_Resources::singleton()->addScriptFile('com.osseed.eventcalendar', 'js/fullcalendar.js');
+    CRM_Core_Resources::singleton()->addScriptFile('com.osseed.eventcalendar', 'js/moment.js',5);
+    CRM_Core_Resources::singleton()->addScriptFile('com.osseed.eventcalendar', 'js/fullcalendar.js',10);
     CRM_Core_Resources::singleton()->addStyleFile('com.osseed.eventcalendar', 'css/civicrm_events.css');
     CRM_Core_Resources::singleton()->addStyleFile('com.osseed.eventcalendar', 'css/fullcalendar.css');
 
@@ -103,11 +104,12 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
       $dao->url = html_entity_decode(CRM_Utils_System::url('civicrm/event/info', 'id='.$dao->id));
       foreach ($eventCalendarParams as $k) {
         $eventData[$k] = $dao->$k;
-
         if(!empty($eventTypes)) {
           $eventData['backgroundColor'] = "#{$eventTypes[$dao->event_type]}";
         }
       }
+      $events['timeDisplay'] = $settings['event_time'];
+
       $events['events'][] = $eventData;
     }
     //Civi::log()->debug('EventCalendar run', array('events' => $events));
@@ -115,6 +117,7 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
     $events['header']['left'] = 'prev,next today';
     $events['header']['center'] = 'title';
     $events['header']['right'] = 'month,basicWeek,basicDay';
+    $events['displayEventEnd'] = 'true';
 
     //send Events array to calendar.
     $this->assign('civicrm_events', json_encode($events));
@@ -132,6 +135,7 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
       'event_is_public' => Civi::settings()->get('eventcalendar_event_is_public'),
       'event_month' => Civi::settings()->get('eventcalendar_event_month'),
       'event_from_month' => Civi::settings()->get('eventcalendar_event_from_month'),
+      'event_time' => Civi::settings()->get('eventcalendar_event_time'),
     );
 
     $eventTypes = Civi::settings()->get('eventcalendar_event_types');
