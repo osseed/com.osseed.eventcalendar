@@ -1,12 +1,12 @@
 Introduction
 ------------
-Event Calendar Extension allows you to view all CiviCRM events in a Calendar by month,day,week.The setting page allows us to select which events should be shown on Calendar with the color we want for particular event type. 
+Event Calendar Extension allows you to view all CiviCRM events in a Calendar by month,day,week.The setting page allows us to select which events should be shown on Calendar with the color we want for particular event type.The setting page configuration for event types filters allows us to filter by particular event types on calendar.
 
 Installation
 -------------
 1. Move the downloaded extension to your extensions folder.
 2. Goto civicrm/admin/extensions&reset=1  -- install the extension
- 
+
 If you are new to CiviCRM Extension you can get help about extension from
 
 http://wiki.civicrm.org/confluence/display/CRMDOC42/Extensions
