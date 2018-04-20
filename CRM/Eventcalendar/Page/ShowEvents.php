@@ -43,6 +43,9 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
     CRM_Core_Resources::singleton()->addStyleFile('com.osseed.eventcalendar', 'css/civicrm_events.css');
     CRM_Core_Resources::singleton()->addStyleFile('com.osseed.eventcalendar', 'css/fullcalendar.css');
 
+    $eventTypesFilter = array();
+    $civieventTypesList = CRM_Event_PseudoConstant::eventType();
+
     $config = CRM_Core_Config::singleton();
 
     //get settings
@@ -106,11 +109,18 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
         $eventData[$k] = $dao->$k;
         if(!empty($eventTypes)) {
           $eventData['backgroundColor'] = "#{$eventTypes[$dao->event_type]}";
+          $eventData['eventType'] = $civieventTypesList[$dao->event_type];
         }
       }
       $events['timeDisplay'] = $settings['event_time'];
-
       $events['events'][] = $eventData;
+      $eventTypesFilter[$dao->event_type] = $civieventTypesList[$dao->event_type];
+
+    }
+
+    if(!empty($settings['event_event_type_filter'])) {
+      $events['eventTypes'][]  = $eventTypesFilter;
+      $this->assign('eventTypes', $eventTypesFilter);
     }
     //Civi::log()->debug('EventCalendar run', array('events' => $events));
 
@@ -136,6 +146,7 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
       'event_month' => Civi::settings()->get('eventcalendar_event_month'),
       'event_from_month' => Civi::settings()->get('eventcalendar_event_from_month'),
       'event_time' => Civi::settings()->get('eventcalendar_event_time'),
+      'event_event_type_filter' =>  Civi::settings()->get('eventcalendar_event__type_filter'),
     );
 
     $eventTypes = Civi::settings()->get('eventcalendar_event_types');
