@@ -146,7 +146,7 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
       'event_month' => Civi::settings()->get('eventcalendar_event_month'),
       'event_from_month' => Civi::settings()->get('eventcalendar_event_from_month'),
       'event_time' => Civi::settings()->get('eventcalendar_event_time'),
-      'event_event_type_filter' =>  Civi::settings()->get('eventcalendar_event__type_filter'),
+      'event_event_type_filter' =>  Civi::settings()->get('eventcalendar_event_type_filter'),
     );
 
     $eventTypes = Civi::settings()->get('eventcalendar_event_types');
