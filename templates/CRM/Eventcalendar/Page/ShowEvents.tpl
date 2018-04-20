@@ -26,7 +26,17 @@
     ],
     displayEventTime: showTime ? 1 : 0,
     timeFormat: 'h(:mm)A',
+
+    eventRender: function eventRender( event, element, view ) {
+      if(event.eventType) {
+        return ['all', event.eventType].indexOf(cj('#event_selector').val()) >= 0
+      }
+    }
    });
+
+   cj('#event_selector').on('change', function(){
+      jQuery('#calendar').fullCalendar('rerenderEvents');
+   })
  }
 </script>
 {/literal}
