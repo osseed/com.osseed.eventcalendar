@@ -152,8 +152,10 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
 
     $eventTypes = Civi::settings()->get('eventcalendar_event_types');
     $eventTypes = json_decode($eventTypes);
-    foreach ($eventTypes as $eventType) {
-      $settings['event_types'][$eventType->id] = $eventType->color;
+    if (!empty($eventTypes)) {
+      foreach ($eventTypes as $eventType) {
+        $settings['event_types'][$eventType->id] = $eventType->color;
+      }    
     }
 
     /*Civi::log()->debug('_eventCalendar_getSettings', array(
