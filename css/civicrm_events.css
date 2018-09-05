@@ -7,3 +7,7 @@
   display: block;
   padding-left: 1px;
 }
+
+.fc-day-grid-event .fc-time {
+	display: block;
+}
