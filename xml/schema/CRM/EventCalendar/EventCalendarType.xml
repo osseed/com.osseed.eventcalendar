@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<table>
+  <base>CRM/EventCalendar</base>
+  <class>EventCalendarEventType</class>
+  <name>civicrm_event_calendar_event_type</name>
+  <comment>Event types and colors, FK to Event Calendar ID</comment>
+  <add>4.4</add>
+  <log>true</log>
+
+  <field>
+    <name>id</name>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment>Unique EventCalendarEventType ID</comment>
+    <add>4.4</add>
+  </field>
+  <primaryKey>
+    <name>id</name>
+    <autoincrement>true</autoincrement>
+  </primaryKey>
+
+  <field>
+    <name>event_calendar_id</name>
+    <type>int unsigned</type>
+    <comment>FK to Event Calendar</comment>
+    <add>4.4</add>
+  </field>
+  <foreignKey>
+    <name>event_calendar_id</name>
+    <table>civicrm_event_calendar</table>
+    <key>id</key>
+    <add>4.4</add>
+    <onDelete>CASCADE</onDelete>
+  </foreignKey>
+
+  <field>
+    <name>event_type</name>
+    <type>int unsigned</type>
+    <comment>Event Type id</comment>
+    <add>4.4</add>
+  </field>
+  <field>
+    <name>event_color</name>
+    <type>varchar(255)</type>
+    <comment>Hex code for event type display color</comment>
+    <add>4.4</add>
+  </field>
+
+</table>

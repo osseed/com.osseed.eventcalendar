@@ -8,67 +8,123 @@ require_once 'CRM/Core/Form.php';
  * @see http://wiki.civicrm.org/confluence/display/CRMDOC43/QuickForm+Reference
  */
 class CRM_Eventcalendar_Form_EventCalendarSettings extends CRM_Core_Form {
-  private $_settingFilter = array('group' => 'eventcalendar');
+  //private $_settingFilter = array('group' => 'eventcalendar');
   private $_submittedValues = array();
   private $_settings = array();
 
-  function buildQuickForm() {
+  public function buildQuickForm() {
     CRM_Core_Resources::singleton()->addScriptFile('com.osseed.eventcalendar', 'js/jscolor.js');
     CRM_Core_Resources::singleton()->addScriptFile('com.osseed.eventcalendar', 'js/eventcalendar.js');
 
+    //This will get used at the bottom of the form for a delete option
     $settings = $this->getFormSettings();
+    //@todo get descriptions out of settings and just store them here
     $descriptions = array();
-    foreach ($settings as $name => $setting) {
-      if (isset($setting['quick_form_type'])) {
-        $add = 'add' . $setting['quick_form_type'];
 
-        if ($name != 'eventcalendar_event_types') {
-          if ($add == 'addElement') {
-            $this->$add($setting['html_type'], $name, ts($setting['title']),
-              CRM_Utils_Array::value('html_attributes', $setting, array()));
-          }
-          else {
-            $this->$add($name, ts($setting['title']));
-          }
-          $descriptions[$name] = $setting['description'];
-        }
-        else {
-          //special handling for event types; we construct these dynamically
-          //and store as json
-          $eventTypes = CRM_Event_PseudoConstant::eventType();
-          foreach ($eventTypes as $id => $type) {
-            $this->addElement('checkbox', "eventtype_{$id}", $type, NULL,
-              array('onclick' => "showhidecolorbox('{$id}')", 'id' => "event_{$id}"));
-            $this->addElement('text', "eventcolor_{$id}", "Color",
-              array(
-                'onchange' => "updatecolor('eventcolor_{$id}', this.value);",
-                'class' => 'color',
-                'id' => "eventcolorid_{$id}",
-                //'value'=> 'EXISTING VALUE?',
-              ));
-          }
+    //Only create a calendar if this is checked off, just so we don't get a bunch of accidental ones with blank values
+    $this->add('advcheckbox', 'create_new_calendar', ts('Create A New Calendar'));
+    $this->add('advcheckbox', 'edit_existing_calendar', ts('Edit An Existing Calendar'));
+    $this->add('text', 'update_id', ts('ID of Calendar to Update'));
+    $this->add('text', 'calendar_title', ts('Calendar Title'));
+    $this->add('advcheckbox', 'show_past_events', ts('Show Past Events?'));
+    $this->add('advcheckbox', 'show_end_date', ts('Show End Date?'));
+    $this->add('advcheckbox', 'show_public_events', ts('Show Public Events?'));
+    $this->add('advcheckbox', 'events_by_month', ts('Show Events by Month?'));
+    $this->add('advcheckbox', 'event_timings', ts('Show Event Times?'));
+    $this->add('text', 'events_from_month', ts('Events from Month'));
+    $this->add('advcheckbox', 'event_type_filters', ts('Filter Event Types?'));
 
-          $this->assign('eventTypes', $eventTypes);
-        }
-      }
+    $eventTypes = CRM_Event_PseudoConstant::eventType();
+    foreach ($eventTypes as $id => $type) {
+      $this->addElement('checkbox', "eventtype_{$id}", $type, NULL,
+        array('onclick' => "showhidecolorbox('{$id}')", 'id' => "event_{$id}"));
+      $this->addElement('text', "eventcolor_{$id}", "Color",
+        array(
+          'onchange' => "updatecolor('eventcolor_{$id}', this.value);",
+          'class' => 'color',
+          'id' => "eventcolorid_{$id}",
+        ));
     }
+
+    //Add ability to delete current calendars, checkbox is a safety measure so we don't accidentally delete calendars we want to keep
+    $this->add('advcheckbox', 'delete_current_calendars', ts('Delete Current Calendar(s)'));
+    foreach ($settings as $calendar) {
+      $this->add('advcheckbox', 'delete_calendar_' . $calendar['id'], ts('Delete ' . $calendar['calendar_title'] . ' (ID:' . $calendar['id'] . ')'));
+    }
+    $this->assign('eventTypes', $eventTypes);
+
     $this->assign('descriptions', $descriptions);
 
     $this->addButtons(array(
-      array (
+      array(
         'type' => 'submit',
         'name' => ts('Submit'),
         'isDefault' => TRUE,
-      )
+      ),
     ));
     // export form elements
     $this->assign('elementNames', $this->getRenderableElementNames());
     parent::buildQuickForm();
   }
 
-  function postProcess() {
-    $this->_submittedValues = $this->exportValues();
-    $this->saveSettings();
+  public function postProcess() {
+    $submitted = $this->exportValues();
+    foreach ($submitted as $key => $value) {
+      if (!$value) {
+        $submitted[$key] = 0;
+      }
+    }
+
+    if ($submitted['create_new_calendar'] == 1) {
+      $sql = "INSERT INTO civicrm_event_calendar(calendar_title, show_past_events, show_end_date, show_public_events, events_by_month, event_timings, events_from_month, event_type_filters)
+       VALUES ('{$submitted['calendar_title']}', {$submitted['show_past_events']}, {$submitted['show_end_date']}, {$submitted['show_public_events']}, {$submitted['events_by_month']}, {$submitted['event_timings']}, {$submitted['events_from_month']}, {$submitted['event_type_filters']});";
+      $dao = CRM_Core_DAO::executeQuery($sql);
+      $cfId = CRM_Core_DAO::singleValueQuery('SELECT LAST_INSERT_ID()');
+      foreach ($submitted as $key => $value) {
+        if ("eventtype" == substr($key, 0, 9)) {
+          if ($value == 1) {
+            $id = explode("_", $key)[1];
+            $sql = "INSERT INTO civicrm_event_calendar_event_type(event_calendar_id, event_type, event_color)
+             VALUES ({$cfId}, {$submitted['eventtype_' . $id]}, {$submitted['eventcolor_' . $id]});";
+          }
+        }
+      }
+    }
+
+    if ($submitted['edit_existing_calendar'] == 1) {
+      $sql = "UPDATE civicrm_event_calendar
+       SET (calendar_title = '{$submitted['calendar_title']}', show_past_events = {$submitted['show_past_events']}, show_end_date = {$submitted['show_end_date']}, show_public_events = {$submitted['show_public_events']}, events_by_month = {$submitted['events_by_month']}, event_timings = {$submitted['event_timings']}, events_from_month = {$submitted['events_from_month']}, event_type_filters = {$submitted['event_type_filters']}
+       WHERE `id` = {$submitted['update_id']};";
+      $dao = CRM_Core_DAO::executeQuery($sql);
+      //delete current event type records to update with new ones
+      $sql = "DELETE FROM civicrm_event_calendar_event_type WHERE `event_calendar_id` = {$submitted['update_id']};";
+      $dao = CRM_Core_DAO::executeQuery($sql);
+      //insert new event type records
+      foreach ($submitted as $key => $value) {
+        if ("eventtype" == substr($key, 0, 9)) {
+          if ($value == 1) {
+            $id = explode("_", $key)[1];
+            $sql = "INSERT INTO civicrm_event_calendar_event_type(event_calendar_id, event_type, event_color)
+             VALUES ({$submitted['update_id']}, {$submitted['eventtype_' . $id]}, {$submitted['eventcolor_' . $id]});";
+          }
+        }
+      }
+    }
+
+    if ($submitted['delete_current_calendars'] == 1) {
+      foreach ($submitted as $key => $value) {
+        if ("delete_calendar" == substr($key, 0, 15)) {
+          if ($value == 1) {
+            $id = explode("_", $key)[2];
+            $sql = "DELETE FROM civicrm_event_calendar WHERE `id` = {$id};";
+            $dao = CRM_Core_DAO::executeQuery($sql);
+          }
+        }
+      }
+    }
+    //Without a refresh, our delete items with IDs don't re-generate properly
+    //There's probably a better way to do this
+    header("Refresh:0");
     parent::postProcess();
   }
 
@@ -77,7 +133,7 @@ class CRM_Eventcalendar_Form_EventCalendarSettings extends CRM_Core_Form {
    *
    * @return array (string)
    */
-  function getRenderableElementNames() {
+  public function getRenderableElementNames() {
     // The _elements list includes some items which should not be
     // auto-rendered in the loop -- such as "qfKey" and "buttons". These
     // items don't have labels. We'll identify renderable by filtering on
@@ -97,69 +153,16 @@ class CRM_Eventcalendar_Form_EventCalendarSettings extends CRM_Core_Form {
    *
    * @return array
    */
-  function getFormSettings() {
+  public function getFormSettings() {
     if (empty($this->_settings)) {
-      $settings = civicrm_api3('setting', 'getfields', array('filters' => $this->_settingFilter));
-    }
-
-    //Civi::log()->debug('getFormSettings', array('settings' => $settings));
-    return $settings['values'];
-  }
-
-  /**
-   * Get the settings we are going to allow to be set on this form.
-   *
-   * @return array
-   */
-  function saveSettings() {
-    $settings = $this->getFormSettings();
-    //Civi::log()->debug('saveSettings', array('_submitValues' => $this->_submitValues));
-
-    //we extract eventtype_ and eventcolor_ settings and store as json
-    $eventTypes = array();
-    foreach ($this->_submittedValues as $f => $v) {
-      if (strpos($f, 'eventtype_') !== FALSE) {
-        $id = str_replace('eventtype_', '', $f);
-        $eventTypes[] = array(
-          'id' => $id,
-          'color' => $this->_submittedValues["eventcolor_{$id}"],
-        );
-      }
-    }
-    $this->_submittedValues['eventcalendar_event_types'] = json_encode($eventTypes);
-
-    foreach ($settings as $settingName => $settingDate) {
-      if ($settingDate['html_type'] === 'checkbox' &&
-        empty($this->_submittedValues[$settingName])
-      ) {
-        $this->_submittedValues[$settingName] = 0;
+      $sql = "SELECT * FROM civicrm_event_calendar;";
+      $dao = CRM_Core_DAO::executeQuery($sql);
+      while ($dao->fetch()) {
+        $settings[] = $dao->toArray();
       }
     }
 
-    $values = array_intersect_key($this->_submittedValues, $settings);
-    //Civi::log()->debug('saveSettings', array('values' => $values));
-    civicrm_api3('setting', 'create', $values);
+    return $settings;
   }
 
-  /**
-   * Set defaults for form.
-   *
-   * @see CRM_Core_Form::setDefaultValues()
-   */
-  function setDefaultValues() {
-    $existing = civicrm_api3('setting', 'get', array('return' => array_keys($this->getFormSettings())));
-    $defaults = array();
-    $domainID = CRM_Core_Config::domainID();
-    foreach ($existing['values'][$domainID] as $name => $value) {
-      $defaults[$name] = $value;
-      if ($name == 'eventcalendar_event_types') {
-        // set event type color
-        foreach(json_decode($value, true) as $eventType) {
-          $defaults['eventtype_'.$eventType['id']] = 1;
-          $defaults['eventcolor_'.$eventType['id']] = $eventType['color'];
-        }
-      }
-    }
-    return $defaults;
-  }
 }

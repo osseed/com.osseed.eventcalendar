@@ -23,7 +23,7 @@
  | GNU Affero General Public License or the licensing of CiviCRM,     |
  | see the CiviCRM license FAQ at http://civicrm.org/licensing        |
  +--------------------------------------------------------------------+
-*/
+ */
 
 /**
  *
@@ -37,9 +37,9 @@ require_once 'CRM/Core/Page.php';
 
 class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
 
-  function run() {
-    CRM_Core_Resources::singleton()->addScriptFile('com.osseed.eventcalendar', 'js/moment.js',5);
-    CRM_Core_Resources::singleton()->addScriptFile('com.osseed.eventcalendar', 'js/fullcalendar.js',10);
+  public function run() {
+    CRM_Core_Resources::singleton()->addScriptFile('com.osseed.eventcalendar', 'js/moment.js', 5);
+    CRM_Core_Resources::singleton()->addScriptFile('com.osseed.eventcalendar', 'js/fullcalendar.js', 10);
     CRM_Core_Resources::singleton()->addStyleFile('com.osseed.eventcalendar', 'css/civicrm_events.css');
     CRM_Core_Resources::singleton()->addStyleFile('com.osseed.eventcalendar', 'css/fullcalendar.css');
 
@@ -59,7 +59,7 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
       $eventTypes = $settings['event_types'];
     }
 
-    if(!empty($eventTypes)) {
+    if (!empty($eventTypes)) {
       $eventTypesList = implode(',', array_keys($eventTypes));
       $whereCondition .= " AND civicrm_event.event_type_id in ({$eventTypesList})";
     }
@@ -70,19 +70,19 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
     //Show/Hide Past Events
     $currentDate = date("Y-m-d h:i:s", time());
     if (empty($settings['event_past'])) {
-      $whereCondition .= " AND civicrm_event.start_date > '" .$currentDate . "'";
+      $whereCondition .= " AND civicrm_event.start_date > '" . $currentDate . "'";
     }
 
     // Show events according to number of next months
-    if(!empty($settings['event_from_month'])) {
+    if (!empty($settings['event_from_month'])) {
       $monthEvents = $settings['event_from_month'];
       $monthEventsDate = date("Y-m-d h:i:s",
-        strtotime(date("Y-m-d h:i:s", strtotime($currentDate))."+".$monthEvents." month"));
-      $whereCondition .= " AND civicrm_event.start_date < '" .$monthEventsDate . "'";
+        strtotime(date("Y-m-d h:i:s", strtotime($currentDate)) . "+" . $monthEvents . " month"));
+      $whereCondition .= " AND civicrm_event.start_date < '" . $monthEventsDate . "'";
     }
 
     //Show/Hide Public Events
-    if(!empty($settings['event_is_public'])) {
+    if (!empty($settings['event_is_public'])) {
       $whereCondition .= " AND civicrm_event.is_public = 1";
     }
 
@@ -97,19 +97,19 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
     $events['events'] = array();
 
     $dao = CRM_Core_DAO::executeQuery($query);
-    $eventCalendarParams = array ('title' => 'title', 'start' => 'start', 'url' => 'url');
+    $eventCalendarParams = array('title' => 'title', 'start' => 'start', 'url' => 'url');
 
-    if(!empty($settings['event_end_date'])) {
+    if (!empty($settings['event_end_date'])) {
       $eventCalendarParams['end'] = 'end';
     }
 
     while ($dao->fetch()) {
       $eventData = array();
 
-      $dao->url = html_entity_decode(CRM_Utils_System::url('civicrm/event/info', 'id='.$dao->id));
+      $dao->url = html_entity_decode(CRM_Utils_System::url('civicrm/event/info', 'id=' . $dao->id));
       foreach ($eventCalendarParams as $k) {
         $eventData[$k] = $dao->$k;
-        if(!empty($eventTypes)) {
+        if (!empty($eventTypes)) {
           $eventData['backgroundColor'] = "#{$eventTypes[$dao->event_type]}";
           $eventData['eventType'] = $civieventTypesList[$dao->event_type];
         }
@@ -121,11 +121,10 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
 
     }
 
-    if(!empty($settings['event_event_type_filter'])) {
+    if (!empty($settings['event_event_type_filter'])) {
       $events['eventTypes'][]  = $eventTypesFilter;
       $this->assign('eventTypes', $eventTypesFilter);
     }
-    //Civi::log()->debug('EventCalendar run', array('events' => $events));
 
     $events['header']['left'] = 'prev,next today';
     $events['header']['center'] = 'title';
@@ -137,34 +136,40 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
     parent::run();
   }
 
-  /*
+  /**
    * retrieve and reconstruct extension settings
    */
-  function _eventCalendar_getSettings() {
-    $settings = array(
-      'calendar_title' => Civi::settings()->get('eventcalendar_calendar_title'),
-      'event_past' => Civi::settings()->get('eventcalendar_event_past'),
-      'event_end_date' => Civi::settings()->get('eventcalendar_event_end_date'),
-      'event_is_public' => Civi::settings()->get('eventcalendar_event_is_public'),
-      'event_month' => Civi::settings()->get('eventcalendar_event_month'),
-      'event_from_month' => Civi::settings()->get('eventcalendar_event_from_month'),
-      'event_time' => Civi::settings()->get('eventcalendar_event_time'),
-      'event_event_type_filter' =>  Civi::settings()->get('eventcalendar_event_type_filter'),
-    );
-
-    $eventTypes = Civi::settings()->get('eventcalendar_event_types');
-    $eventTypes = json_decode($eventTypes);
-    if (!empty($eventTypes)) {
-      foreach ($eventTypes as $eventType) {
-        $settings['event_types'][$eventType->id] = $eventType->color;
+  public function _eventCalendar_getSettings() {
+    $settings = array();
+    $calendarId = $_GET['id'];
+    if ($calendarId) {
+      $sql = "SELECT * FROM civicrm_event_calendar WHERE `id` = {$calendarId};";
+      $dao = CRM_Core_DAO::executeQuery($sql);
+      while ($dao->fetch()) {
+        $settings['calendar_title'] = $dao->calendar_title;
+        $settings['event_past'] = $dao->show_past_events;
+        $settings['event_end_date'] = $dao->show_end_date;
+        $settings['event_is_public'] = $dao->show_public_events;
+        $settings['event_month'] = $dao->events_by_month;
+        $settings['event_from_month'] = $dao->events_from_month;
+        $settings['event_time'] = $dao->event_timings;
+        $settings['event_event_type_filter'] = $dao->event_type_filters;
       }
     }
 
-    /*Civi::log()->debug('_eventCalendar_getSettings', array(
-      'eventTypes' => $eventTypes,
-      'settings' => $settings,
-    ));*/
+    $sql = "SELECT * FROM civicrm_event_calendar_event_type WHERE `event_calendar_id` = {$calendarId};";
+    $dao = CRM_Core_DAO::executeQuery($sql);
+    $eventTypes = array();
+    while ($dao->fetch()) {
+      $eventTypes[] = $dao->toArray();
+    }
 
+    if (!empty($eventTypes)) {
+      foreach ($eventTypes as $eventType) {
+        $settings['event_types'][$eventType['event_type']] = $eventType['event_color'];
+      }
+    }
     return $settings;
   }
+
 }

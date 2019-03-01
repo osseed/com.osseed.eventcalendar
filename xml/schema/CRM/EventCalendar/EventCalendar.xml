@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<table>
+  <base>CRM/EventCalendar</base>
+  <class>EventCalendar</class>
+  <name>civicrm_event_calendar</name>
+  <comment>Stores Event Calendar parameters for display</comment>
+  <add>4.4</add>
+  <log>true</log>
+
+  <field>
+    <name>id</name>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment>Unique EventCalendar ID</comment>
+    <add>4.4</add>
+  </field>
+  <primaryKey>
+    <name>id</name>
+    <autoincrement>true</autoincrement>
+  </primaryKey>
+
+  <field>
+    <name>calendar_title</name>
+    <type>varchar(255)</type>
+    <comment>Calendar Title</comment>
+    <add>4.4</add>
+  </field>
+  <field>
+    <name>show_past_events</name>
+    <type>boolean</type>
+    <comment>Show Past Events</comment>
+    <add>4.4</add>
+  </field>
+  <field>
+    <name>show_end_date</name>
+    <type>boolean</type>
+    <comment>Show End Date</comment>
+    <add>4.4</add>
+  </field>
+  <field>
+    <name>show_public_events</name>
+    <type>boolean</type>
+    <comment>Show Only Public or All</comment>
+    <add>4.4</add>
+  </field>
+  <field>
+    <name>events_by_month</name>
+    <type>boolean</type>
+    <comment>Use the Month param in the calendar</comment>
+    <add>4.4</add>
+  </field>
+  <field>
+    <name>event_timings</name>
+    <type>boolean</type>
+    <comment>Show the event timing</comment>
+    <add>4.4</add>
+  </field>
+  <field>
+    <name>events_from_month</name>
+    <type>int unsigned</type>
+    <comment>How many months to show events</comment>
+    <add>4.4</add>
+  </field>
+  <field>
+    <name>event_type_filters</name>
+    <type>boolean</type>
+    <comment>Whether to show event type filters</comment>
+    <add>4.4</add>
+  </field>
+
+</table>
