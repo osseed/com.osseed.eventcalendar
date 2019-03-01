@@ -15,8 +15,8 @@
     <description>Event Calendar</description>
     <config>
     <fields name="params">
-    <fieldset name="advanced"> 
-      <field name="task" type="hidden" default="civicrm/showevents" />
+    <fieldset name="advanced">
+      <field name="task" type="hidden" default="civicrm/showevents?id=" />
       <field name="reset" type="hidden" size="5" default="1"  />
     </fieldset>
     </fields>
