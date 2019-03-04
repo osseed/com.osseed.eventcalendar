@@ -23,11 +23,11 @@ cj(function() {
       cj('.toggle').show("slow");
       cj('#edit_existing_calendar').attr('checked', false);
       cj('#delete_current_calendars').attr('checked', false);
-      cj('#update_id').add('label[for="update_id"]').add('#edit_existing_calendar').add('label[for="edit_existing_calendar"]').hide();
-      cj('#delete_current_calendars').add('label[for="delete_current_calendars"]').hide();
+      cj('#update_id').add('label[for="update_id"]').add('#edit_existing_calendar').add('label[for="edit_existing_calendar"]').add('#edit_description').hide();
+      cj('#delete_current_calendars').add('label[for="delete_current_calendars"]').add('#delete_description').hide();
     } else {
       cj('.toggle').hide();
-      cj('#edit_existing_calendar').add('label[for="edit_existing_calendar"]').add('#delete_current_calendars').add('label[for="delete_current_calendars"]').show();
+      cj('#edit_existing_calendar').add('label[for="edit_existing_calendar"]').add('#delete_current_calendars').add('label[for="delete_current_calendars"]').add('#delete_description').add('#edit_description').show();
     }
   });
 
@@ -36,11 +36,11 @@ cj(function() {
       cj('.toggle').add('#update_id').add('label[for="update_id"]').show("slow");
       cj('#create_new_calendar').attr('checked', false);
       cj('#delete_current_calendars').attr('checked', false);
-      cj('#create_new_calendar').add('label[for="create_new_calendar"]').hide();
-      cj('#delete_current_calendars').add('label[for="delete_current_calendars"]').hide();
+      cj('#create_new_calendar').add('label[for="create_new_calendar"]').add('#create_description').hide();
+      cj('#delete_current_calendars').add('label[for="delete_current_calendars"]').add('#delete_description').hide();
     } else {
       cj('.toggle').hide();
-      cj('#create_new_calendar').add('label[for="create_new_calendar"]').add('#delete_current_calendars').add('label[for="delete_current_calendars"]').show();
+      cj('#create_new_calendar').add('label[for="create_new_calendar"]').add('#delete_current_calendars').add('label[for="delete_current_calendars"]').add('#delete_description').add('#create_description').show();
     }
   });
 
@@ -48,12 +48,12 @@ cj(function() {
     if (cj('#delete_current_calendars').is(':checked')) {
       cj('#create_new_calendar').attr('checked', false);
       cj('#edit_existing_calendar').attr('checked', false);
-      cj('#create_new_calendar').add('label[for="create_new_calendar"]').hide();
-      cj('#edit_existing_calendar').add('label[for="edit_existing_calendar"]').hide();
+      cj('#create_new_calendar').add('label[for="create_new_calendar"]').add('#create_description').hide();
+      cj('#edit_existing_calendar').add('label[for="edit_existing_calendar"]').add('#edit_description').hide();
       cj(deleteboxes).parent().parent().show("slow");
     } else {
       cj(deleteboxes).parent().parent().hide();
-      cj('#create_new_calendar').add('label[for="create_new_calendar"]').add('#edit_existing_calendar').add('label[for="edit_existing_calendar"]').show();
+      cj('#create_new_calendar').add('label[for="create_new_calendar"]').add('#edit_existing_calendar').add('label[for="edit_existing_calendar"]').add('#create_description').add('#edit_description').show();
     }
   });
 });

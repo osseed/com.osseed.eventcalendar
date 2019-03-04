@@ -4,14 +4,14 @@
 <div class="crm-section">
   <div class="label">{$form.create_new_calendar.label}</div>
   <div class="content">{$form.create_new_calendar.html}
-    {if $descriptions.create_new_calendar}<br /><span class="description">{$descriptions.create_new_calendar}</span>{/if}
+    {if $descriptions.create_new_calendar}<br /><span id="create_description" class="description">{$descriptions.create_new_calendar}</span>{/if}
   </div>
   <div class="clear"></div>
 </div>
 <div class="crm-section">
   <div class="label">{$form.edit_existing_calendar.label}</div>
   <div class="content">{$form.edit_existing_calendar.html}
-    {if $descriptions.edit_existing_calendar}<br /><span class="description">{$descriptions.edit_existing_calendar}</span>{/if}
+    {if $descriptions.edit_existing_calendar}<br /><span id="edit_description" class="description">{$descriptions.edit_existing_calendar}</span>{/if}
   </div>
   <div class="clear"></div>
 </div>
@@ -29,7 +29,7 @@
 <div class="crm-section">
   <div class="label">{$form.delete_current_calendars.label}</div>
   <div class="content">{$form.delete_current_calendars.html}
-    {if $descriptions.delete_current_calendars}<br /><span class="description">{$descriptions.delete_current_calendars}</span>{/if}
+    {if $descriptions.delete_current_calendars}<br /><span id="delete_description" class="description">{$descriptions.delete_current_calendars}</span>{/if}
   </div>
   <div class="clear"></div>
 </div>

@@ -7,7 +7,7 @@ require_once 'CRM/Core/Form.php';
  *
  * @see http://wiki.civicrm.org/confluence/display/CRMDOC43/QuickForm+Reference
  */
-class CRM_Eventcalendar_Form_EventCalendarSettings extends CRM_Core_Form {
+class CRM_EventCalendar_Form_EventCalendarSettings extends CRM_Core_Form {
   //private $_settingFilter = array('group' => 'eventcalendar');
   private $_submittedValues = array();
   private $_settings = array();
@@ -23,16 +23,26 @@ class CRM_Eventcalendar_Form_EventCalendarSettings extends CRM_Core_Form {
 
     //Only create a calendar if this is checked off, just so we don't get a bunch of accidental ones with blank values
     $this->add('advcheckbox', 'create_new_calendar', ts('Create A New Calendar'));
+    $descriptions['create_new_calendar'] = ts('Create a new Calendar');
     $this->add('advcheckbox', 'edit_existing_calendar', ts('Edit An Existing Calendar'));
+    $descriptions['edit_existing_calendar'] = ts('Edit an Existing calendar. If you dont know your calendar ID, check the delete calendar(s) section.');
     $this->add('text', 'update_id', ts('ID of Calendar to Update'));
     $this->add('text', 'calendar_title', ts('Calendar Title'));
+    $descriptions['calendar_title'] = ts('Event calendar title.');
     $this->add('advcheckbox', 'show_past_events', ts('Show Past Events?'));
+    $descriptions['show_past_events'] = ts('Show past events as well as current/future.');
     $this->add('advcheckbox', 'show_end_date', ts('Show End Date?'));
+    $descriptions['show_end_date'] = ts('Show the event with start and end dates on the calendar.');
     $this->add('advcheckbox', 'show_public_events', ts('Show Public Events?'));
+    $descriptions['show_public_events'] = ts('Show only public events, or all events.');
     $this->add('advcheckbox', 'events_by_month', ts('Show Events by Month?'));
+    $descriptions['events_by_month'] = ts('Show the month parameter on calendar.');
     $this->add('advcheckbox', 'event_timings', ts('Show Event Times?'));
+    $descriptions['event_timings'] = ts('Show the event timings on calendar.');
     $this->add('text', 'events_from_month', ts('Events from Month'));
+    $descriptions['events_from_month'] = ts('Show events from how many months from current month.');
     $this->add('advcheckbox', 'event_type_filters', ts('Filter Event Types?'));
+    $descriptions['event_type_filters'] = ts('Show event types filter on calendar.');
 
     $eventTypes = CRM_Event_PseudoConstant::eventType();
     foreach ($eventTypes as $id => $type) {
@@ -48,6 +58,7 @@ class CRM_Eventcalendar_Form_EventCalendarSettings extends CRM_Core_Form {
 
     //Add ability to delete current calendars, checkbox is a safety measure so we don't accidentally delete calendars we want to keep
     $this->add('advcheckbox', 'delete_current_calendars', ts('Delete Current Calendar(s)'));
+    $descriptions['delete_current_calendars'] = ts('Delete currently configured calendar(s). Current calendar IDs displayed in this section');
     foreach ($settings as $calendar) {
       $this->add('advcheckbox', 'delete_calendar_' . $calendar['id'], ts('Delete ' . $calendar['calendar_title'] . ' (ID:' . $calendar['id'] . ')'));
     }

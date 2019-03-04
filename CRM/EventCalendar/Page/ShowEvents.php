@@ -35,7 +35,7 @@
 
 require_once 'CRM/Core/Page.php';
 
-class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
+class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
 
   public function run() {
     CRM_Core_Resources::singleton()->addScriptFile('com.osseed.eventcalendar', 'js/moment.js', 5);
@@ -155,13 +155,12 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
         $settings['event_time'] = $dao->event_timings;
         $settings['event_event_type_filter'] = $dao->event_type_filters;
       }
-    }
-
-    $sql = "SELECT * FROM civicrm_event_calendar_event_type WHERE `event_calendar_id` = {$calendarId};";
-    $dao = CRM_Core_DAO::executeQuery($sql);
-    $eventTypes = array();
-    while ($dao->fetch()) {
-      $eventTypes[] = $dao->toArray();
+      $sql = "SELECT * FROM civicrm_event_calendar_event_type WHERE `event_calendar_id` = {$calendarId};";
+      $dao = CRM_Core_DAO::executeQuery($sql);
+      $eventTypes = array();
+      while ($dao->fetch()) {
+        $eventTypes[] = $dao->toArray();
+      }
     }
 
     if (!empty($eventTypes)) {
