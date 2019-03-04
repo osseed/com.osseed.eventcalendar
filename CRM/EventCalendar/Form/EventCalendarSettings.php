@@ -96,7 +96,8 @@ class CRM_EventCalendar_Form_EventCalendarSettings extends CRM_Core_Form {
           if ($value == 1) {
             $id = explode("_", $key)[1];
             $sql = "INSERT INTO civicrm_event_calendar_event_type(event_calendar_id, event_type, event_color)
-             VALUES ({$cfId}, {$submitted['eventtype_' . $id]}, {$submitted['eventcolor_' . $id]});";
+             VALUES ({$cfId}, {$id}, '{$submitted['eventcolor_' . $id]}');";
+            $dao = CRM_Core_DAO::executeQuery($sql);
           }
         }
       }
@@ -104,7 +105,7 @@ class CRM_EventCalendar_Form_EventCalendarSettings extends CRM_Core_Form {
 
     if ($submitted['edit_existing_calendar'] == 1) {
       $sql = "UPDATE civicrm_event_calendar
-       SET (calendar_title = '{$submitted['calendar_title']}', show_past_events = {$submitted['show_past_events']}, show_end_date = {$submitted['show_end_date']}, show_public_events = {$submitted['show_public_events']}, events_by_month = {$submitted['events_by_month']}, event_timings = {$submitted['event_timings']}, events_from_month = {$submitted['events_from_month']}, event_type_filters = {$submitted['event_type_filters']}
+       SET calendar_title = '{$submitted['calendar_title']}', show_past_events = {$submitted['show_past_events']}, show_end_date = {$submitted['show_end_date']}, show_public_events = {$submitted['show_public_events']}, events_by_month = {$submitted['events_by_month']}, event_timings = {$submitted['event_timings']}, events_from_month = {$submitted['events_from_month']}, event_type_filters = {$submitted['event_type_filters']}
        WHERE `id` = {$submitted['update_id']};";
       $dao = CRM_Core_DAO::executeQuery($sql);
       //delete current event type records to update with new ones
@@ -116,7 +117,8 @@ class CRM_EventCalendar_Form_EventCalendarSettings extends CRM_Core_Form {
           if ($value == 1) {
             $id = explode("_", $key)[1];
             $sql = "INSERT INTO civicrm_event_calendar_event_type(event_calendar_id, event_type, event_color)
-             VALUES ({$submitted['update_id']}, {$submitted['eventtype_' . $id]}, {$submitted['eventcolor_' . $id]});";
+             VALUES ({$submitted['update_id']}, {$id}, '{$submitted['eventcolor_' . $id]}');";
+            $dao = CRM_Core_DAO::executeQuery($sql);
           }
         }
       }

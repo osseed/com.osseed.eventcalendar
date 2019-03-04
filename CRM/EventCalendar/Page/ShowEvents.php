@@ -142,6 +142,7 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
   public function _eventCalendar_getSettings() {
     $settings = array();
     $calendarId = $_GET['id'];
+
     if ($calendarId) {
       $sql = "SELECT * FROM civicrm_event_calendar WHERE `id` = {$calendarId};";
       $dao = CRM_Core_DAO::executeQuery($sql);
