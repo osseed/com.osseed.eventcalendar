@@ -8,63 +8,62 @@ require_once 'CRM/Core/Form.php';
  * @see http://wiki.civicrm.org/confluence/display/CRMDOC43/QuickForm+Reference
  */
 class CRM_EventCalendar_Form_EventCalendarSettings extends CRM_Core_Form {
-  //private $_settingFilter = array('group' => 'eventcalendar');
   private $_submittedValues = array();
   private $_settings = array();
 
   public function buildQuickForm() {
-    CRM_Core_Resources::singleton()->addScriptFile('com.osseed.eventcalendar', 'js/jscolor.js');
-    CRM_Core_Resources::singleton()->addScriptFile('com.osseed.eventcalendar', 'js/eventcalendar.js');
+    $this->controller->_destination = CRM_Utils_System::url('civicrm/admin/event-calendar', 'reset=1');
+    $this->action = $_GET['action'];
+    $this->calendar_id = $_GET['id'];
 
-    //This will get used at the bottom of the form for a delete option
-    $settings = $this->getFormSettings();
-    //@todo get descriptions out of settings and just store them here
-    $descriptions = array();
-
-    //Only create a calendar if this is checked off, just so we don't get a bunch of accidental ones with blank values
-    $this->add('advcheckbox', 'create_new_calendar', ts('Create A New Calendar'));
-    $descriptions['create_new_calendar'] = ts('Create a new Calendar');
-    $this->add('advcheckbox', 'edit_existing_calendar', ts('Edit An Existing Calendar'));
-    $descriptions['edit_existing_calendar'] = ts('Edit an Existing calendar. If you dont know your calendar ID, check the delete calendar(s) section.');
-    $this->add('text', 'update_id', ts('ID of Calendar to Update'));
-    $this->add('text', 'calendar_title', ts('Calendar Title'));
-    $descriptions['calendar_title'] = ts('Event calendar title.');
-    $this->add('advcheckbox', 'show_past_events', ts('Show Past Events?'));
-    $descriptions['show_past_events'] = ts('Show past events as well as current/future.');
-    $this->add('advcheckbox', 'show_end_date', ts('Show End Date?'));
-    $descriptions['show_end_date'] = ts('Show the event with start and end dates on the calendar.');
-    $this->add('advcheckbox', 'show_public_events', ts('Show Public Events?'));
-    $descriptions['show_public_events'] = ts('Show only public events, or all events.');
-    $this->add('advcheckbox', 'events_by_month', ts('Show Events by Month?'));
-    $descriptions['events_by_month'] = ts('Show the month parameter on calendar.');
-    $this->add('advcheckbox', 'event_timings', ts('Show Event Times?'));
-    $descriptions['event_timings'] = ts('Show the event timings on calendar.');
-    $this->add('text', 'events_from_month', ts('Events from Month'));
-    $descriptions['events_from_month'] = ts('Show events from how many months from current month.');
-    $this->add('advcheckbox', 'event_type_filters', ts('Filter Event Types?'));
-    $descriptions['event_type_filters'] = ts('Show event types filter on calendar.');
-
-    $eventTypes = CRM_Event_PseudoConstant::eventType();
-    foreach ($eventTypes as $id => $type) {
-      $this->addElement('checkbox', "eventtype_{$id}", $type, NULL,
-        array('onclick' => "showhidecolorbox('{$id}')", 'id' => "event_{$id}"));
-      $this->addElement('text', "eventcolor_{$id}", "Color",
-        array(
-          'onchange' => "updatecolor('eventcolor_{$id}', this.value);",
-          'class' => 'color',
-          'id' => "eventcolorid_{$id}",
-        ));
+    if ($this->action == 'delete') {
+      $descriptions['delete_warning'] = ts('Are you sure you want to delete this calendar?');
+      $this->add('hidden', 'action', $this->action);
+      $this->add('hidden', 'calendar_id', $this->calendar_id);
+      $this->assign('descriptions', $descriptions);
     }
+    else {
+      CRM_Core_Resources::singleton()->addScriptFile('com.osseed.eventcalendar', 'js/jscolor.js');
+      CRM_Core_Resources::singleton()->addScriptFile('com.osseed.eventcalendar', 'js/eventcalendar.js');
 
-    //Add ability to delete current calendars, checkbox is a safety measure so we don't accidentally delete calendars we want to keep
-    $this->add('advcheckbox', 'delete_current_calendars', ts('Delete Current Calendar(s)'));
-    $descriptions['delete_current_calendars'] = ts('Delete currently configured calendar(s). Current calendar IDs displayed in this section');
-    foreach ($settings as $calendar) {
-      $this->add('advcheckbox', 'delete_calendar_' . $calendar['id'], ts('Delete ' . $calendar['calendar_title'] . ' (ID:' . $calendar['id'] . ')'));
+      $settings = $this->getFormSettings();
+      $descriptions = array();
+
+      $this->add('hidden', 'action', $this->action);
+      $this->add('hidden', 'calendar_id', $this->calendar_id);
+      $this->add('text', 'calendar_title', ts('Calendar Title'));
+      $descriptions['calendar_title'] = ts('Event calendar title.');
+      $this->add('advcheckbox', 'show_past_events', ts('Show Past Events?'));
+      $descriptions['show_past_events'] = ts('Show past events as well as current/future.');
+      $this->add('advcheckbox', 'show_end_date', ts('Show End Date?'));
+      $descriptions['show_end_date'] = ts('Show the event with start and end dates on the calendar.');
+      $this->add('advcheckbox', 'show_public_events', ts('Show Public Events?'));
+      $descriptions['show_public_events'] = ts('Show only public events, or all events.');
+      $this->add('advcheckbox', 'events_by_month', ts('Show Events by Month?'));
+      $descriptions['events_by_month'] = ts('Show the month parameter on calendar.');
+      $this->add('advcheckbox', 'event_timings', ts('Show Event Times?'));
+      $descriptions['event_timings'] = ts('Show the event timings on calendar.');
+      $this->add('text', 'events_from_month', ts('Events from Month'));
+      $descriptions['events_from_month'] = ts('Show events from how many months from current month.');
+      $this->add('advcheckbox', 'event_type_filters', ts('Filter Event Types?'));
+      $descriptions['event_type_filters'] = ts('Show event types filter on calendar.');
+
+      $eventTypes = CRM_Event_PseudoConstant::eventType();
+      foreach ($eventTypes as $id => $type) {
+        $this->addElement('checkbox', "eventtype_{$id}", $type, NULL,
+          array('onclick' => "showhidecolorbox('{$id}')", 'id' => "event_{$id}"));
+        $this->addElement('text', "eventcolor_{$id}", "Color",
+          array(
+            'onchange' => "updatecolor('eventcolor_{$id}', this.value);",
+            'class' => 'color',
+            'id' => "eventcolorid_{$id}",
+          ));
+      }
+
+      $this->assign('eventTypes', $eventTypes);
+
+      $this->assign('descriptions', $descriptions);
     }
-    $this->assign('eventTypes', $eventTypes);
-
-    $this->assign('descriptions', $descriptions);
 
     $this->addButtons(array(
       array(
@@ -86,7 +85,7 @@ class CRM_EventCalendar_Form_EventCalendarSettings extends CRM_Core_Form {
       }
     }
 
-    if ($submitted['create_new_calendar'] == 1) {
+    if ($submitted['action'] == 'add') {
       $sql = "INSERT INTO civicrm_event_calendar(calendar_title, show_past_events, show_end_date, show_public_events, events_by_month, event_timings, events_from_month, event_type_filters)
        VALUES ('{$submitted['calendar_title']}', {$submitted['show_past_events']}, {$submitted['show_end_date']}, {$submitted['show_public_events']}, {$submitted['events_by_month']}, {$submitted['event_timings']}, {$submitted['events_from_month']}, {$submitted['event_type_filters']});";
       $dao = CRM_Core_DAO::executeQuery($sql);
@@ -103,13 +102,13 @@ class CRM_EventCalendar_Form_EventCalendarSettings extends CRM_Core_Form {
       }
     }
 
-    if ($submitted['edit_existing_calendar'] == 1) {
+    if ($submitted['action'] == 'update') {
       $sql = "UPDATE civicrm_event_calendar
        SET calendar_title = '{$submitted['calendar_title']}', show_past_events = {$submitted['show_past_events']}, show_end_date = {$submitted['show_end_date']}, show_public_events = {$submitted['show_public_events']}, events_by_month = {$submitted['events_by_month']}, event_timings = {$submitted['event_timings']}, events_from_month = {$submitted['events_from_month']}, event_type_filters = {$submitted['event_type_filters']}
-       WHERE `id` = {$submitted['update_id']};";
+       WHERE `id` = {$submitted['calendar_id']};";
       $dao = CRM_Core_DAO::executeQuery($sql);
       //delete current event type records to update with new ones
-      $sql = "DELETE FROM civicrm_event_calendar_event_type WHERE `event_calendar_id` = {$submitted['update_id']};";
+      $sql = "DELETE FROM civicrm_event_calendar_event_type WHERE `event_calendar_id` = {$submitted['calendar_id']};";
       $dao = CRM_Core_DAO::executeQuery($sql);
       //insert new event type records
       foreach ($submitted as $key => $value) {
@@ -117,27 +116,19 @@ class CRM_EventCalendar_Form_EventCalendarSettings extends CRM_Core_Form {
           if ($value == 1) {
             $id = explode("_", $key)[1];
             $sql = "INSERT INTO civicrm_event_calendar_event_type(event_calendar_id, event_type, event_color)
-             VALUES ({$submitted['update_id']}, {$id}, '{$submitted['eventcolor_' . $id]}');";
+             VALUES ({$submitted['calendar_id']}, {$id}, '{$submitted['eventcolor_' . $id]}');";
             $dao = CRM_Core_DAO::executeQuery($sql);
           }
         }
       }
     }
 
-    if ($submitted['delete_current_calendars'] == 1) {
-      foreach ($submitted as $key => $value) {
-        if ("delete_calendar" == substr($key, 0, 15)) {
-          if ($value == 1) {
-            $id = explode("_", $key)[2];
-            $sql = "DELETE FROM civicrm_event_calendar WHERE `id` = {$id};";
-            $dao = CRM_Core_DAO::executeQuery($sql);
-          }
-        }
-      }
+    if ($submitted['action'] == 'delete') {
+      $sql = "DELETE FROM civicrm_event_calendar WHERE `id` = {$submitted['calendar_id']};";
+      $dao = CRM_Core_DAO::executeQuery($sql);
     }
-    //Without a refresh, our delete items with IDs don't re-generate properly
-    //There's probably a better way to do this
-    header("Refresh:0");
+
+    CRM_Core_Session::setStatus(ts('The Calendar has been saved.'), ts('Saved'), 'success');
     parent::postProcess();
   }
 
@@ -176,6 +167,38 @@ class CRM_EventCalendar_Form_EventCalendarSettings extends CRM_Core_Form {
     }
 
     return $settings;
+  }
+
+  /**
+   * Set defaults for form.
+   *
+   * @see CRM_Core_Form::setDefaultValues()
+   */
+  public function setDefaultValues() {
+    if ($this->calendar_id && ($this->action != 'delete')) {
+      $existing = array();
+      $sql = "SELECT * FROM civicrm_event_calendar WHERE id = {$this->calendar_id};";
+      $dao = CRM_Core_DAO::executeQuery($sql);
+      while ($dao->fetch()) {
+        $existing[] = $dao->toArray();
+      }
+      $defaults = array();
+      foreach ($existing as $name => $value) {
+        $defaults[$name] = $value;
+      }
+      $sql = "SELECT * FROM civicrm_event_calendar_event_type WHERE event_calendar_id = {$this->calendar_id};";
+      $dao = CRM_Core_DAO::executeQuery($sql);
+      $existing = array();
+      while ($dao->fetch()) {
+        $existing[] = $dao->toArray();
+      }
+      foreach ($existing as $name => $value) {
+        $defaults[0]['eventtype_' . $value['event_type']] = 1;
+        $defaults[0]['eventcolor_' . $value['event_type']] = $value['event_color'];
+      }
+
+    }
+    return $defaults[0];
   }
 
 }

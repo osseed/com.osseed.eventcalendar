@@ -119,7 +119,7 @@ class CRM_EventCalendar_DAO_EventCalendar extends CRM_Core_DAO {
         ],
         'calendar_title' => [
           'name' => 'calendar_title',
-          'type' => CRM_Utils_Type::T_VARCHAR(255),
+          'type' => CRM_Utils_Type::T_TEXT,
           'title' => ts('Calendar Title'),
           'description' => ts('Calendar Title'),
           'table_name' => 'civicrm_event_calendar',

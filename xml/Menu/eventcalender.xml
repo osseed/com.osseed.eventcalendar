@@ -13,4 +13,10 @@
     <title>Event Calendar Settings</title>
     <access_arguments>administer CiviCRM</access_arguments>
   </item>
+  <item>
+    <path>civicrm/admin/event-calendar</path>
+    <page_callback>CRM_EventCalendar_Page_ManageEventCalendars</page_callback>
+    <title>Manage Event Calendars</title>
+    <access_arguments>administer CiviCRM</access_arguments>
+  </item>
 </menu>

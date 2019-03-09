@@ -9,6 +9,43 @@ class CRM_EventCalendar_Upgrader extends CRM_EventCalendar_Upgrader_Base {
   // By convention, functions that look like "function upgrade_NNNN()" are
   // upgrade tasks. They are executed in order (like Drupal's hook_update_N).
 
+  public function upgrade_0001() {
+    $this->ctx->log->info('Applying update 0001');
+    $sql = "CREATE TABLE IF NOT EXISTS `civicrm_event_calendar` (
+         `id` int unsigned NOT NULL AUTO_INCREMENT  COMMENT 'Unique EventCalendar ID',
+         `calendar_title` varchar(255)    COMMENT 'Calendar Title',
+         `show_past_events` tinyint    COMMENT 'Show Past Events',
+         `show_end_date` tinyint    COMMENT 'Show End Date',
+         `show_public_events` tinyint    COMMENT 'Show Only Public or All',
+         `events_by_month` tinyint    COMMENT 'Use the Month param in the calendar',
+         `event_timings` tinyint    COMMENT 'Show the event timing',
+         `events_from_month` int unsigned    COMMENT 'How many months to show events',
+         `event_type_filters` tinyint    COMMENT 'Whether to show event type filters',
+            PRIMARY KEY (`id`)
+    );";
+    CRM_Core_DAO::executeQuery($sql);
+
+    $sql = "CREATE TABLE IF NOT EXISTS `civicrm_event_calendar_event_type` (
+         `id` int unsigned NOT NULL AUTO_INCREMENT  COMMENT 'Unique EventCalendarEventType ID',
+         `event_calendar_id` int unsigned    COMMENT 'FK to Event Calendar',
+         `event_type` int unsigned    COMMENT 'Event Type id',
+         `event_color` varchar(255)    COMMENT 'Hex code for event type display color',
+            PRIMARY KEY (`id`),
+            CONSTRAINT FK_civicrm_event_calendar_event_type_event_calendar_id FOREIGN KEY (`event_calendar_id`) REFERENCES `civicrm_event_calendar`(`id`) ON DELETE CASCADE
+    );";
+    CRM_Core_DAO::executeQuery($sql);
+
+    $result = civicrm_api3('Navigation', 'get', [
+      'sequential' => 1,
+      'url' => "civicrm/eventcalendarsettings",
+    ]);
+    if ($result['values']) {
+      $newmenulink = civicrm_api3('Navigation', 'create', [
+        'id' => $result['values'][0]['id'],
+        'url' => "/civicrm/admin/event-calendar",
+      ]);
+    }
+  }
   /**
    * Example: Run an external SQL script when the module is installed.
    *
