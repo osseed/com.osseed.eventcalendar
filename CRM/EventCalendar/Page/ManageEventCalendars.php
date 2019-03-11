@@ -2,7 +2,7 @@
 use CRM_EventCalendar_ExtensionUtil as E;
 
 class CRM_EventCalendar_Page_ManageEventCalendars extends CRM_Core_Page_Basic {
-
+  //This could be an ajax page here, but couldn't get the special colorbox javascript working with ajax functionality on
   //public $useLivePageJS = TRUE;
 
   static $_links = NULL;
