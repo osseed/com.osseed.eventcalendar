@@ -40,11 +40,14 @@ class CRM_EventCalendar_Upgrader extends CRM_EventCalendar_Upgrader_Base {
       'url' => "civicrm/eventcalendarsettings",
     ]);
     if ($result['values']) {
+      $url = CRM_Utils_System::url('civicrm/admin/event-calendar', 'reset=1');
       $newmenulink = civicrm_api3('Navigation', 'create', [
         'id' => $result['values'][0]['id'],
-        'url' => "/civicrm/admin/event-calendar",
+        'url' => $url,
       ]);
     }
+    CRM_Core_Session::setStatus(ts('You may need to clear caches and reset paths as some menu items have changed'), ts('Success'), 'success');
+    return TRUE;
   }
   /**
    * Example: Run an external SQL script when the module is installed.
