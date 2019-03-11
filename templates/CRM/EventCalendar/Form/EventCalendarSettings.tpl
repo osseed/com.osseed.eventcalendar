@@ -10,6 +10,7 @@
   </div>
 {/foreach}
 <div class="crm-section">
+  <div>
     {if $descriptions.delete_warning}<br /><span id="delete_warning" class="description">{$descriptions.delete_warning}</span>{/if}
   </div>
   <div class="clear"></div>
@@ -25,4 +26,5 @@
 {* FOOTER *}
 <div class="crm-submit-buttons">
   {include file="CRM/common/formButtons.tpl" location="bottom"}
+  {crmButton p='civicrm/admin/event-calendar' icon="times"}{ts}Cancel{/ts}{/crmButton}
 </div>

@@ -80,7 +80,7 @@ class CRM_EventCalendar_Form_EventCalendarSettings extends CRM_Core_Form {
   public function postProcess() {
     $submitted = $this->exportValues();
     foreach ($submitted as $key => $value) {
-      if (!$value) {
+      if (!$value && $key != 'calendar_title') {
         $submitted[$key] = 0;
       }
     }
