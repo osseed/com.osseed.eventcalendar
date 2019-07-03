@@ -55,7 +55,9 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
     CRM_Utils_System::setTitle(ts($settings['calendar_title']));
 
     $whereCondition = '';
-    $eventTypes = $settings['event_types'];
+    if (array_key_exists("event_types", $settings)) {
+      $eventTypes = $settings['event_types'];
+    }
 
     if(!empty($eventTypes)) {
       $eventTypesList = implode(',', array_keys($eventTypes));
@@ -155,7 +157,7 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
     if (!empty($eventTypes)) {
       foreach ($eventTypes as $eventType) {
         $settings['event_types'][$eventType->id] = $eventType->color;
-      }    
+      }
     }
 
     /*Civi::log()->debug('_eventCalendar_getSettings', array(
