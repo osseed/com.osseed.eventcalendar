@@ -11,10 +11,10 @@ If you are new to CiviCRM Extension you can get help about extension from
 
 http://wiki.civicrm.org/confluence/display/CRMDOC42/Extensions
 
-Library
----------------
-Extension uses the fullcalendar library.
-Add the fullcalendar library https://github.com/fullcalendar/fullcalendar/releases/tag/v1.6.7
+Requires
+--------
+Extension required https://www.drupal.org/project/jquery_update module for installation with Drupal.
+
 
 Usage
 ---------------
