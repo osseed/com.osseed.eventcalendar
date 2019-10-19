@@ -20,7 +20,7 @@
    var jsonStr = JSON.stringify(events_data);
    var showTime = events_data.timeDisplay;
 
-   jQuery('#calendar').fullCalendar({
+   cj('#calendar').fullCalendar({
     eventSources: [
       { events: events_data.events,}
     ],
@@ -35,7 +35,7 @@
    });
 
    cj('#event_selector').on('change', function(){
-      jQuery('#calendar').fullCalendar('rerenderEvents');
+      cj('#calendar').fullCalendar('rerenderEvents');
    })
  }
 </script>
