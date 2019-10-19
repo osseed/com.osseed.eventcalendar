@@ -2,7 +2,7 @@
 <extension key="com.osseed.eventcalendar" type="module">
   <file>eventcalendar</file>
   <name>Event Calendar</name>
-  <description>Show CiviCRM Events in Calendar</description>
+  <description>Show CiviCRM Events in Calendar(This version is supported for drupal 8)</description>
   <license>AGPL-3.0</license>
   <maintainer>
     <author>OSSeed</author>
@@ -12,8 +12,8 @@
 	<url desc="Main Extension Page">https://github.com/osseed/com.osseed.eventcalendar</url>
 	<url desc="Documentation">https://raw.github.com/osseed/com.osseed.eventcalendar/master/README.txt</url>
 </urls>
-  <releaseDate>2019-08-23</releaseDate>
-  <version>2.4</version>
+  <releaseDate>2019-10-19</releaseDate>
+  <version>3.0</version>
   <develStage>alpha</develStage>
   <compatibility>
     <ver>4.7</ver>
