@@ -26,3 +26,5 @@ Note
 1: If you are using Joomla CMS then copy the folder "yourextensiondirectory/com.osseed.eventcalendar/joomla/EventCalendar" to "joomlarootdirectory/components/com_civicrm/views/" which will add menu item type for Event Calendar.
 
 2: If you are using Wordpress CMS then copy the folder "yourextensiondirectory/com.osseed.eventcalendar/wordpress/wordpress-event-calendar" to "wordpressdirectory/wp-content/plugins/" and activate the plugin which will add CiviCRm frontend type for Event Calendar.
+
+3: This version is supported for Drupal 8 only.
