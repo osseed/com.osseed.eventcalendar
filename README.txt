@@ -18,7 +18,7 @@ Extension required https://www.drupal.org/project/jquery_update module for insta
 
 Usage
 ---------------
-1. Click Administrator->CiviEvent->Event Calendar Settings menu (civicrm/eventCalendarsettings) -- change the setting if required.
+1. Click Administrator->CiviEvent->Event Calendar Settings menu (civicrm/eventcalendarsettings) -- change the setting if required.
 2. Click Events->Show Events menu (civicrm/showevents) -- to view Event Calendar with Events as per settings.
 
 Note
