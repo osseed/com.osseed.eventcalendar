@@ -6,37 +6,4 @@
     {/foreach}
   </select>
 {/if}
-<div id="calendar"></div>
-
-{literal}
-<script type="text/javascript">
- if (typeof(jQuery) != 'function')
-     var jQuery = cj;
- cj( function( ) {
-    buildCalendar( );
-  });
- function buildCalendar( ) {
-   var events_data = {/literal}{$civicrm_events}{literal};
-   var jsonStr = JSON.stringify(events_data);
-   var showTime = events_data.timeDisplay;
-
-   cj('#calendar').fullCalendar({
-    eventSources: [
-      { events: events_data.events,}
-    ],
-    displayEventTime: showTime ? 1 : 0,
-    timeFormat: 'h(:mm)A',
-
-    eventRender: function eventRender( event, element, view ) {
-      if(event.eventType && events_data.isfilter == "1" ) {
-        return ['all', event.eventType].indexOf(cj('#event_selector').val()) >= 0
-      }
-    }
-   });
-
-   cj('#event_selector').on('change', function(){
-      cj('#calendar').fullCalendar('rerenderEvents');
-   })
- }
-</script>
-{/literal}
+<div id="calendar" data-events="{$civicrm_events|escape}"></div>
