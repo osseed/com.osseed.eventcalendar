@@ -10,11 +10,16 @@
 
 {literal}
 <script type="text/javascript">
- if (typeof(jQuery) != 'function')
-     var jQuery = cj;
- cj( function( ) {
+  if (typeof(jQuery) != 'function'){
+    var jQuery = cj;
+  }
+  else {
+    var cj = jQuery;
+  }
+  cj( function( ) {
     buildCalendar( );
   });
+
  function buildCalendar( ) {
    var events_data = {/literal}{$civicrm_events}{literal};
    var jsonStr = JSON.stringify(events_data);
@@ -32,11 +37,11 @@
         return ['all', event.eventType].indexOf(cj('#event_selector').val()) >= 0
       }
     }
-   });
+  });
 
-   cj('#event_selector').on('change', function(){
-      cj('#calendar').fullCalendar('rerenderEvents');
-   })
- }
+  cj('#event_selector').on('change', function(){
+    cj('#calendar').fullCalendar('rerenderEvents');
+  });
+}
 </script>
 {/literal}
