@@ -126,13 +126,18 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
       $this->assign('eventTypes', $eventTypesFilter);
     }
     //Civi::log()->debug('EventCalendar run', array('events' => $events));
-
-    $events['header']['left'] = 'prev,next today';
-    $events['header']['center'] = 'title';
-    $events['header']['right'] = 'month,basicWeek,basicDay';
     $events['displayEventEnd'] = 'true';
 
-    //send Events array to calendar.
+    //Check weekBegin settings from calendar configuration
+    $weekBegins = '';
+    if($settings['week_begins_from_day'] == 1) {
+      //Get existing setting for weekday from civicrm start & set into event calendar.
+      $weekBegins = Civi::settings()->get('weekBegins');
+    }
+    $weekBegins = $weekBegins ? $weekBegins : 0;
+    $this->assign('weekBeginDay', $weekBegins);
+
+    //Send Events array to calendar.
     $this->assign('civicrm_events', json_encode($events));
     parent::run();
   }
@@ -150,6 +155,7 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
       'event_from_month' => Civi::settings()->get('eventcalendar_event_from_month'),
       'event_time' => Civi::settings()->get('eventcalendar_event_time'),
       'event_event_type_filter' =>  Civi::settings()->get('eventcalendar_event_type_filter'),
+      'week_begins_from_day' =>  Civi::Settings()->get('eventcalendar_week_begins_from_day'),
     );
 
     $eventTypes = Civi::settings()->get('eventcalendar_event_types');
