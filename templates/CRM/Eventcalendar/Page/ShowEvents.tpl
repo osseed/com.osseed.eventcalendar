@@ -24,13 +24,20 @@
    var events_data = {/literal}{$civicrm_events}{literal};
    var jsonStr = JSON.stringify(events_data);
    var showTime = events_data.timeDisplay;
+   var weekStartDay = {/literal}{$weekBeginDay}{literal};
 
    cj('#calendar').fullCalendar({
     eventSources: [
       { events: events_data.events,}
     ],
     displayEventTime: showTime ? 1 : 0,
+    firstDay:weekStartDay,
     timeFormat: 'h(:mm)A',
+    header: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'month,agendaWeek,agendaDay'
+    },
 
     eventRender: function eventRender( event, element, view ) {
       if(event.eventType && events_data.isfilter == "1" ) {
