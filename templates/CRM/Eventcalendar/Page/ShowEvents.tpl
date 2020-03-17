@@ -13,9 +13,7 @@
   if (typeof(jQuery) != 'function'){
     var jQuery = cj;
   }
-  else {
-    var cj = jQuery;
-  }
+
   cj( function( ) {
     buildCalendar( );
   });
@@ -26,7 +24,7 @@
    var showTime = events_data.timeDisplay;
    var weekStartDay = {/literal}{$weekBeginDay}{literal};
 
-   cj('#calendar').fullCalendar({
+   jQuery('#calendar').fullCalendar({
     eventSources: [
       { events: events_data.events,}
     ],
@@ -47,7 +45,7 @@
   });
 
   cj('#event_selector').on('change', function(){
-    cj('#calendar').fullCalendar('rerenderEvents');
+    jQuery('#calendar').fullCalendar('rerenderEvents');
   });
 }
 </script>
