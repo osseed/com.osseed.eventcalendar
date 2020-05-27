@@ -16,17 +16,46 @@
   else {
     var cj = jQuery;
   }
+
   cj( function( ) {
-    buildCalendar( );
+    checkFullCalendarLIbrary()
+    .then(function() {
+      buildCalendar();
+    })
+    .catch(function() {
+      alert('Error loading calendar, try refreshing...');
+    });
   });
 
- function buildCalendar( ) {
-   var events_data = {/literal}{$civicrm_events}{literal};
-   var jsonStr = JSON.stringify(events_data);
-   var showTime = events_data.timeDisplay;
-   var weekStartDay = {/literal}{$weekBeginDay}{literal};
+/*
+ * Checks if full calendar API is ready.
+ *
+ * @returns {Promise}
+ *  if library is available or not.
+ */
+function checkFullCalendarLIbrary() {
+  return new Promise((resolve, reject) => {
+    if(cj.fullCalendar) {
+      resolve();
+    } else {
+      cj(document).ajaxComplete(function() {
+        if(cj.fullCalendar) {
+          resolve();
+        } else {
+          reject();
+        }
+      });
+    }
+  });
+}
 
-   cj('#calendar').fullCalendar({
+function buildCalendar( ) {
+  var events_data = {/literal}{$civicrm_events}{literal};
+  var jsonStr = JSON.stringify(events_data);
+  var showTime = events_data.timeDisplay;
+  var weekStartDay = {/literal}{$weekBeginDay}{literal};
+
+  cj('#calendar').fullCalendar({
     eventSources: [
       { events: events_data.events,}
     ],
