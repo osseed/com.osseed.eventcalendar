@@ -75,8 +75,10 @@ function buildCalendar( ) {
     }
   });
 
-  cj('#event_selector').on('change', function(){
-    cj('#calendar').fullCalendar('rerenderEvents');
+  CRM.$(function($) {
+    $("#event_selector").change(function() {
+      cj('#calendar').fullCalendar('rerenderEvents');
+    });
   });
 }
 </script>
