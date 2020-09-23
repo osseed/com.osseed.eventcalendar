@@ -86,12 +86,24 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
       $whereCondition .= " AND civicrm_event.is_public = 1";
     }
 
-    $query = "
-      SELECT `id`, `title`, `start_date` start, `end_date` end ,`event_type_id` event_type
-      FROM `civicrm_event`
-      WHERE civicrm_event.is_active = 1
-        AND civicrm_event.is_template = 0
-    ";
+    //Check recurringEvent is available or not.
+    if($settings['recurring_event'] == 1){
+      $query = "
+        SELECT `title`, `start_date` start, `end_date` end ,`event_type_id` event_type
+        FROM `civicrm_event` LEFT JOIN civicrm_recurring_entity ON civicrm_recurring_entity.entity_id = civicrm_event.id
+        WHERE civicrm_recurring_entity.entity_table='civicrm_event'
+          AND civicrm_event.is_active = 1
+          AND civicrm_event.is_template = 0
+      ";
+    }
+    else{
+      $query = "
+        SELECT `id`, `title`, `start_date` start, `end_date` end ,`event_type_id` event_type
+        FROM `civicrm_event`
+        WHERE civicrm_event.is_active = 1
+          AND civicrm_event.is_template = 0
+      ";
+    }
 
     $query .= $whereCondition;
     $events['events'] = array();
@@ -157,6 +169,7 @@ class CRM_Eventcalendar_Page_ShowEvents extends CRM_Core_Page {
       'event_time' => Civi::settings()->get('eventcalendar_event_time'),
       'event_event_type_filter' =>  Civi::settings()->get('eventcalendar_event_type_filter'),
       'week_begins_from_day' =>  Civi::Settings()->get('eventcalendar_week_begins_from_day'),
+      'recurring_event' => Civi::Settings()->get('eventcalendar_recurring_event')
     );
 
     $eventTypes = Civi::settings()->get('eventcalendar_event_types');
