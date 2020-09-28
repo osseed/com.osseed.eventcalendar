@@ -47,6 +47,8 @@ class CRM_EventCalendar_Form_EventCalendarSettings extends CRM_Core_Form {
       $descriptions['events_from_month'] = ts('Show events from how many months from current month.');
       $this->add('advcheckbox', 'event_type_filters', ts('Filter Event Types?'));
       $descriptions['event_type_filters'] = ts('Show event types filter on calendar.');
+      $this->add('advcheckbox', 'week_begins_from_day', ts('Week begins on'));
+      $descriptions['week_begins_from_day'] = ts('Use weekBegin settings from CiviCRM.');
 
       $eventTypes = CRM_Event_PseudoConstant::eventType();
       foreach ($eventTypes as $id => $type) {

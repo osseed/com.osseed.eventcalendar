@@ -1,4 +1,4 @@
-$dao->url = html_entity_decode(CRM_Utils_System::url('civicrm/event/info', 'id=' . $dao->id));strtotime(date("Y-m-d h:i:s", strtotime($currentDate)) . "+" . $monthEvents . " month"));<?php
+<?php
 /*
  +--------------------------------------------------------------------+
  | CiviCRM version 4.3                                                |
@@ -149,7 +149,7 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
    public function _eventCalendar_getSettings() {
      $settings = array();
      $calendarId = $_GET['id'];
-     
+
      if ($calendarId) {
        $sql = "SELECT * FROM civicrm_event_calendar WHERE `id` = {$calendarId};";
        $dao = CRM_Core_DAO::executeQuery($sql);
@@ -162,6 +162,7 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
          $settings['event_from_month'] = $dao->events_from_month;
          $settings['event_time'] = $dao->event_timings;
          $settings['event_event_type_filter'] = $dao->event_type_filters;
+         $settings['week_begins_from_day'] = $dao->week_begins_from_day;
        }
        $sql = "SELECT * FROM civicrm_event_calendar_event_type WHERE `event_calendar_id` = {$calendarId};";
        $dao = CRM_Core_DAO::executeQuery($sql);

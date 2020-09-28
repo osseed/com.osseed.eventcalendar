@@ -18,13 +18,19 @@ class CRM_EventCalendar_Page_ManageEventCalendars extends CRM_Core_Page_Basic {
           'name' => ts('View/Edit'),
           'url' => 'civicrm/eventcalendarsettings',
           'qs' => 'action=update&id=%%id%%&reset=1',
-          'title' => ts('Edit Relationship Type'),
+          'title' => ts('Edit Event Calendar'),
         ),
         CRM_Core_Action::DELETE => array(
           'name' => ts('Delete'),
           'url' => 'civicrm/eventcalendarsettings',
           'qs' => 'action=delete&id=%%id%%',
-          'title' => ts('Delete Reletionship Type'),
+          'title' => ts('Delete Event Calendar'),
+        ),
+        CRM_Core_Action::VIEW => array(
+        'name' => ts('Preview'),
+        'url' => 'civicrm/showevents',
+        'qs' => 'id=%%id%%',
+        'title' => ts('Preview Event Calendar'),
         ),
       );
     }
