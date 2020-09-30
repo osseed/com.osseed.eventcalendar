@@ -14,7 +14,7 @@ class CRM_EventCalendar_Form_EventCalendarSettings extends CRM_Core_Form {
   public function buildQuickForm() {
     $this->controller->_destination = CRM_Utils_System::url('civicrm/admin/event-calendar', 'reset=1');
     $this->action = $_GET['action'];
-    $this->calendar_id = $_GET['id'];
+    $this->calendar_id = $_GET['id'] ?? '';
 
     if ($this->action == 'delete') {
       $descriptions['delete_warning'] = ts('Are you sure you want to delete this calendar?');
@@ -166,9 +166,8 @@ class CRM_EventCalendar_Form_EventCalendarSettings extends CRM_Core_Form {
       while ($dao->fetch()) {
         $settings[] = $dao->toArray();
       }
+      return isset($settings);
     }
-
-    return $settings;
   }
 
   /**
@@ -198,9 +197,9 @@ class CRM_EventCalendar_Form_EventCalendarSettings extends CRM_Core_Form {
         $defaults[0]['eventtype_' . $value['event_type']] = 1;
         $defaults[0]['eventcolor_' . $value['event_type']] = $value['event_color'];
       }
+      return $defaults[0];
 
     }
-    return $defaults[0];
   }
 
 }
