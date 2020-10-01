@@ -61,7 +61,8 @@ CREATE TABLE `civicrm_event_calendar` (
      `events_by_month` tinyint    COMMENT 'Use the Month param in the calendar',
      `event_timings` tinyint    COMMENT 'Show the event timing',
      `events_from_month` int unsigned    COMMENT 'How many months to show events',
-     `event_type_filters` tinyint    COMMENT 'Whether to show event type filters'
+     `event_type_filters` tinyint    COMMENT 'Whether to show event type filters',
+     `week_begins_from_day` tinyint    COMMENT 'Show week begins from day'
 ,
         PRIMARY KEY (`id`)
 

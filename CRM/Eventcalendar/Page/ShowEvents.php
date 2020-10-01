@@ -164,6 +164,8 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
          $settings['event_event_type_filter'] = $dao->event_type_filters;
          $settings['week_begins_from_day'] = $dao->week_begins_from_day;
        }
+       dsm($dao);
+
        $sql = "SELECT * FROM civicrm_event_calendar_event_type WHERE `event_calendar_id` = {$calendarId};";
        $dao = CRM_Core_DAO::executeQuery($sql);
        $eventTypes = array();

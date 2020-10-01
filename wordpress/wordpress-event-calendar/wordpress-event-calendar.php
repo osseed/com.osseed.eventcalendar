@@ -1,4 +1,4 @@
-shortcode += ' id="<<your calendar id here>>"]';<?php
+<?php
 
 /*
 Plugin Name: Wordpress Event Calendar

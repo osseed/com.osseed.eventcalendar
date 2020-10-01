@@ -21,6 +21,7 @@ class CRM_EventCalendar_Upgrader extends CRM_EventCalendar_Upgrader_Base {
          `event_timings` tinyint    COMMENT 'Show the event timing',
          `events_from_month` int unsigned    COMMENT 'How many months to show events',
          `event_type_filters` tinyint    COMMENT 'Whether to show event type filters',
+         `week_begins_from_day` tinyint    COMMENT 'Show week begins from day',
             PRIMARY KEY (`id`)
     );";
     CRM_Core_DAO::executeQuery($sql);
@@ -40,6 +41,7 @@ class CRM_EventCalendar_Upgrader extends CRM_EventCalendar_Upgrader_Base {
       'url' => "civicrm/eventcalendarsettings",
     ]);
     if ($result['values']) {
+      $url = CRM_Utils_System::url('civicrm/admin/event-calendar', 'reset=1');
       $newmenulink = civicrm_api3('Navigation', 'create', [
         'id' => $result['values'][0]['id'],
         'url' => $url,
@@ -54,6 +56,7 @@ class CRM_EventCalendar_Upgrader extends CRM_EventCalendar_Upgrader_Base {
   public function install() {
     $this->executeSqlFile('sql/myinstall.sql');
   }
+
   /**
    * Example: Work with entities usually not available during the install step.
    *
@@ -71,24 +74,28 @@ class CRM_EventCalendar_Upgrader extends CRM_EventCalendar_Upgrader_Base {
       'myWeirdFieldSetting' => array('id' => $customFieldId, 'weirdness' => 1),
     ));
   }
+
   /**
    * Example: Run an external SQL script when the module is uninstalled.
    *
   public function uninstall() {
    $this->executeSqlFile('sql/myuninstall.sql');
   }
+
   /**
    * Example: Run a simple query when a module is enabled.
    *
   public function enable() {
     CRM_Core_DAO::executeQuery('UPDATE foo SET is_active = 1 WHERE bar = "whiz"');
   }
+
   /**
    * Example: Run a simple query when a module is disabled.
    *
   public function disable() {
     CRM_Core_DAO::executeQuery('UPDATE foo SET is_active = 0 WHERE bar = "whiz"');
   }
+
   /**
    * Example: Run a couple simple queries.
    *
@@ -123,6 +130,7 @@ class CRM_EventCalendar_Upgrader extends CRM_EventCalendar_Upgrader_Base {
    * @throws Exception
   public function upgrade_4202() {
     $this->ctx->log->info('Planning update 4202'); // PEAR Log interface
+
     $this->addTask(E::ts('Process first step'), 'processPart1', $arg1, $arg2);
     $this->addTask(E::ts('Process second step'), 'processPart2', $arg3, $arg4);
     $this->addTask(E::ts('Process second step'), 'processPart3', $arg5);
@@ -142,6 +150,7 @@ class CRM_EventCalendar_Upgrader extends CRM_EventCalendar_Upgrader_Base {
    * @throws Exception
   public function upgrade_4203() {
     $this->ctx->log->info('Planning update 4203'); // PEAR Log interface
+
     $minId = CRM_Core_DAO::singleValueQuery('SELECT coalesce(min(id),0) FROM civicrm_contribution');
     $maxId = CRM_Core_DAO::singleValueQuery('SELECT coalesce(max(id),0) FROM civicrm_contribution');
     for ($startId = $minId; $startId <= $maxId; $startId += self::BATCH_SIZE) {
