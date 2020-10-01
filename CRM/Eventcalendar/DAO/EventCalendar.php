@@ -99,6 +99,13 @@ class CRM_EventCalendar_DAO_EventCalendar extends CRM_Core_DAO {
   public $week_begins_from_day;
 
   /**
+   * Whether to show recurring events.
+   *
+   * @var boolean
+   */
+  public $recurring_event;
+
+  /**
    * Class constructor.
    */
   public function __construct() {
@@ -204,11 +211,21 @@ class CRM_EventCalendar_DAO_EventCalendar extends CRM_Core_DAO {
           'bao' => 'CRM_EventCalendar_DAO_EventCalendar',
           'localizable' => 0,
         ],
-        'week_begins_from_day'=> [
+        'week_begins_from_day' => [
           'name' => 'week_begins_from_day',
           'type' => CRM_Utils_Type::T_BOOLEAN,
           'title' => ts('week_begins_from_day'),
           'description' => ts('week_begins_from_day'),
+          'table_name' => 'civicrm_event_calendar',
+          'entity' => 'EventCalendar',
+          'bao' => 'CRM_EventCalendar_DAO_EventCalendar',
+          'localizable' => 0,
+        ],
+        'recurring_event' => [
+          'name' => 'recurring_event',
+          'type' => CRM_Utils_Type::T_BOOLEAN,
+          'title' => ts('recurring_event'),
+          'description' => ts('recurring_event'),
           'table_name' => 'civicrm_event_calendar',
           'entity' => 'EventCalendar',
           'bao' => 'CRM_EventCalendar_DAO_EventCalendar',

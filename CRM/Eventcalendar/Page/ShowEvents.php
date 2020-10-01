@@ -86,12 +86,24 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
       $whereCondition .= " AND civicrm_event.is_public = 1";
     }
 
-    $query = "
-      SELECT `id`, `title`, `start_date` start, `end_date` end ,`event_type_id` event_type
-      FROM `civicrm_event`
-      WHERE civicrm_event.is_active = 1
-        AND civicrm_event.is_template = 0
-    ";
+    //Check recurringEvent is available or not.
+    if($settings['recurring_event'] == 1){
+      $query = "
+        SELECT `title`, `start_date` start, `end_date` end ,`event_type_id` event_type
+        FROM `civicrm_event` LEFT JOIN civicrm_recurring_entity ON civicrm_recurring_entity.entity_id = civicrm_event.id
+        WHERE civicrm_recurring_entity.entity_table='civicrm_event'
+          AND civicrm_event.is_active = 1
+          AND civicrm_event.is_template = 0
+      ";
+    }
+    else{
+      $query = "
+        SELECT `id`, `title`, `start_date` start, `end_date` end ,`event_type_id` event_type
+        FROM `civicrm_event`
+        WHERE civicrm_event.is_active = 1
+          AND civicrm_event.is_template = 0
+      ";
+    }
 
     $query .= $whereCondition;
     $events['events'] = array();
@@ -106,7 +118,7 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
     while ($dao->fetch()) {
       $eventData = array();
 
-      $dao->url = html_entity_decode(CRM_Utils_System::url('civicrm/event/info', 'id=' . $dao->id));
+      $dao->url = html_entity_decode(CRM_Utils_System::url('civicrm/event/info', 'id=' . isset($dao->id) ?: NULL));
       foreach ($eventCalendarParams as $k) {
         $eventData[$k] = $dao->$k;
         if (!empty($eventTypes)) {
@@ -163,8 +175,8 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
          $settings['event_time'] = $dao->event_timings;
          $settings['event_event_type_filter'] = $dao->event_type_filters;
          $settings['week_begins_from_day'] = $dao->week_begins_from_day;
+         $settings['recurring_event'] = $dao->recurring_event;
        }
-       dsm($dao);
 
        $sql = "SELECT * FROM civicrm_event_calendar_event_type WHERE `event_calendar_id` = {$calendarId};";
        $dao = CRM_Core_DAO::executeQuery($sql);

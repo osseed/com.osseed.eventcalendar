@@ -49,6 +49,8 @@ class CRM_EventCalendar_Form_EventCalendarSettings extends CRM_Core_Form {
       $descriptions['event_type_filters'] = ts('Show event types filter on calendar.');
       $this->add('advcheckbox', 'week_begins_from_day', ts('Week begins on'));
       $descriptions['week_begins_from_day'] = ts('Use weekBegin settings from CiviCRM.');
+      $this->add('advcheckbox', 'recurring_event', ts('Show recurring events'));
+      $descriptions['recurring_event'] = ts('Show only recurring events.');
 
       $eventTypes = CRM_Event_PseudoConstant::eventType();
       foreach ($eventTypes as $id => $type) {
@@ -88,9 +90,9 @@ class CRM_EventCalendar_Form_EventCalendarSettings extends CRM_Core_Form {
     }
 
     if ($submitted['action'] == 'add') {
-      $sql = "INSERT INTO civicrm_event_calendar(calendar_title, show_past_events, show_end_date, show_public_events, events_by_month, event_timings, events_from_month, event_type_filters, week_begins_from_day)
+      $sql = "INSERT INTO civicrm_event_calendar(calendar_title, show_past_events, show_end_date, show_public_events, events_by_month, event_timings, events_from_month, event_type_filters, week_begins_from_day, recurring_event)
        VALUES ('{$submitted['calendar_title']}', {$submitted['show_past_events']}, {$submitted['show_end_date']}, {$submitted['show_public_events']}, {$submitted['events_by_month']}, {$submitted['event_timings']}, {$submitted['events_from_month']}, {$submitted['event_type_filters']},
-          {$submitted['week_begins_from_day']});";
+          {$submitted['week_begins_from_day']}, {$submitted['recurring_event']});";
       $dao = CRM_Core_DAO::executeQuery($sql);
       $cfId = CRM_Core_DAO::singleValueQuery('SELECT LAST_INSERT_ID()');
       foreach ($submitted as $key => $value) {
@@ -108,7 +110,7 @@ class CRM_EventCalendar_Form_EventCalendarSettings extends CRM_Core_Form {
     if ($submitted['action'] == 'update') {
       $sql = "UPDATE civicrm_event_calendar
        SET calendar_title = '{$submitted['calendar_title']}', show_past_events = {$submitted['show_past_events']}, show_end_date = {$submitted['show_end_date']}, show_public_events = {$submitted['show_public_events']}, events_by_month = {$submitted['events_by_month']}, event_timings = {$submitted['event_timings']}, events_from_month = {$submitted['events_from_month']},
-        event_type_filters = {$submitted['event_type_filters']}, week_begins_from_day = {$submitted['week_begins_from_day']}
+        event_type_filters = {$submitted['event_type_filters']}, week_begins_from_day = {$submitted['week_begins_from_day']}, recurring_event = {$submitted['recurring_event']}
        WHERE `id` = {$submitted['calendar_id']};";
       $dao = CRM_Core_DAO::executeQuery($sql);
       //delete current event type records to update with new ones
