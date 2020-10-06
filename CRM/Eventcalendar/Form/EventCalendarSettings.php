@@ -13,7 +13,10 @@ class CRM_EventCalendar_Form_EventCalendarSettings extends CRM_Core_Form {
 
   public function buildQuickForm() {
     $this->controller->_destination = CRM_Utils_System::url('civicrm/admin/event-calendar', 'reset=1');
-    $this->action = $_GET['action'];
+    $this->action = '';
+    if(isset($_GET['action'])) {
+      $this->action = $_GET['action'];
+    }
     $this->calendar_id = $_GET['id'] ?? '';
 
     if ($this->action == 'delete') {

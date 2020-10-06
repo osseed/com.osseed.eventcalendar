@@ -59,12 +59,15 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
       $eventTypes = $settings['event_types'];
     }
 
-    if (!empty($eventTypes)) {
-      $eventTypesList = implode(',', array_keys($eventTypes));
-      $whereCondition .= " AND civicrm_event.event_type_id in ({$eventTypesList})";
-    }
-    else {
-      $whereCondition .= ' AND civicrm_event.event_type_id in (0)';
+    $calendarId = isset($_GET['id']) ? $_GET['id'] : '';
+    if ($calendarId) {
+      if (!empty($eventTypes)) {
+        $eventTypesList = implode(',', array_keys($eventTypes));
+        $whereCondition .= " AND civicrm_event.event_type_id in ({$eventTypesList})";
+      }
+      else {
+        $whereCondition .= ' AND civicrm_event.event_type_id in (0)';
+      }
     }
 
     //Show/Hide Past Events
@@ -87,7 +90,7 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
     }
 
     //Check recurringEvent is available or not.
-    if($settings['recurring_event'] == 1){
+    if(isset($settings['recurring_event']) && $settings['recurring_event'] == 1) {
       $query = "
         SELECT `title`, `start_date` start, `end_date` end ,`event_type_id` event_type
         FROM `civicrm_event` LEFT JOIN civicrm_recurring_entity ON civicrm_recurring_entity.entity_id = civicrm_event.id
@@ -96,7 +99,7 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
           AND civicrm_event.is_template = 0
       ";
     }
-    else{
+    else {
       $query = "
         SELECT `id`, `title`, `start_date` start, `end_date` end ,`event_type_id` event_type
         FROM `civicrm_event`
@@ -126,9 +129,14 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
           $eventData['textColor'] = $this->_getContrastTextColor($eventData['backgroundColor']);
           $eventData['eventType'] = $civieventTypesList[$dao->event_type];
         }
+        elseif ($calendarId == 0) {
+          $eventData['backgroundColor'] = "";
+          $eventData['textColor'] = $this->_getContrastTextColor($eventData['backgroundColor']);
+          $eventData['eventType'] = $civieventTypesList[$dao->event_type];
+        }
       }
-      $events['timeDisplay'] = $settings['event_time'];
-      $events['isfilter'] = $settings['event_event_type_filter'];
+      $events['timeDisplay'] = isset($settings['event_time']) ?: '';
+      $events['isfilter'] = isset($settings['event_event_type_filter']) ?: '';
       $events['events'][] = $eventData;
       $eventTypesFilter[$dao->event_type] = $civieventTypesList[$dao->event_type];
 
@@ -143,7 +151,7 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
 
     //Check weekBegin settings from calendar configuration
     $weekBegins = '';
-    if($settings['week_begins_from_day'] == 1) {
+    if(isset($settings['week_begins_from_day']) && $settings['week_begins_from_day'] == 1) {
       //Get existing setting for weekday from civicrm start & set into event calendar.
       $weekBegins = Civi::settings()->get('weekBegins');
     }
@@ -160,7 +168,7 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
    */
    public function _eventCalendar_getSettings() {
      $settings = array();
-     $calendarId = $_GET['id'];
+     $calendarId = isset($_GET['id']) ? $_GET['id'] : '';
 
      if ($calendarId) {
        $sql = "SELECT * FROM civicrm_event_calendar WHERE `id` = {$calendarId};";
@@ -185,12 +193,17 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
          $eventTypes[] = $dao->toArray();
        }
     }
+    elseif ($calendarId == 0) {
+      $settings['calendar_title'] = 'Event Calendar';
+      $settings['event_is_public'] = 1;
+    }
 
     if (!empty($eventTypes)) {
       foreach ($eventTypes as $eventType) {
         $settings['event_types'][$eventType['event_type']] = $eventType['event_color'];
       }
     }
+
     return $settings;
   }
 
