@@ -51,7 +51,7 @@ class CRM_EventCalendar_Form_EventCalendarSettings extends CRM_Core_Form {
       $this->add('advcheckbox', 'event_type_filters', ts('Filter Event Types?'));
       $descriptions['event_type_filters'] = ts('Show event types filter on calendar.');
       $this->add('advcheckbox', 'week_begins_from_day', ts('Week begins on'));
-      $descriptions['week_begins_from_day'] = ts('Use weekBegin settings from CiviCRM.');
+      $descriptions['week_begins_from_day'] = ts('Use weekBegin settings from CiviCRM.You can overide settings at Administer > Localization > Date Formats.');
       $this->add('advcheckbox', 'recurring_event', ts('Show recurring events'));
       $descriptions['recurring_event'] = ts('Show only recurring events.');
 
