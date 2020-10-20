@@ -13,13 +13,11 @@ class CRM_EventCalendar_BAO_EventCalendar extends CRM_EventCalendar_DAO_EventCal
     $className = 'CRM_EventCalendar_DAO_EventCalendar';
     $entityName = 'EventCalendar';
     $hook = empty($params['id']) ? 'create' : 'edit';
-
     CRM_Utils_Hook::pre($hook, $entityName, CRM_Utils_Array::value('id', $params), $params);
     $instance = new $className();
     $instance->copyValues($params);
     $instance->save();
     CRM_Utils_Hook::post($hook, $entityName, $instance->id, $instance);
-
     return $instance;
   } */
 

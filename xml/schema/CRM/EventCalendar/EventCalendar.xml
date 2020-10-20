@@ -68,5 +68,16 @@
     <comment>Whether to show event type filters</comment>
     <add>4.4</add>
   </field>
-
+  <field>
+    <name>week_begins_from_day</name>
+    <type>boolean</type>
+    <comment>Show week begins on</comment>
+    <add>4.4</add>
+  </field>
+  <field>
+    <name>recurring_day</name>
+    <type>boolean</type>
+    <comment>Show recurring events</comment>
+    <add>4.4</add>
+  </field>
 </table>

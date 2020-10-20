@@ -121,18 +121,6 @@ function _eventcalendar_civix_civicrm_xmlMenu(&$files) {
 }
 
 /**
- * Implements hook_civicrm_install().
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_install
- */
-function _eventcalendar_civix_civicrm_install() {
-  _eventcalendar_civix_civicrm_config();
-  if ($upgrader = _eventcalendar_civix_upgrader()) {
-    $upgrader->onInstall();
-  }
-}
-
-/**
  * Implements hook_civicrm_postInstall().
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_postInstall
@@ -143,6 +131,18 @@ function _eventcalendar_civix_civicrm_postInstall() {
     if (is_callable(array($upgrader, 'onPostInstall'))) {
       $upgrader->onPostInstall();
     }
+  }
+}
+
+/**
+ * Implements hook_civicrm_install().
+ *
+ * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_install
+ */
+function _eventcalendar_civix_civicrm_install() {
+  _eventcalendar_civix_civicrm_config();
+  if ($upgrader = _eventcalendar_civix_upgrader()) {
+    $upgrader->onInstall();
   }
 }
 
@@ -205,14 +205,14 @@ function _eventcalendar_civix_civicrm_upgrade($op, CRM_Queue_Queue $queue = NULL
 }
 
 /**
- * @return CRM_EventCalendar_Upgrader
+ * @return CRM_Eventcalendar_Upgrader
  */
 function _eventcalendar_civix_upgrader() {
-  if (!file_exists(__DIR__ . '/CRM/EventCalendar/Upgrader.php')) {
+  if (!file_exists(__DIR__.'/CRM/Eventcalendar/Upgrader.php')) {
     return NULL;
   }
   else {
-    return CRM_EventCalendar_Upgrader_Base::instance();
+    return CRM_Eventcalendar_Upgrader_Base::instance();
   }
 }
 
@@ -244,8 +244,7 @@ function _eventcalendar_civix_find_files($dir, $pattern) {
       while (FALSE !== ($entry = readdir($dh))) {
         $path = $subdir . DIRECTORY_SEPARATOR . $entry;
         if ($entry{0} == '.') {
-        }
-        elseif (is_dir($path)) {
+        } elseif (is_dir($path)) {
           $todos[] = $path;
         }
       }
@@ -270,10 +269,11 @@ function _eventcalendar_civix_civicrm_managed(&$entities) {
       if (empty($e['module'])) {
         $e['module'] = E::LONG_NAME;
       }
-      if (empty($e['params']['version'])) {
-        $e['params']['version'] = '3';
-      }
       $entities[] = $e;
+      if (empty($e['params']['version'])) {
+       $e['params']['version'] = '3';
+     }
+     $entities[] = $e;
     }
   }
 }
@@ -457,13 +457,13 @@ function _eventcalendar_civix_civicrm_alterSettingsFolders(&$metaDataFolders = N
 
 function _eventcalendar_civix_civicrm_entityTypes(&$entityTypes) {
   $entityTypes = array_merge($entityTypes, array (
-    'CRM_EventCalendar_DAO_EventCalendar' => 
+    'CRM_EventCalendar_DAO_EventCalendar' =>
     array (
       'name' => 'EventCalendar',
       'class' => 'CRM_EventCalendar_DAO_EventCalendar',
       'table' => 'civicrm_event_calendar',
     ),
-    'CRM_EventCalendar_DAO_EventCalendarType' => 
+    'CRM_EventCalendar_DAO_EventCalendarType' =>
     array (
       'name' => 'EventCalendarType',
       'class' => 'CRM_EventCalendar_DAO_EventCalendarType',

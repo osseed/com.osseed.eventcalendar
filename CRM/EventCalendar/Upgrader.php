@@ -21,6 +21,7 @@ class CRM_EventCalendar_Upgrader extends CRM_EventCalendar_Upgrader_Base {
          `event_timings` tinyint    COMMENT 'Show the event timing',
          `events_from_month` int unsigned    COMMENT 'How many months to show events',
          `event_type_filters` tinyint    COMMENT 'Whether to show event type filters',
+         `week_begins_from_day` tinyint    COMMENT 'Show week begins from day',
             PRIMARY KEY (`id`)
     );";
     CRM_Core_DAO::executeQuery($sql);
