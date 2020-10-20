@@ -13,16 +13,17 @@ http://wiki.civicrm.org/confluence/display/CRMDOC42/Extensions
 
 Requires
 --------
-Extension required https://www.drupal.org/project/jquery_update module for installation with Drupal.
+Extension required https://www.drupal.org/project/jquery_update module for installation with Drupal7.
 
 
 Usage
 ---------------
-1. Click Administrator->CiviEvent->Event Calendar Settings menu (civicrm/eventcalendarsettings) -- change the setting if required.
-2. Click Events->Show Events menu (civicrm/showevents) -- to view Event Calendar with Events as per settings.
+1. Click Administrator->CiviEvent->Event Calendar Settings menu (civicrm/admin/event-calendar) -- change the setting if required.
+2. Now you can add multiple calendar with specific settings & preview event data as per settings on calendar.
+3. Click Events->Show Events menu (civicrm/showevents) -- to view global Event Calendar with Events as per settings.
 
 Note
 -----
 1: If you are using Joomla CMS then copy the folder "yourextensiondirectory/com.osseed.eventcalendar/joomla/EventCalendar" to "joomlarootdirectory/components/com_civicrm/views/" which will add menu item type for Event Calendar.
 
-2: If you are using Wordpress CMS then copy the folder "yourextensiondirectory/com.osseed.eventcalendar/wordpress/wordpress-event-calendar" to "wordpressdirectory/wp-content/plugins/" and activate the plugin which will add CiviCRm frontend type for Event Calendar.
+2: If you are using Wordpress CMS then copy the folder "yourextensiondirectory/com.osseed.eventcalendar/wordpress/wordpress-event-calendar" to "wordpressdirectory/wp-content/plugins/" and activate the plugin which will add CiviCRM frontend type for Event Calendar.
