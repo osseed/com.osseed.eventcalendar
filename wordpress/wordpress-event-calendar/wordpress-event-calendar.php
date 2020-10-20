@@ -63,7 +63,7 @@ function event_calendar_add_form_button_html() {
           case 'event-calendar':
           break;
         }
-        shortcode += ']';
+        shortcode += ' id="<<your calendar id here>>"]';
         window.send_to_editor(shortcode);
       });
     });
@@ -97,23 +97,24 @@ function event_calendar_add_form_button_html() {
   }
 }
 
-function event_calendar_shortcode_handler( $atts ) {
+function event_calendar_shortcode_handler($atts) {
   $component = $atts['component'];
   if ($component == 'event-calendar') {
-    extract( shortcode_atts( array(
+    extract(shortcode_atts(array(
       'component' => 'event-calender',
       'action' => NULL,
       'mode' => NULL,
-      'id' => NULL,
+      'id' => 'id',
       'cid' => NULL,
       'gid' => NULL,
       'cs' => NULL,
       ),
       $atts
-    ) );
+    ));
 
     $args = array(
       'reset' => 1,
+      'id' => $atts['id'],
     );
     civicrm_initialize();
     $args['q'] = 'civicrm/showevents';
