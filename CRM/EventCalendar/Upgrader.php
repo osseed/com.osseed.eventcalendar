@@ -9,8 +9,11 @@ class CRM_EventCalendar_Upgrader extends CRM_EventCalendar_Upgrader_Base {
   // By convention, functions that look like "function upgrade_NNNN()" are
   // upgrade tasks. They are executed in order (like Drupal's hook_update_N).
 
-  public function upgrade_0001() {
-    $this->ctx->log->info('Applying update 0001');
+  /**
+   * Upgrade the table as support for multicalender.
+   */
+  public function upgrade_1001() {
+    $this->ctx->log->info('Applying update 1001');
     $sql = "CREATE TABLE IF NOT EXISTS `civicrm_event_calendar` (
          `id` int unsigned NOT NULL AUTO_INCREMENT  COMMENT 'Unique EventCalendar ID',
          `calendar_title` varchar(255)    COMMENT 'Calendar Title',
