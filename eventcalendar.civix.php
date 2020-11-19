@@ -205,14 +205,14 @@ function _eventcalendar_civix_civicrm_upgrade($op, CRM_Queue_Queue $queue = NULL
 }
 
 /**
- * @return CRM_Eventcalendar_Upgrader
+ * @return CRM_EventCalendar_Upgrader
  */
 function _eventcalendar_civix_upgrader() {
-  if (!file_exists(__DIR__.'/CRM/Eventcalendar/Upgrader.php')) {
+  if (!file_exists(__DIR__.'/CRM/EventCalendar/Upgrader.php')) {
     return NULL;
   }
   else {
-    return CRM_Eventcalendar_Upgrader_Base::instance();
+    return CRM_EventCalendar_Upgrader_Base::instance();
   }
 }
 
