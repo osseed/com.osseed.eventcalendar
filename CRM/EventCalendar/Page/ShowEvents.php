@@ -120,7 +120,6 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
 
     while ($dao->fetch()) {
       $eventData = array();
-
       $dao->url = html_entity_decode(CRM_Utils_System::url('civicrm/event/info', 'id=' . $dao->id ?: NULL));
       foreach ($eventCalendarParams as $k) {
         $eventData[$k] = $dao->$k;
@@ -139,7 +138,6 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
       $events['isfilter'] = isset($settings['event_event_type_filter']) ?: '';
       $events['events'][] = $eventData;
       $eventTypesFilter[$dao->event_type] = $civieventTypesList[$dao->event_type];
-
     }
 
     if(!empty($settings['event_event_type_filter'])) {
@@ -196,6 +194,7 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
     elseif ($calendarId == 0) {
       $settings['calendar_title'] = 'Event Calendar';
       $settings['event_is_public'] = 1;
+      $settings['event_past'] = 1;
     }
 
     if (!empty($eventTypes)) {
