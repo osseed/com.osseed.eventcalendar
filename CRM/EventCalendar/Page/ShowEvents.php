@@ -92,7 +92,7 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
     //Check recurringEvent is available or not.
     if(isset($settings['recurring_event']) && $settings['recurring_event'] == 1) {
       $query = "
-        SELECT `title`, `start_date` start, `end_date` end ,`event_type_id` event_type
+        SELECT `entity_id` id ,`title` title, `start_date` start, `end_date` end ,`event_type_id` event_type
         FROM `civicrm_event` LEFT JOIN civicrm_recurring_entity ON civicrm_recurring_entity.entity_id = civicrm_event.id
         WHERE civicrm_recurring_entity.entity_table='civicrm_event'
           AND civicrm_event.is_active = 1
@@ -120,7 +120,7 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
 
     while ($dao->fetch()) {
       $eventData = array();
-      $dao->url = html_entity_decode(CRM_Utils_System::url('civicrm/event/info', 'id=' . $dao->id ?: NULL));
+      $dao->url = html_entity_decode(CRM_Utils_System::url('civicrm/event/info', 'id=' . $dao->id ?:NULL));
       foreach ($eventCalendarParams as $k) {
         $eventData[$k] = $dao->$k;
         if (!empty($eventTypes)) {
