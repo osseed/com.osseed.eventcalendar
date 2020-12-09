@@ -134,8 +134,8 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
           $eventData['eventType'] = $civieventTypesList[$dao->event_type];
         }
       }
-      $events['timeDisplay'] = isset($settings['event_time']) ?: '';
-      $events['isfilter'] = isset($settings['event_event_type_filter']) ?: '';
+      $events['timeDisplay'] = !empty($settings['event_time']) ?: '';
+      $events['isfilter'] = !empty($settings['event_event_type_filter']) ?: '';
       $events['events'][] = $eventData;
       $eventTypesFilter[$dao->event_type] = $civieventTypesList[$dao->event_type];
     }
