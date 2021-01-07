@@ -47,10 +47,8 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
     $civieventTypesList = CRM_Event_PseudoConstant::eventType();
 
     $config = CRM_Core_Config::singleton();
-
     //get settings
     $settings = $this->_eventCalendar_getSettings();
-
     //set title from settings; allow empty value so we don't duplicate titles
     CRM_Utils_System::setTitle(ts($settings['calendar_title']));
 
@@ -223,10 +221,10 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
     $G2BlackColor = hexdec(substr($blackColor, 3, 2));
     $B2BlackColor = hexdec(substr($blackColor, 5, 2));
 
-     // Calc contrast ratio
-     $L1 = 0.2126 * pow($R1 / 255, 2.2) +
-           0.7152 * pow($G1 / 255, 2.2) +
-           0.0722 * pow($B1 / 255, 2.2);
+    // Calc contrast ratio
+    $L1 = 0.2126 * pow($R1 / 255, 2.2) +
+          0.7152 * pow($G1 / 255, 2.2) +
+          0.0722 * pow($B1 / 255, 2.2);
 
     $L2 = 0.2126 * pow($R2BlackColor / 255, 2.2) +
           0.7152 * pow($G2BlackColor / 255, 2.2) +
@@ -234,17 +232,17 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
 
     $contrastRatio = 0;
     if ($L1 > $L2) {
-        $contrastRatio = (int)(($L1 + 0.05) / ($L2 + 0.05));
+      $contrastRatio = (int)(($L1 + 0.05) / ($L2 + 0.05));
     } else {
-        $contrastRatio = (int)(($L2 + 0.05) / ($L1 + 0.05));
+      $contrastRatio = (int)(($L2 + 0.05) / ($L1 + 0.05));
     }
 
     // If contrast is more than 5, return black color
     if ($contrastRatio > 5) {
-        return '#000000';
+      return '#000000';
     } else {
-        // if not, return white color.
-        return '#FFFFFF';
+      // if not, return white color.
+      return '#FFFFFF';
     }
   }
 }

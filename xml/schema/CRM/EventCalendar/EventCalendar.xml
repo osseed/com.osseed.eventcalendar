@@ -19,7 +19,6 @@
     <name>id</name>
     <autoincrement>true</autoincrement>
   </primaryKey>
-
   <field>
     <name>calendar_title</name>
     <type>varchar(255)</type>
@@ -50,6 +49,7 @@
     <comment>Use the Month param in the calendar</comment>
     <add>4.4</add>
   </field>
+
   <field>
     <name>event_timings</name>
     <type>boolean</type>

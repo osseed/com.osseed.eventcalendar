@@ -19,7 +19,6 @@
     <name>id</name>
     <autoincrement>true</autoincrement>
   </primaryKey>
-
   <field>
     <name>event_calendar_id</name>
     <type>int unsigned</type>
@@ -33,7 +32,6 @@
     <add>4.4</add>
     <onDelete>CASCADE</onDelete>
   </foreignKey>
-
   <field>
     <name>event_type</name>
     <type>int unsigned</type>
@@ -46,5 +44,4 @@
     <comment>Hex code for event type display color</comment>
     <add>4.4</add>
   </field>
-
 </table>

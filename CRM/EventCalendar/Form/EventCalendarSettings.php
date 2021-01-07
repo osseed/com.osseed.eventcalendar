@@ -68,7 +68,6 @@ class CRM_EventCalendar_Form_EventCalendarSettings extends CRM_Core_Form {
       }
 
       $this->assign('eventTypes', $eventTypes);
-
       $this->assign('descriptions', $descriptions);
     }
 
@@ -205,8 +204,6 @@ class CRM_EventCalendar_Form_EventCalendarSettings extends CRM_Core_Form {
         $defaults[0]['eventcolor_' . $value['event_type']] = $value['event_color'];
       }
       return $defaults[0];
-
     }
   }
-
 }

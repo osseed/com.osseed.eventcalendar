@@ -15,7 +15,6 @@ Requires
 --------
 Extension required https://www.drupal.org/project/jquery_update module for installation with Drupal7.
 
-
 Usage
 ---------------
 1. Click Administrator->CiviEvent->Event Calendar Settings menu (civicrm/admin/event-calendar) -- change the setting if required.
@@ -25,5 +24,4 @@ Usage
 Note
 -----
 1: If you are using Joomla CMS then copy the folder "yourextensiondirectory/com.osseed.eventcalendar/joomla/EventCalendar" to "joomlarootdirectory/components/com_civicrm/views/" which will add menu item type for Event Calendar.
-
 2: If you are using Wordpress CMS then copy the folder "yourextensiondirectory/com.osseed.eventcalendar/wordpress/wordpress-event-calendar" to "wordpressdirectory/wp-content/plugins/" and activate the plugin which will add CiviCRM frontend type for Event Calendar.
