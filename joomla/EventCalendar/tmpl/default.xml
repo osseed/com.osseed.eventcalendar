@@ -14,12 +14,25 @@
     <version>1.1</version>
     <description>Event Calendar</description>
     <config>
-    <fields name="params">
-    <fieldset name="advanced">
-      <field name="task" type="hidden" default="civicrm/showevents?id=" />
-      <field name="reset" type="hidden" size="5" default="1"  />
-    </fieldset>
-    </fields>
+      <fields name="params">
+        <fieldset name="request">
+          <field name="id"
+                 type="showevents"
+                 label="Add Event Calendar Setting ID"
+                 description="Configured CiviCRM Event Calendar Setting ID"
+                 required="false"
+            />
+          <field name="task"
+                 type="hidden"
+                 default="civicrm/showevents"
+            />
+          <field name="reset"
+                 type="hidden"
+                 size="5"
+                 default="1"
+            />
+        </fieldset>
+      </fields>
     </config>
   </state>
 </metadata>
