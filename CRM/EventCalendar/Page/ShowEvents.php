@@ -132,6 +132,19 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
           $eventData['eventType'] = $civieventTypesList[$dao->event_type];
         }
       }
+
+      $enrollment_status = civicrm_api3('Event', 'getsingle', [
+        'return' => ['is_full'],
+        'id' => $dao->id,
+      ]);
+      
+      // Show/Hide enrollment status
+      if(!empty($settings['enrollment_status'])) {
+        if( !(isset($enrollment_status['is_error']))  && ( $enrollment_status['is_full'] == "1" ) ) {
+          $eventData['url']='';
+          $eventData['title'].=' FULL';
+        }
+      }
       $events['timeDisplay'] = !empty($settings['event_time']) ?: '';
       $events['isfilter'] = !empty($settings['event_event_type_filter']) ?: '';
       $events['events'][] = $eventData;
@@ -180,6 +193,7 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
          $settings['event_event_type_filter'] = $dao->event_type_filters;
          $settings['week_begins_from_day'] = $dao->week_begins_from_day;
          $settings['recurring_event'] = $dao->recurring_event;
+         $settings['enrollment_status'] = $dao->enrollment_status;
        }
 
        $sql = "SELECT * FROM civicrm_event_calendar_event_type WHERE `event_calendar_id` = {$calendarId};";

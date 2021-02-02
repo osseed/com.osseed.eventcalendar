@@ -63,7 +63,8 @@ CREATE TABLE `civicrm_event_calendar` (
      `events_from_month` int unsigned    COMMENT 'How many months to show events',
      `event_type_filters` tinyint    COMMENT 'Whether to show event type filters',
      `week_begins_from_day` tinyint    COMMENT 'Show week begins from day',
-     `recurring_event`  tinyint   COMMENT 'Show recurring events'
+     `recurring_event`  tinyint   COMMENT 'Show recurring events',
+     `enrollment_status` tinyint   COMMENT 'Show enrollment status'
 ,
         PRIMARY KEY (`id`)
 

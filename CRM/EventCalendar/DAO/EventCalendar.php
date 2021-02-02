@@ -106,6 +106,13 @@ class CRM_EventCalendar_DAO_EventCalendar extends CRM_Core_DAO {
   public $recurring_event;
 
   /**
+   * Whether to show enrollment status on events.
+   *
+   * @var boolean
+   */
+  public $enrollment_status;
+
+  /**
    * Class constructor.
    */
   public function __construct() {
@@ -226,6 +233,16 @@ class CRM_EventCalendar_DAO_EventCalendar extends CRM_Core_DAO {
           'type' => CRM_Utils_Type::T_BOOLEAN,
           'title' => ts('recurring_event'),
           'description' => ts('recurring_event'),
+          'table_name' => 'civicrm_event_calendar',
+          'entity' => 'EventCalendar',
+          'bao' => 'CRM_EventCalendar_DAO_EventCalendar',
+          'localizable' => 0,
+        ],
+        'enrollment_status' => [
+          'name' => 'enrollment_status',
+          'type' => CRM_Utils_Type::T_BOOLEAN,
+          'title' => ts('enrollment_status'),
+          'description' => ts('enrollment_status'),
           'table_name' => 'civicrm_event_calendar',
           'entity' => 'EventCalendar',
           'bao' => 'CRM_EventCalendar_DAO_EventCalendar',
