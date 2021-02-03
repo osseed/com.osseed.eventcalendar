@@ -137,7 +137,7 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
         'return' => ['is_full'],
         'id' => $dao->id,
       ]);
-      
+
       // Show/Hide enrollment status
       if(!empty($settings['enrollment_status'])) {
         if( !(isset($enrollment_status['is_error']))  && ( $enrollment_status['is_full'] == "1" ) ) {
@@ -207,6 +207,7 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
       $settings['calendar_title'] = 'Event Calendar';
       $settings['event_is_public'] = 1;
       $settings['event_past'] = 1;
+      $settings['enrollment_status'] = 1;
     }
 
     if (!empty($eventTypes)) {
