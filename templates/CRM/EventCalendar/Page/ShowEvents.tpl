@@ -7,7 +7,6 @@
   </select>
 {/if}
 <div id="calendar"></div>
-
 {literal}
 <script type="text/javascript">
   if (typeof(jQuery) != 'function'){
@@ -59,6 +58,7 @@ function buildCalendar( ) {
     eventSources: [
       { events: events_data.events,}
     ],
+    displayEventEnd: true,
     displayEventTime: showTime ? 1 : 0,
     firstDay:weekStartDay,
     timeFormat: 'h(:mm)A',
