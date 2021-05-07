@@ -127,7 +127,6 @@ function event_calendar_shortcode_handler($atts) {
 
     // Call wp_frontend with $shortcode param.
     if (class_exists('CiviCRM_For_WordPress')) {
-      ob_start(); // start buffering
       civi_wp()->invoke();
       $content = ob_get_clean(); // save the output and flush the buffer
       return $content;
