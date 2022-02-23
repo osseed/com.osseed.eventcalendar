@@ -15,27 +15,29 @@ class CRM_EventCalendar_Upgrader extends CRM_EventCalendar_Upgrader_Base {
   public function upgrade_1001() {
     $this->ctx->log->info('Applying update 1001');
     $sql = "CREATE TABLE IF NOT EXISTS `civicrm_event_calendar` (
-         `id` int unsigned NOT NULL AUTO_INCREMENT  COMMENT 'Unique EventCalendar ID',
-         `calendar_title` varchar(255)    COMMENT 'Calendar Title',
-         `show_past_events` tinyint    COMMENT 'Show Past Events',
-         `show_end_date` tinyint    COMMENT 'Show End Date',
-         `show_public_events` tinyint    COMMENT 'Show Only Public or All',
-         `events_by_month` tinyint    COMMENT 'Use the Month param in the calendar',
-         `event_timings` tinyint    COMMENT 'Show the event timing',
-         `events_from_month` int unsigned    COMMENT 'How many months to show events',
-         `event_type_filters` tinyint    COMMENT 'Whether to show event type filters',
-         `week_begins_from_day` tinyint    COMMENT 'Show week begins from day',
-            PRIMARY KEY (`id`)
+        `id` int unsigned NOT NULL AUTO_INCREMENT  COMMENT 'Unique EventCalendar ID',
+        `calendar_title` varchar(255)    COMMENT 'Calendar Title',
+        `show_past_events` tinyint    COMMENT 'Show Past Events',
+        `show_end_date` tinyint    COMMENT 'Show End Date',
+        `show_public_events` tinyint    COMMENT 'Show Only Public or All',
+        `events_by_month` tinyint    COMMENT 'Use the Month param in the calendar',
+        `event_timings` tinyint    COMMENT 'Show the event timing',
+        `events_from_month` int unsigned    COMMENT 'How many months to show events',
+        `event_type_filters` tinyint    COMMENT 'Whether to show event type filters',
+        `week_begins_from_day` tinyint    COMMENT 'Show week begins from day',
+        `recurring_event`  tinyint   COMMENT 'Show recurring events',
+        `enrollment_status` tinyint   COMMENT 'Show enrollment status',
+        PRIMARY KEY (`id`)
     );";
     CRM_Core_DAO::executeQuery($sql);
 
     $sql = "CREATE TABLE IF NOT EXISTS `civicrm_event_calendar_event_type` (
-         `id` int unsigned NOT NULL AUTO_INCREMENT  COMMENT 'Unique EventCalendarEventType ID',
-         `event_calendar_id` int unsigned    COMMENT 'FK to Event Calendar',
-         `event_type` int unsigned    COMMENT 'Event Type id',
-         `event_color` varchar(255)    COMMENT 'Hex code for event type display color',
-            PRIMARY KEY (`id`),
-            CONSTRAINT FK_civicrm_event_calendar_event_type_event_calendar_id FOREIGN KEY (`event_calendar_id`) REFERENCES `civicrm_event_calendar`(`id`) ON DELETE CASCADE
+      `id` int unsigned NOT NULL AUTO_INCREMENT  COMMENT 'Unique EventCalendarEventType ID',
+      `event_calendar_id` int unsigned    COMMENT 'FK to Event Calendar',
+      `event_type` int unsigned    COMMENT 'Event Type id',
+      `event_color` varchar(255)    COMMENT 'Hex code for event type display color',
+      PRIMARY KEY (`id`),
+      CONSTRAINT FK_civicrm_event_calendar_event_type_event_calendar_id FOREIGN KEY (`event_calendar_id`) REFERENCES `civicrm_event_calendar`(`id`) ON DELETE CASCADE
     );";
     CRM_Core_DAO::executeQuery($sql);
 
