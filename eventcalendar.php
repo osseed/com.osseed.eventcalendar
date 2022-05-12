@@ -1,6 +1,7 @@
 <?php
 
 require_once 'eventcalendar.civix.php';
+use CRM_EventCalendar_ExtensionUtil as E;
 
 /**
  * Implements hook_civicrm_config().
@@ -29,13 +30,6 @@ function eventcalendar_civicrm_xmlMenu(&$files) {
  */
 function eventcalendar_civicrm_install() {
   _eventcalendar_civix_civicrm_install();
-}
-
-/**
- * Implementation of hook_civicrm_postInstall
- */
-function eventcalendar_civicrm_postInstall() {
-  _eventcalendar_civix_civicrm_postInstall();
 }
 
 /**
@@ -128,3 +122,30 @@ function eventcalendar_civicrm_angularModules(&$angularModules) {
 function eventcalendar_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
   _eventcalendar_civix_civicrm_alterSettingsFolders($metaDataFolders);
 }
+
+/**
+ * Functions below this ship commented out. Uncomment as required.
+ *
+ * Implements hook_civicrm_preProcess().
+ *
+ * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_preProcess
+ *
+function eventcalendar_civicrm_preProcess($formName, &$form) {
+}*/
+
+/**
+ * Implements hook_civicrm_navigationMenu().
+ *
+ * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_navigationMenu
+ *
+function eventcalendar_civicrm_navigationMenu(&$menu) {
+_eventcalendar_civix_insert_navigation_menu($menu, NULL, array(
+'label' => ts('The Page', array('domain' => 'com.osseed.eventcalendar')),
+'name' => 'the_page',
+'url' => 'civicrm/the-page',
+'permission' => 'access CiviReport,access CiviContribute',
+'operator' => 'OR',
+'separator' => 0,
+));
+_eventcalendar_civix_navigationMenu($menu);
+}*/
