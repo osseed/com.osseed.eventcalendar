@@ -1,6 +1,7 @@
 <?php
 
 require_once 'CRM/Core/Form.php';
+use CRM_EventCalendar_ExtensionUtil as E;
 
 /**
  * Form controller class
@@ -20,7 +21,7 @@ class CRM_EventCalendar_Form_EventCalendarSettings extends CRM_Core_Form {
     $this->calendar_id = $_GET['id'] ?? '';
 
     if ($this->action == 'delete') {
-      $descriptions['delete_warning'] = ts('Are you sure you want to delete this calendar?');
+      $descriptions['delete_warning'] = E::ts('Are you sure you want to delete this calendar?');
       $this->add('hidden', 'action', $this->action);
       $this->add('hidden', 'calendar_id', $this->calendar_id);
       $this->assign('descriptions', $descriptions);
@@ -30,38 +31,39 @@ class CRM_EventCalendar_Form_EventCalendarSettings extends CRM_Core_Form {
       CRM_Core_Resources::singleton()->addScriptFile('com.osseed.eventcalendar', 'js/eventcalendar.js');
 
       $settings = $this->getFormSettings();
+      CRM_Utils_System::setTitle(E::ts('Event Calendar Settings'));
       $descriptions = array();
 
       $this->add('hidden', 'action', $this->action);
       $this->add('hidden', 'calendar_id', $this->calendar_id);
-      $this->add('text', 'calendar_title', ts('Calendar Title'));
-      $descriptions['calendar_title'] = ts('Event calendar title.');
-      $this->add('advcheckbox', 'show_past_events', ts('Show Past Events?'));
-      $descriptions['show_past_events'] = ts('Show past events as well as current/future.');
-      $this->add('advcheckbox', 'show_end_date', ts('Show End Date?'));
-      $descriptions['show_end_date'] = ts('Show the event with start and end dates on the calendar.');
-      $this->add('advcheckbox', 'show_public_events', ts('Show Public Events?'));
-      $descriptions['show_public_events'] = ts('Show only public events, or all events.');
-      $this->add('advcheckbox', 'events_by_month', ts('Show Events by Month?'));
-      $descriptions['events_by_month'] = ts('Show the month parameter on calendar.');
-      $this->add('advcheckbox', 'event_timings', ts('Show Event Times?'));
-      $descriptions['event_timings'] = ts('Show the event timings on calendar.');
-      $this->add('text', 'events_from_month', ts('Events from Month'));
-      $descriptions['events_from_month'] = ts('Show events from how many months from current month.');
-      $this->add('advcheckbox', 'event_type_filters', ts('Filter Event Types?'));
-      $descriptions['event_type_filters'] = ts('Show event types filter on calendar.');
-      $this->add('advcheckbox', 'week_begins_from_day', ts('Week begins on'));
-      $descriptions['week_begins_from_day'] = ts('Use weekBegin settings from CiviCRM. You can override settings at Administer > Localization > Date Formats.');
-      $this->add('advcheckbox', 'recurring_event', ts('Show recurring events'));
-      $descriptions['recurring_event'] = ts('Show only recurring events.');
-      $this->add('advcheckbox', 'enrollment_status', ts('Show enrollment status'));
-      $descriptions['enrollment_status'] = ts('Show enrollment status on calendar event.');
+      $this->add('text', 'calendar_title', E::ts('Calendar Title'));
+      $descriptions['calendar_title'] = E::ts('Event calendar title.');
+      $this->add('advcheckbox', 'show_past_events', E::ts('Show Past Events?'));
+      $descriptions['show_past_events'] = E::ts('Show past events as well as current/future.');
+      $this->add('advcheckbox', 'show_end_date', E::ts('Show End Date?'));
+      $descriptions['show_end_date'] = E::ts('Show the event with start and end dates on the calendar.');
+      $this->add('advcheckbox', 'show_public_events', E::ts('Show Public Events?'));
+      $descriptions['show_public_events'] = E::ts('Show only public events, or all events.');
+      $this->add('advcheckbox', 'events_by_month', E::ts('Show Events by Month?'));
+      $descriptions['events_by_month'] = E::ts('Show the month parameter on calendar.');
+      $this->add('advcheckbox', 'event_timings', E::ts('Show Event Times?'));
+      $descriptions['event_timings'] = E::ts('Show the event timings on calendar.');
+      $this->add('text', 'events_from_month', E::ts('Events from Month'));
+      $descriptions['events_from_month'] = E::ts('Show events from how many months from current month.');
+      $this->add('advcheckbox', 'event_type_filters', E::ts('Filter Event Types?'));
+      $descriptions['event_type_filters'] = E::ts('Show event types filter on calendar.');
+      $this->add('advcheckbox', 'week_begins_from_day', E::ts('Week begins on'));
+      $descriptions['week_begins_from_day'] = E::ts('Use weekBegin settings from CiviCRM. You can override settings at Administer > Localization > Date Formats.');
+      $this->add('advcheckbox', 'recurring_event', E::ts('Show recurring events'));
+      $descriptions['recurring_event'] = E::ts('Show only recurring events.');
+      $this->add('advcheckbox', 'enrollment_status', E::ts('Show enrollment status'));
+      $descriptions['enrollment_status'] = E::ts('Show enrollment status on calendar event.');
 
       $eventTypes = CRM_Event_PseudoConstant::eventType();
       foreach ($eventTypes as $id => $type) {
-        $this->addElement('checkbox', "eventtype_{$id}", $type, NULL,
+        $this->addElement('checkbox', "eventtype_{$id}", E::ts($type), NULL,
           array('onclick' => "showhidecolorbox('{$id}')", 'id' => "event_{$id}"));
-        $this->addElement('text', "eventcolor_{$id}", "Color",
+        $this->addElement('text', "eventcolor_{$id}", E::ts("Color"),
           array(
             'onchange' => "updatecolor('eventcolor_{$id}', this.value);",
             'class' => 'color',
@@ -76,7 +78,7 @@ class CRM_EventCalendar_Form_EventCalendarSettings extends CRM_Core_Form {
     $this->addButtons(array(
       array(
         'type' => 'submit',
-        'name' => ts('Submit'),
+        'name' => E::ts('Submit'),
         'isDefault' => TRUE,
       ),
     ));
@@ -138,7 +140,7 @@ class CRM_EventCalendar_Form_EventCalendarSettings extends CRM_Core_Form {
       $dao = CRM_Core_DAO::executeQuery($sql);
     }
 
-    CRM_Core_Session::setStatus(ts('The Calendar has been saved.'), ts('Saved'), 'success');
+    CRM_Core_Session::setStatus(E::ts('The Calendar has been saved.'), E::ts('Saved'), 'success');
     parent::postProcess();
   }
 
