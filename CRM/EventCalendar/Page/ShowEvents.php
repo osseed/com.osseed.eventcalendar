@@ -39,6 +39,7 @@ use CRM_EventCalendar_ExtensionUtil as E;
 class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
 
   public function run() {
+    CRM_Core_Resources::singleton()->addScriptFile('com.osseed.eventcalendar', 'js/locale-all.js', 201);
     CRM_Core_Resources::singleton()->addScriptFile('com.osseed.eventcalendar', 'js/moment.js', 5);
     CRM_Core_Resources::singleton()->addScriptFile('com.osseed.eventcalendar', 'js/fullcalendar.js', 10);
     CRM_Core_Resources::singleton()->addStyleFile('com.osseed.eventcalendar', 'css/civicrm_events.css');
@@ -170,6 +171,7 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
 
     //Send Events array to calendar.
     $this->assign('civicrm_events', json_encode($events));
+    $this->assign('calendar_locale', json_encode(CRM_Calendar_Utils_Locale::getCurrentLocaleForCalendar()));
     parent::run();
   }
 

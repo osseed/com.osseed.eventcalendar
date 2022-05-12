@@ -50,6 +50,7 @@ function checkFullCalendarLIbrary() {
 
 function buildCalendar( ) {
   var events_data = {/literal}{$civicrm_events}{literal};
+  var calendar_locale = {/literal}{$calendar_locale}{literal};
   var jsonStr = JSON.stringify(events_data);
   var showTime = events_data.timeDisplay;
   var weekStartDay = {/literal}{$weekBeginDay}{literal};
@@ -67,6 +68,7 @@ function buildCalendar( ) {
       center: 'title',
       right: 'month,agendaWeek,agendaDay'
     },
+    locale: calendar_locale,
 
     eventRender: function eventRender( event, element, view ) {
       if(event.eventType && events_data.isfilter == "1" ) {
