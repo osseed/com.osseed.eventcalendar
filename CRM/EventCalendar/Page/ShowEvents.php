@@ -34,6 +34,7 @@
  */
 
 require_once 'CRM/Core/Page.php';
+use CRM_EventCalendar_ExtensionUtil as E;
 
 class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
 
@@ -56,7 +57,7 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
     $settings = $this->_eventCalendar_getSettings();
     //set title from settings; allow empty value so we don't duplicate titles
     $title = $settings['calendar_title'] ?? '';
-    CRM_Utils_System::setTitle(ts($title));
+    CRM_Utils_System::setTitle(E::ts($title));
 
     $whereCondition = '';
     if (array_key_exists("event_types", $settings)) {
@@ -197,7 +198,7 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
        $sql = "SELECT * FROM civicrm_event_calendar WHERE `id` = {$calendarId};";
        $dao = CRM_Core_DAO::executeQuery($sql);
        while ($dao->fetch()) {
-         $settings['calendar_title'] = $dao->calendar_title;
+         $settings['calendar_title'] = E::ts($dao->calendar_title);
          $settings['event_past'] = $dao->show_past_events;
          $settings['event_end_date'] = $dao->show_end_date;
          $settings['event_is_public'] = $dao->show_public_events;
@@ -219,7 +220,7 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
        }
     }
     elseif ($calendarId == 0) {
-      $settings['calendar_title'] = 'Event Calendar';
+      $settings['calendar_title'] = E::ts('Event Calendar');
       $settings['event_is_public'] = 1;
       $settings['event_past'] = 1;
       $settings['enrollment_status'] = 1;

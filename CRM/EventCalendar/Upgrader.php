@@ -52,7 +52,7 @@ class CRM_EventCalendar_Upgrader extends CRM_EventCalendar_Upgrader_Base {
         'url' => $url,
       ]);
     }
-    CRM_Core_Session::setStatus(ts('You may need to clear caches and reset paths as some menu items have changed'), ts('Success'), 'success');
+    CRM_Core_Session::setStatus(E::ts('You may need to clear caches and reset paths as some menu items have changed'), E::ts('Success'), 'success');
     return TRUE;
   }
 
