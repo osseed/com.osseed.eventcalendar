@@ -222,8 +222,8 @@ class CRM_EventCalendar_DAO_EventCalendar extends CRM_Core_DAO {
         'week_begins_from_day' => [
           'name' => 'week_begins_from_day',
           'type' => CRM_Utils_Type::T_BOOLEAN,
-          'title' => E::ts('week_begins_from_day'),
-          'description' => E::ts('week_begins_from_day'),
+          'title' => E::ts('Week Begins From Day'),
+          'description' => E::ts('Week Begins From Day'),
           'table_name' => 'civicrm_event_calendar',
           'entity' => 'EventCalendar',
           'bao' => 'CRM_EventCalendar_DAO_EventCalendar',
@@ -232,8 +232,8 @@ class CRM_EventCalendar_DAO_EventCalendar extends CRM_Core_DAO {
         'recurring_event' => [
           'name' => 'recurring_event',
           'type' => CRM_Utils_Type::T_BOOLEAN,
-          'title' => E::ts('recurring_event'),
-          'description' => E::ts('recurring_event'),
+          'title' => E::ts('Recurring Event'),
+          'description' => E::ts('Recurring Event'),
           'table_name' => 'civicrm_event_calendar',
           'entity' => 'EventCalendar',
           'bao' => 'CRM_EventCalendar_DAO_EventCalendar',
@@ -242,8 +242,8 @@ class CRM_EventCalendar_DAO_EventCalendar extends CRM_Core_DAO {
         'enrollment_status' => [
           'name' => 'enrollment_status',
           'type' => CRM_Utils_Type::T_BOOLEAN,
-          'title' => E::ts('enrollment_status'),
-          'description' => E::ts('enrollment_status'),
+          'title' => E::ts('Enrollment Status'),
+          'description' => E::ts('Enrollment Status'),
           'table_name' => 'civicrm_event_calendar',
           'entity' => 'EventCalendar',
           'bao' => 'CRM_EventCalendar_DAO_EventCalendar',
