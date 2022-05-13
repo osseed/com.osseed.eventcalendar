@@ -12,6 +12,7 @@ class CRM_EventCalendar_Page_ManageEventCalendars extends CRM_Core_Page_Basic {
   }
 
   public function &links() {
+  CRM_Utils_System::setTitle(E::ts('Manage Event Calendars'));
     if (!(self::$_links)) {
       self::$_links = array(
         CRM_Core_Action::UPDATE => array(
