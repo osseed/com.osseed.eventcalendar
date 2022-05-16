@@ -137,15 +137,25 @@ function eventcalendar_civicrm_preProcess($formName, &$form) {
  * Implements hook_civicrm_navigationMenu().
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_navigationMenu
- *
+ */
 function eventcalendar_civicrm_navigationMenu(&$menu) {
-_eventcalendar_civix_insert_navigation_menu($menu, NULL, array(
-'label' => ts('The Page', array('domain' => 'com.osseed.eventcalendar')),
-'name' => 'the_page',
-'url' => 'civicrm/the-page',
-'permission' => 'access CiviReport,access CiviContribute',
-'operator' => 'OR',
+_eventcalendar_civix_insert_navigation_menu($menu, 'Events', array(
+'label' => ts('Show Events Calendar', array('domain' => 'com.osseed.eventcalendar')),
+'name' => 'Show Events Calendar',
+'url' => 'civicrm/showevents',
+'permission' => 'access CRM_Core_Permission,access checkMenu',
+'operator' => 'AND',
 'separator' => 0,
 ));
 _eventcalendar_civix_navigationMenu($menu);
-}*/
+
+_eventcalendar_civix_insert_navigation_menu($menu, 'Administer/CiviEvent', array(
+'label' => ts('Event Calendar Settings', array('domain' => 'com.osseed.eventcalendar')),
+'name' => 'Event Calendar Settings',
+'url' => 'civicrm/admin/event-calendar',
+'permission' => 'access CRM_Core_Permission,access checkMenu',
+'operator' => 'AND',
+'separator' => 0,
+));
+_eventcalendar_civix_navigationMenu($menu);
+}
