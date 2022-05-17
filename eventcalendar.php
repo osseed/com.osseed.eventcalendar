@@ -139,23 +139,23 @@ function eventcalendar_civicrm_preProcess($formName, &$form) {
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_navigationMenu
  */
 function eventcalendar_civicrm_navigationMenu(&$menu) {
-_eventcalendar_civix_insert_navigation_menu($menu, 'Events', array(
-'label' => ts('Show Events Calendar', array('domain' => 'com.osseed.eventcalendar')),
-'name' => 'Show Events Calendar',
-'url' => 'civicrm/showevents',
-'permission' => 'view event info',
-'operator' => 'AND',
-'separator' => 0,
-));
-_eventcalendar_civix_navigationMenu($menu);
+  _eventcalendar_civix_insert_navigation_menu($menu, 'Events', array(
+    'label' => ts('Show Events Calendar', array('domain' => 'com.osseed.eventcalendar')),
+    'name' => 'Show Events Calendar',
+    'url' => 'civicrm/showevents',
+    'permission' => 'view event info',
+    'operator' => 'AND',
+    'separator' => 0,
+  ));
+  _eventcalendar_civix_navigationMenu($menu);
 
-_eventcalendar_civix_insert_navigation_menu($menu, 'Administer/CiviEvent', array(
-'label' => ts('Event Calendar Settings', array('domain' => 'com.osseed.eventcalendar')),
-'name' => 'Event Calendar Settings',
-'url' => 'civicrm/admin/event-calendar',
-'permission' => 'administer CiviCRM',
-'operator' => 'AND',
-'separator' => 0,
-));
-_eventcalendar_civix_navigationMenu($menu);
+  _eventcalendar_civix_insert_navigation_menu($menu, 'Administer/CiviEvent', array(
+    'label' => ts('Event Calendar Settings', array('domain' => 'com.osseed.eventcalendar')),
+    'name' => 'Event Calendar Settings',
+    'url' => 'civicrm/admin/event-calendar',
+    'permission' => 'administer CiviCRM',
+    'operator' => 'AND',
+    'separator' => 0,
+  ));
+  _eventcalendar_civix_navigationMenu($menu);
 }
