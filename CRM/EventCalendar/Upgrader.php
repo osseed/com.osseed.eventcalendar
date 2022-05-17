@@ -53,6 +53,21 @@ class CRM_EventCalendar_Upgrader extends CRM_EventCalendar_Upgrader_Base {
     CRM_Core_Session::setStatus(E::ts('You may need to clear caches and reset paths as some menu items have changed'), E::ts('Success'), 'success');
     return TRUE;
   }
+
+  /**
+   * Remove extension's menu items from civicrm_navigation table.
+   */
+  public function upgrade_1002() {
+    $this->ctx->log->info('Applying update 1002');
+    $sql = "DELETE FROM `civicrm_navigation` WHERE `civicrm_navigation`.`url` = 'civicrm/showevents' OR `civicrm_navigation`.`url` = 'civicrm/admin/event-calendar';";
+    CRM_Core_DAO::executeQuery($sql);
+    $result = civicrm_api3('system', 'flush');
+    if ($result['values']) {
+      CRM_Core_Session::setStatus(E::ts('Upgrade Successful.'), E::ts('Success'), 'success');
+    }
+    return TRUE;
+  }
+
   /**
    * Example: Run an external SQL script when the module is installed.
    *
