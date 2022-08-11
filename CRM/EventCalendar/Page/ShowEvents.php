@@ -129,7 +129,7 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
         elseif ($calendarId == 0) {
           $eventData['backgroundColor'] = "";
           $eventData['textColor'] = $this->_getContrastTextColor($eventData['backgroundColor']);
-          $eventData['eventType'] = $civieventTypesList[$dao->event_type];
+          $eventData['eventType'] = !empty($civieventTypesList[$dao->event_type]) ?: '';
         }
       }
 
@@ -148,7 +148,7 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
       $events['timeDisplay'] = !empty($settings['event_time']) ?: '';
       $events['isfilter'] = !empty($settings['event_event_type_filter']) ?: '';
       $events['events'][] = $eventData;
-      $eventTypesFilter[$dao->event_type] = $civieventTypesList[$dao->event_type];
+      $eventTypesFilter[$dao->event_type] = !empty($civieventTypesList[$dao->event_type]) ?: '';
     }
 
     if(!empty($settings['event_event_type_filter'])) {
