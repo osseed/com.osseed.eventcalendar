@@ -50,7 +50,8 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
     //get settings
     $settings = $this->_eventCalendar_getSettings();
     //set title from settings; allow empty value so we don't duplicate titles
-    CRM_Utils_System::setTitle(ts($settings['calendar_title']));
+    $title = $settings['calendar_title'] ?? '';
+    CRM_Utils_System::setTitle(ts($title));
 
     $whereCondition = '';
     if (array_key_exists("event_types", $settings)) {
