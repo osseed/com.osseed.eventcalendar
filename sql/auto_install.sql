@@ -64,7 +64,8 @@ CREATE TABLE `civicrm_event_calendar` (
      `event_type_filters` tinyint    COMMENT 'Whether to show event type filters',
      `week_begins_from_day` tinyint    COMMENT 'Show week begins from day',
      `recurring_event`  tinyint   COMMENT 'Show recurring events',
-     `enrollment_status` tinyint   COMMENT 'Show enrollment status'
+     `enrollment_status` tinyint   COMMENT 'Show enrollment status',
+     `saved_search_id` int(11) COMMENT 'Filter results by this saved search'
 ,
         PRIMARY KEY (`id`)
 

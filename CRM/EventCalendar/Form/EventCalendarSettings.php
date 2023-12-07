@@ -56,6 +56,21 @@ class CRM_EventCalendar_Form_EventCalendarSettings extends CRM_Core_Form {
       $descriptions['recurring_event'] = ts('Show only recurring events.');
       $this->add('advcheckbox', 'enrollment_status', ts('Show enrollment status'));
       $descriptions['enrollment_status'] = ts('Show enrollment status on calendar event.');
+      $searchKitEnabled = \Civi\Api4\Extension::get(FALSE)
+        ->addWhere('file', '=', 'search_kit')
+        ->addWhere('status', '=', 'installed')
+        ->execute()
+        ->count();
+      if ($searchKitEnabled) {
+        $this->addEntityRef('saved_search_id', ts('Search Kit saved search'), [
+          'entity' => 'SavedSearch',
+          'api' => [
+            'params' => ['api_entity' => 'Event'],
+          ],
+          'select' => ['minimumInputLength' => 0],
+        ]);
+        $descriptions['saved_search_id'] = ts('Optionally filter only to events found in this saved search.');
+      }
 
       $eventTypes = CRM_Event_PseudoConstant::eventType();
       foreach ($eventTypes as $id => $type) {
@@ -94,9 +109,9 @@ class CRM_EventCalendar_Form_EventCalendarSettings extends CRM_Core_Form {
     }
 
     if ($submitted['action'] == 'add') {
-      $sql = "INSERT INTO civicrm_event_calendar(calendar_title, show_past_events, show_end_date, show_public_events, events_by_month, event_timings, events_from_month, event_type_filters, week_begins_from_day, recurring_event, enrollment_status)
+      $sql = "INSERT INTO civicrm_event_calendar(calendar_title, show_past_events, show_end_date, show_public_events, events_by_month, event_timings, events_from_month, event_type_filters, week_begins_from_day, recurring_event, enrollment_status, saved_search_id)
        VALUES ('{$submitted['calendar_title']}', {$submitted['show_past_events']}, {$submitted['show_end_date']}, {$submitted['show_public_events']}, {$submitted['events_by_month']}, {$submitted['event_timings']}, {$submitted['events_from_month']}, {$submitted['event_type_filters']},
-          {$submitted['week_begins_from_day']}, {$submitted['recurring_event']}, {$submitted['enrollment_status']});";
+          {$submitted['week_begins_from_day']}, {$submitted['recurring_event']}, {$submitted['enrollment_status']}, {$submitted['saved_search_id']});";
       $dao = CRM_Core_DAO::executeQuery($sql);
       $cfId = CRM_Core_DAO::singleValueQuery('SELECT LAST_INSERT_ID()');
       foreach ($submitted as $key => $value) {
@@ -114,7 +129,7 @@ class CRM_EventCalendar_Form_EventCalendarSettings extends CRM_Core_Form {
     if ($submitted['action'] == 'update') {
       $sql = "UPDATE civicrm_event_calendar
        SET calendar_title = '{$submitted['calendar_title']}', show_past_events = {$submitted['show_past_events']}, show_end_date = {$submitted['show_end_date']}, show_public_events = {$submitted['show_public_events']}, events_by_month = {$submitted['events_by_month']}, event_timings = {$submitted['event_timings']}, events_from_month = {$submitted['events_from_month']},
-        event_type_filters = {$submitted['event_type_filters']}, week_begins_from_day = {$submitted['week_begins_from_day']}, recurring_event = {$submitted['recurring_event']},  enrollment_status = {$submitted['enrollment_status']}
+        event_type_filters = {$submitted['event_type_filters']}, week_begins_from_day = {$submitted['week_begins_from_day']}, recurring_event = {$submitted['recurring_event']},  enrollment_status = {$submitted['enrollment_status']}, saved_search_id = {$submitted['saved_search_id']}
        WHERE `id` = {$submitted['calendar_id']};";
       $dao = CRM_Core_DAO::executeQuery($sql);
       //delete current event type records to update with new ones

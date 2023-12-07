@@ -1,7 +1,7 @@
 <?php
 
 /*
-Plugin Name: Wordpress Event Calendar
+Plugin Name: OSSeed Wordpress Event Calendar
 Plugin URI:
 Description: CiviCRM Calendar Plugin
 Author: OSSeed
