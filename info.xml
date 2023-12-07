@@ -9,9 +9,9 @@
     <email>hello@osseed.com</email>
   </maintainer>
   <urls>
-	<url desc="Main Extension Page">https://github.com/osseed/com.osseed.eventcalendar</url>
-	<url desc="Documentation">https://raw.github.com/osseed/com.osseed.eventcalendar/master/README.txt</url>
-</urls>
+    <url desc="Main Extension Page">https://github.com/osseed/com.osseed.eventcalendar</url>
+    <url desc="Documentation">https://raw.github.com/osseed/com.osseed.eventcalendar/master/README.txt</url>
+  </urls>
   <releaseDate>2021-03-04</releaseDate>
   <version>4.2</version>
   <develStage>alpha</develStage>
@@ -24,5 +24,9 @@
   <comments>Show CiviCRM Event in Calendar</comments>
   <civix>
     <namespace>CRM/EventCalendar</namespace>
+    <format>22.05.2</format>
   </civix>
+  <mixins>
+    <mixin>menu-xml@1.0.0</mixin>
+  </mixins>
 </extension>
