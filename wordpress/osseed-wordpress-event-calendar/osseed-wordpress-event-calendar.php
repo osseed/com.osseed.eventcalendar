@@ -122,7 +122,7 @@ function event_calendar_shortcode_handler( $atts ) {
 		extract(
 			shortcode_atts(
 				array(
-					'component' => 'event-calender',
+					'component' => 'event-calendar',
 					'action'    => null,
 					'mode'      => null,
 					'id'        => 'id',

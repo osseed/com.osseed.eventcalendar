@@ -10,7 +10,7 @@ class CRM_EventCalendar_Upgrader extends CRM_EventCalendar_Upgrader_Base {
   // upgrade tasks. They are executed in order (like Drupal's hook_update_N).
 
   /**
-   * Upgrade the table as support for multicalender.
+   * Upgrade the table as support for multicalendar.
    */
   public function upgrade_1001() {
     $this->ctx->log->info('Applying update 1001');
