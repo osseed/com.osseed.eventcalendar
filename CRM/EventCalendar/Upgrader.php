@@ -60,14 +60,9 @@ class CRM_EventCalendar_Upgrader extends CRM_EventCalendar_Upgrader_Base {
    * Upgrade to calendar for filter by saved_search_id.
    */
   public function upgrade_1002() {
-    $config = CRM_Core_Config::singleton();
-    $dbName = DB::connect($config->dsn)->_db;
-
-    // Add search_id column to civicrm_event_calendar table.
-    $sql = "SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = %1 AND TABLE_NAME = 'civicrm_event_calendar' AND COLUMN_NAME = 'saved_search_id'";
-    $dao = CRM_Core_DAO::executeQuery($sql, [1 => [$dbName, 'String']]);
-    $saved_search_id_column_exists = $dao->N == 0 ? FALSE : TRUE;
-    if (!$saved_search_id_column_exists) {
+    $this->ctx->log->info('Check to see if saved_search_id column is present on the civicrm_event_calendar table.');
+    // Add search_id column to civicrm_event_calendar table if not exist.
+    if (!CRM_Core_BAO_SchemaHandler::checkIfFieldExists('civicrm_event_calendar', 'saved_search_id')) {
       $this->ctx->log->info('Applying civicrm_event_calendar update 1002.  Adding saved_search_id to civicrm_event_calendar table.');
       CRM_Core_DAO::executeQuery('ALTER TABLE civicrm_event_calendar ADD COLUMN `saved_search_id` int(11) COMMENT "Filter results by this saved search"');
     }
