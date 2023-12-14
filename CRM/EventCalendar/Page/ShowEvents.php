@@ -140,7 +140,7 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
           $eventData['textColor'] = $this->_getContrastTextColor($eventData['backgroundColor']);
           $eventData['eventType'] = $civieventTypesList[$dao->event_type];
         }
-        elseif ($calendarId == 0) {
+        elseif ($calendarId == '' || $calendarId == 0) {
           $eventData['backgroundColor'] = "";
           $eventData['textColor'] = $this->_getContrastTextColor($eventData['backgroundColor']);
           $eventData['eventType'] = $civieventTypesList[$dao->event_type];
@@ -219,7 +219,7 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
          $eventTypes[] = $dao->toArray();
        }
     }
-    elseif ($calendarId == 0) {
+    elseif ($calendarId == '' || $calendarId == 0) {
       $settings['calendar_title'] = E::ts('Event Calendar');
       $settings['event_is_public'] = 1;
       $settings['event_past'] = 1;
