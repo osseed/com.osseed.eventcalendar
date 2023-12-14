@@ -116,8 +116,10 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
     // Filter Events based on Saved Search
     if (!empty($settings['saved_search_id'])) {
       $eventIds = $this->getSavedSearchEvents($settings['saved_search_id']);
-      $ids = implode(',', $eventIds);
-      $whereCondition .= " AND id IN (" . $ids . ")";
+      if (!empty($eventIds)) {
+        $ids = implode(',', $eventIds);
+        $whereCondition .= " AND id IN (" . $ids . ")";
+      }
     }
 
     $query .= $whereCondition;
@@ -286,9 +288,15 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
       return [];
     }
     $savedSearch['api_params']['select'] = [0 => 'id'];
-    $searchedEvents = (array) civicrm_api4($savedSearch['api_entity'], 'get', $savedSearch['api_params']);
-    $eventIds = array_column($searchedEvents, 'id');
-    return $eventIds;
+
+    try{
+      $searchedEvents = (array) civicrm_api4($savedSearch['api_entity'], 'get', $savedSearch['api_params']);
+      $eventIds = array_column($searchedEvents, 'id');
+      return $eventIds;
+    }
+    catch (\Exception $e) {
+      return [];
+    }
   }
 
 }
