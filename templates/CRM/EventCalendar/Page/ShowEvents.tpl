@@ -69,7 +69,6 @@ function buildCalendar( ) {
       right: 'month,agendaWeek,agendaDay'
     },
     locale: site_locale,
-    lang: site_locale,
     eventRender: function eventRender( event, element, view ) {
       if(event.eventType && events_data.isfilter == "1" ) {
         return ['all', event.eventType].indexOf(cj('#event_selector').val()) >= 0

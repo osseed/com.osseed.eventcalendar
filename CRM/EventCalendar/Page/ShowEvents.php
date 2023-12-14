@@ -40,8 +40,8 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
 
   public function run() {
     $lang = CRM_Core_I18n::getLocale() ?? 'en';
-    $locale = explode('_', $lang)[0];
-    $this->assign('site_locale', strtolower($locale));
+    // $locale = explode('_', $lang)[0];
+    $this->assign('site_locale', strtolower($lang));
 
     CRM_Core_Resources::singleton()->addScriptFile('com.osseed.eventcalendar', 'js/moment.js', 5);
     CRM_Core_Resources::singleton()->addScriptFile('com.osseed.eventcalendar', 'js/fullcalendar.js', 10);
