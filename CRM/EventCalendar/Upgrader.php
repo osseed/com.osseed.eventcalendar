@@ -74,6 +74,23 @@ class CRM_EventCalendar_Upgrader extends CRM_EventCalendar_Upgrader_Base {
     return TRUE;
   }
 
+   /**
+   * Add recurring_event and enrollment_status columns to the civicrm_event_calendar table if missing.
+   */
+  public function upgrade_1003() {
+    $this->ctx->log->info('Check to see if recurring_event and enrollment_status columns are present on the civicrm_event_calendar table.');
+    if (!CRM_Core_BAO_SchemaHandler::checkIfFieldExists('civicrm_event_calendar', 'recurring_event')) {
+      CRM_Core_DAO::executeQuery("ALTER TABLE civicrm_event_calendar ADD COLUMN recurring_event tinyint DEFAULT NULL COMMENT 'Show recurring events'");
+    }
+    if (!CRM_Core_BAO_SchemaHandler::checkIfFieldExists('civicrm_event_calendar', 'enrollment_status')) {
+      CRM_Core_DAO::executeQuery("ALTER TABLE civicrm_event_calendar ADD COLUMN enrollment_status tinyint DEFAULT NULL COMMENT 'Show enrollment status'");
+    }
+    else {
+      $this->ctx->log->info('Skipped civicrm_event_calendar update 1003. Columns already present on the civicrm_event_calendar table.');
+    }
+    return TRUE;
+  }
+
   /**
    * Example: Run an external SQL script when the module is installed.
    *
