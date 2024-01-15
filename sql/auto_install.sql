@@ -31,18 +31,20 @@
 -- *
 -- *******************************************************/
 
-SET FOREIGN_KEY_CHECKS=0;
+SET FOREIGN_KEY_CHECKS = 0;
 
 DROP TABLE IF EXISTS `civicrm_event_calendar_event_type`;
+
 DROP TABLE IF EXISTS `civicrm_event_calendar`;
 
-SET FOREIGN_KEY_CHECKS=1;
+SET FOREIGN_KEY_CHECKS = 1;
+
 -- /*******************************************************
 -- *
 -- * Create new tables
 -- *
 -- *******************************************************/
-
+--
 -- /*******************************************************
 -- *
 -- * civicrm_event_calendar
@@ -51,26 +53,21 @@ SET FOREIGN_KEY_CHECKS=1;
 -- *
 -- *******************************************************/
 CREATE TABLE `civicrm_event_calendar` (
-
-
-     `id` int unsigned NOT NULL AUTO_INCREMENT  COMMENT 'Unique EventCalendar ID',
-     `calendar_title` varchar(255)    COMMENT 'Calendar Title',
-     `show_past_events` tinyint    COMMENT 'Show Past Events',
-     `show_end_date` tinyint    COMMENT 'Show End Date',
-     `show_public_events` tinyint    COMMENT 'Show Only Public or All',
-     `events_by_month` tinyint    COMMENT 'Use the Month param in the calendar',
-     `event_timings` tinyint    COMMENT 'Show the event timing',
-     `events_from_month` int unsigned    COMMENT 'How many months to show events',
-     `event_type_filters` tinyint    COMMENT 'Whether to show event type filters',
-     `week_begins_from_day` tinyint    COMMENT 'Show week begins from day',
-     `recurring_event`  tinyint   COMMENT 'Show recurring events',
-     `enrollment_status` tinyint   COMMENT 'Show enrollment status'
-,
+        `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique EventCalendar ID',
+        `calendar_title` varchar(255) COMMENT 'Calendar Title',
+        `show_past_events` tinyint COMMENT 'Show Past Events',
+        `show_end_date` tinyint COMMENT 'Show End Date',
+        `show_public_events` tinyint COMMENT 'Show Only Public or All',
+        `events_by_month` tinyint COMMENT 'Use the Month param in the calendar',
+        `event_timings` tinyint COMMENT 'Show the event timing',
+        `events_from_month` int unsigned COMMENT 'How many months to show events',
+        `event_type_filters` tinyint COMMENT 'Whether to show event type filters',
+        `week_begins_from_day` tinyint COMMENT 'Show week begins from day',
+        `recurring_event` tinyint COMMENT 'Show recurring events',
+        `enrollment_status` tinyint COMMENT 'Show enrollment status',
+        `saved_search_id` int(11) COMMENT 'Filter results by this saved search',
         PRIMARY KEY (`id`)
-
-
-
-)    ;
+);
 
 -- /*******************************************************
 -- *
@@ -80,33 +77,25 @@ CREATE TABLE `civicrm_event_calendar` (
 -- *
 -- *******************************************************/
 CREATE TABLE `civicrm_event_calendar_event_type` (
+        `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique EventCalendarEventType ID',
+        `event_calendar_id` int unsigned COMMENT 'FK to Event Calendar',
+        `event_type` int unsigned COMMENT 'Event Type id',
+        `event_color` varchar(255) COMMENT 'Hex code for event type display color',
+        PRIMARY KEY (`id`),
+        CONSTRAINT FK_civicrm_event_calendar_event_type_event_calendar_id FOREIGN KEY (`event_calendar_id`) REFERENCES `civicrm_event_calendar`(`id`) ON DELETE CASCADE
+);
 
-
-     `id` int unsigned NOT NULL AUTO_INCREMENT  COMMENT 'Unique EventCalendarEventType ID',
-     `event_calendar_id` int unsigned    COMMENT 'FK to Event Calendar',
-     `event_type` int unsigned    COMMENT 'Event Type id',
-     `event_color` varchar(255)    COMMENT 'Hex code for event type display color'
-,
-        PRIMARY KEY (`id`)
-
-
-,          CONSTRAINT FK_civicrm_event_calendar_event_type_event_calendar_id FOREIGN KEY (`event_calendar_id`) REFERENCES `civicrm_event_calendar`(`id`) ON DELETE CASCADE
-)    ;
-
-SELECT @domain_id := min(id) FROM civicrm_domain;
-SELECT @administerID    := MAX(id) FROM civicrm_navigation where name = 'Events';
-SELECT @adminCampaignWeight := MAX(weight)+1 FROM civicrm_navigation where parent_id = @administerID;
-
-INSERT INTO civicrm_navigation
-    ( domain_id, url, label, name, permission, permission_operator, parent_id, is_active, has_separator, weight )
-VALUES
-    ( @domain_id,'civicrm/showevents', 'Show Events Calendar', 'Show Events Calendar', 'view event info', 'AND', @administerID, '1', NULL, @adminCampaignWeight );
-
-SELECT @domain_id := min(id) FROM civicrm_domain;
-SELECT @administerID    := MAX(id) FROM civicrm_navigation where name = 'CiviEvent';
-SELECT @adminCampaignWeight := MAX(weight)+1 FROM civicrm_navigation where parent_id = @administerID;
-
-INSERT INTO civicrm_navigation
-    ( domain_id, url, label, name, permission, permission_operator, parent_id, is_active, has_separator, weight )
-VALUES
-( @domain_id,'civicrm/admin/event-calendar', 'Event Calendar Settings', 'Event Calendar Settings', 'administer CiviCRM', 'AND', @administerID, '1', NULL, @adminCampaignWeight );
+-- SELECT @domain_id := min(id) FROM civicrm_domain;
+-- SELECT @administerID    := MAX(id) FROM civicrm_navigation where name = 'Events';
+-- SELECT @adminCampaignWeight := MAX(weight)+1 FROM civicrm_navigation where parent_id = @administerID;
+-- INSERT INTO civicrm_navigation
+--     ( domain_id, url, label, name, permission, permission_operator, parent_id, is_active, has_separator, weight )
+-- VALUES
+--     ( @domain_id,'civicrm/showevents', 'Show Events Calendar', 'Show Events Calendar', 'view event info', 'AND', @administerID, '1', NULL, @adminCampaignWeight );
+-- SELECT @domain_id := min(id) FROM civicrm_domain;
+-- SELECT @administerID    := MAX(id) FROM civicrm_navigation where name = 'CiviEvent';
+-- SELECT @adminCampaignWeight := MAX(weight)+1 FROM civicrm_navigation where parent_id = @administerID;
+-- INSERT INTO civicrm_navigation
+--     ( domain_id, url, label, name, permission, permission_operator, parent_id, is_active, has_separator, weight )
+-- VALUES
+-- ( @domain_id,'civicrm/admin/event-calendar', 'Event Calendar Settings', 'Event Calendar Settings', 'administer CiviCRM', 'AND', @administerID, '1', NULL, @adminCampaignWeight );

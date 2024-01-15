@@ -4,14 +4,14 @@
   <div class="crm-section">
     <div class="label">{$form.$elementName.label}</div>
     <div class="content">{$form.$elementName.html}
-      {if $descriptions.$elementName}<br /><span class="description">{$descriptions.$elementName}</span>{/if}
+      {if !empty($descriptions.$elementName) AND $descriptions.$elementName}<br /><span class="description">{$descriptions.$elementName}</span>{/if}
     </div>
     <div class="clear"></div>
   </div>
 {/foreach}
 <div class="crm-section">
   <div>
-    {if $descriptions.delete_warning}<br /><span id="delete_warning" class="description">{$descriptions.delete_warning}</span>{/if}
+    {if !empty($descriptions.delete_warning) AND $descriptions.delete_warning}<br /><span id="delete_warning" class="description">{$descriptions.delete_warning}</span>{/if}
   </div>
   <div class="clear"></div>
 </div>

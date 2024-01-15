@@ -34,12 +34,18 @@
  */
 
 require_once 'CRM/Core/Page.php';
+use CRM_EventCalendar_ExtensionUtil as E;
 
 class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
 
   public function run() {
+    $lang = CRM_Core_I18n::getLocale() ?? 'en';
+    // $locale = explode('_', $lang)[0];
+    $this->assign('site_locale', strtolower($lang));
+
     CRM_Core_Resources::singleton()->addScriptFile('com.osseed.eventcalendar', 'js/moment.js', 5);
     CRM_Core_Resources::singleton()->addScriptFile('com.osseed.eventcalendar', 'js/fullcalendar.js', 10);
+    CRM_Core_Resources::singleton()->addScriptFile('com.osseed.eventcalendar', 'js/locale-all.js', 15);
     CRM_Core_Resources::singleton()->addStyleFile('com.osseed.eventcalendar', 'css/civicrm_events.css');
     CRM_Core_Resources::singleton()->addStyleFile('com.osseed.eventcalendar', 'css/fullcalendar.css');
 
@@ -50,7 +56,8 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
     //get settings
     $settings = $this->_eventCalendar_getSettings();
     //set title from settings; allow empty value so we don't duplicate titles
-    CRM_Utils_System::setTitle(ts($settings['calendar_title']));
+    $title = $settings['calendar_title'] ?? '';
+    CRM_Utils_System::setTitle(E::ts($title));
 
     $whereCondition = '';
     if (array_key_exists("event_types", $settings)) {
@@ -106,6 +113,15 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
       ";
     }
 
+    // Filter Events based on Saved Search
+    if (!empty($settings['saved_search_id'])) {
+      $eventIds = $this->getSavedSearchEvents($settings['saved_search_id']);
+      if (!empty($eventIds)) {
+        $ids = implode(',', $eventIds);
+        $whereCondition .= " AND id IN (" . $ids . ")";
+      }
+    }
+
     $query .= $whereCondition;
     $events['events'] = array();
 
@@ -126,7 +142,7 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
           $eventData['textColor'] = $this->_getContrastTextColor($eventData['backgroundColor']);
           $eventData['eventType'] = $civieventTypesList[$dao->event_type];
         }
-        elseif ($calendarId == 0) {
+        elseif ($calendarId == '' || $calendarId == 0) {
           $eventData['backgroundColor'] = "";
           $eventData['textColor'] = $this->_getContrastTextColor($eventData['backgroundColor']);
           $eventData['eventType'] = $civieventTypesList[$dao->event_type];
@@ -170,6 +186,7 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
     //Send Events array to calendar.
     $this->assign('civicrm_events', json_encode($events));
     parent::run();
+
   }
 
   /**
@@ -183,7 +200,7 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
        $sql = "SELECT * FROM civicrm_event_calendar WHERE `id` = {$calendarId};";
        $dao = CRM_Core_DAO::executeQuery($sql);
        while ($dao->fetch()) {
-         $settings['calendar_title'] = $dao->calendar_title;
+         $settings['calendar_title'] = E::ts($dao->calendar_title);
          $settings['event_past'] = $dao->show_past_events;
          $settings['event_end_date'] = $dao->show_end_date;
          $settings['event_is_public'] = $dao->show_public_events;
@@ -194,6 +211,7 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
          $settings['week_begins_from_day'] = $dao->week_begins_from_day;
          $settings['recurring_event'] = $dao->recurring_event;
          $settings['enrollment_status'] = $dao->enrollment_status;
+         $settings['saved_search_id'] = $dao->saved_search_id;
        }
 
        $sql = "SELECT * FROM civicrm_event_calendar_event_type WHERE `event_calendar_id` = {$calendarId};";
@@ -203,8 +221,8 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
          $eventTypes[] = $dao->toArray();
        }
     }
-    elseif ($calendarId == 0) {
-      $settings['calendar_title'] = 'Event Calendar';
+    elseif ($calendarId == '' || $calendarId == 0) {
+      $settings['calendar_title'] = E::ts('Event Calendar');
       $settings['event_is_public'] = 1;
       $settings['event_past'] = 1;
       $settings['enrollment_status'] = 1;
@@ -260,4 +278,25 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
       return '#FFFFFF';
     }
   }
+
+  private function getSavedSearchEvents($searchId) : array {
+    $savedSearch = \Civi\Api4\SavedSearch::get()
+      ->addWhere('id', '=', $searchId)
+      ->execute()
+      ->first();
+    if (!$savedSearch) {
+      return [];
+    }
+    $savedSearch['api_params']['select'] = [0 => 'id'];
+
+    try{
+      $searchedEvents = (array) civicrm_api4($savedSearch['api_entity'], 'get', $savedSearch['api_params']);
+      $eventIds = array_column($searchedEvents, 'id');
+      return $eventIds;
+    }
+    catch (\Exception $e) {
+      return [];
+    }
+  }
+
 }

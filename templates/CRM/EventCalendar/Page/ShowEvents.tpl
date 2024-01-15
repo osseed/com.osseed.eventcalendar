@@ -1,4 +1,4 @@
-{if $eventTypes == TRUE}
+{if !empty($eventTypes) AND $eventTypes == TRUE}
   <select id="event_selector" class="crm-form-select crm-select2 crm-action-menu fa-plus">
     <option value="all">{ts}All{/ts}</option>
     {foreach from=$eventTypes item=type}
@@ -53,6 +53,7 @@ function buildCalendar( ) {
   var jsonStr = JSON.stringify(events_data);
   var showTime = events_data.timeDisplay;
   var weekStartDay = {/literal}{$weekBeginDay}{literal};
+  var site_locale = {/literal}'{$site_locale}'{literal};
 
   cj('#calendar').fullCalendar({
     eventSources: [
@@ -67,7 +68,7 @@ function buildCalendar( ) {
       center: 'title',
       right: 'month,agendaWeek,agendaDay'
     },
-
+    locale: site_locale,
     eventRender: function eventRender( event, element, view ) {
       if(event.eventType && events_data.isfilter == "1" ) {
         return ['all', event.eventType].indexOf(cj('#event_selector').val()) >= 0
