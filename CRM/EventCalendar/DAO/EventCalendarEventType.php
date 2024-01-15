@@ -118,7 +118,7 @@ class CRM_EventCalendar_DAO_EventCalendarEventType extends CRM_Core_DAO {
         ],
         'event_color' => [
           'name' => 'event_color',
-          'type' => CRM_Utils_Type::T_VARCHAR(255),
+          'type' => CRM_Utils_Type::T_STRING,
           'title' => ts('Event Color'),
           'description' => ts('Hex code for event type display color'),
           'table_name' => 'civicrm_event_calendar_event_type',

@@ -4,8 +4,8 @@
 return array (
   0 => 
   array (
-    'name' => 'EventCalendarType',
-    'class' => 'CRM_EventCalendar_DAO_EventCalendarType',
-    'table' => 'civicrm_event_calendar_type',
+    'name' => 'EventCalendarEventType',
+    'class' => 'CRM_EventCalendar_DAO_EventCalendarEventType',
+    'table' => 'civicrm_event_calendar_event_type',
   ),
 );
