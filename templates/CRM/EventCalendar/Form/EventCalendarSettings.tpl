@@ -1,6 +1,6 @@
 {* HEADER *}
 
-{foreach from=$elementNames item=elementName}
+{foreach $elementNames as $elementName}
   <div class="crm-section">
     <div class="label">{$form.$elementName.label}</div>
     <div class="content">{$form.$elementName.html}
@@ -23,7 +23,7 @@
     <span>{$form.favorite_color.html}</span>
   </div>
 
-{* FOOTER *}
+  FOOTER *}
 <div class="crm-submit-buttons">
   {include file="CRM/common/formButtons.tpl" location="bottom"}
   {crmButton p='civicrm/admin/event-calendar' icon="times"}{ts}Cancel{/ts}{/crmButton}
