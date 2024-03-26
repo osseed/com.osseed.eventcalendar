@@ -13,21 +13,24 @@
     <url desc="Documentation">https://raw.github.com/osseed/com.osseed.eventcalendar/master/README.md</url>
   </urls>
   <releaseDate>2023-12-14</releaseDate>
-  <version>4.3</version>
+  <version>4.4</version>
   <develStage>alpha</develStage>
   <compatibility>
-    <ver>4.7</ver>
-    <ver>5.15</ver>
-    <ver>5.21</ver>
-    <ver>5.31</ver>
     <ver>5.68</ver>
   </compatibility>
   <comments>Show CiviCRM Event in Calendar</comments>
   <civix>
     <namespace>CRM/EventCalendar</namespace>
-    <format>22.05.2</format>
+    <format>23.02.1</format>
   </civix>
   <mixins>
     <mixin>menu-xml@1.0.0</mixin>
+    <mixin>smarty-v2@1.0.1</mixin>
+    <mixin>entity-types-php@1.0.0</mixin>
   </mixins>
+  <classloader>
+    <psr0 prefix="CRM_" path="."/>
+    <psr4 prefix="Civi\" path="Civi"/>
+  </classloader>
+  <upgrader>CRM_EventCalendar_Upgrader</upgrader>
 </extension>
