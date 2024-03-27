@@ -6,15 +6,16 @@
   </layout>
   <state>
     <name>EventCalendar</name>
-    <creationDate>04/01/2008</creationDate>
+    <creationDate>14/12/2023</creationDate>
     <copyright></copyright>
     <author>OSSeed</author>
     <authorEmail>hello@osseed.com</authorEmail>
-    <authorUrl></authorUrl>
-    <version>1.1</version>
+    <authorUrl>osseed.com</authorUrl>
+    <version>4.4</version>
     <description>Event Calendar</description>
+
     <config>
-      <fields name="params">
+      <fields name="request">
         <fieldset name="request">
           <field name="id"
                  type="showevents"
@@ -25,11 +26,13 @@
           <field name="task"
                  type="hidden"
                  default="civicrm/showevents"
+                 required="true"
             />
           <field name="reset"
                  type="hidden"
                  size="5"
                  default="1"
+                 required="true"
             />
         </fieldset>
       </fields>
