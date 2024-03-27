@@ -7,6 +7,7 @@
   </select>
 {/if}
 <div id="calendar"></div>
+
 {literal}
 <script type="text/javascript">
   if (typeof(jQuery) != 'function'){
@@ -17,7 +18,7 @@
   }
 
   cj( function( ) {
-    checkFullCalendarLIbrary()
+    checkFullCalendarLibrary()
     .then(function() {
       buildCalendar();
     })
@@ -27,12 +28,12 @@
   });
 
 /*
- * Checks if full calendar API is ready.
+ * Checks if FullCalendar API is ready.
  *
  * @returns {Promise}
  *  if library is available or not.
  */
-function checkFullCalendarLIbrary() {
+function checkFullCalendarLibrary() {
   return new Promise((resolve, reject) => {
     if(cj.fullCalendar) {
       resolve();
@@ -48,7 +49,7 @@ function checkFullCalendarLIbrary() {
   });
 }
 
-function buildCalendar( ) {
+function buildCalendar() {
   var events_data = {/literal}{$civicrm_events}{literal};
   var jsonStr = JSON.stringify(events_data);
   var showTime = events_data.timeDisplay;
@@ -57,11 +58,11 @@ function buildCalendar( ) {
 
   cj('#calendar').fullCalendar({
     eventSources: [
-      { events: events_data.events,}
+      { events: events_data.events }
     ],
     displayEventEnd: true,
     displayEventTime: showTime ? 1 : 0,
-    firstDay:weekStartDay,
+    firstDay: weekStartDay,
     timeFormat: 'h(:mm)A',
     header: {
       left: 'prev,next today',
@@ -69,9 +70,9 @@ function buildCalendar( ) {
       right: 'month,agendaWeek,agendaDay'
     },
     locale: site_locale,
-    eventRender: function eventRender( event, element, view ) {
-      if(event.eventType && events_data.isfilter == "1" ) {
-        return ['all', event.eventType].indexOf(cj('#event_selector').val()) >= 0
+    eventRender: function(event, element, view) {
+      if (event.eventType && events_data.isfilter == "1") {
+        return ['all', event.eventType].indexOf(cj('#event_selector').val()) >= 0;
       }
     }
   });
