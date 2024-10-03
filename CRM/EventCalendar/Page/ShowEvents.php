@@ -38,12 +38,6 @@ use CRM_EventCalendar_ExtensionUtil as E;
 
 class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
 
-  /**
-   * Event Calendar ID
-   * @var int|null
-   */
-  protected $id;
-
   public function run() {
     $lang = CRM_Core_I18n::getLocale() ?? 'en';
     // $locale = explode('_', $lang)[0];
@@ -70,7 +64,7 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
       $eventTypes = $settings['event_types'];
     }
 
-    $calendarId = $this->id;
+    $calendarId = isset($_GET['id']) ? $_GET['id'] : '';
     if ($calendarId) {
       if (!empty($eventTypes)) {
         $eventTypesList = implode(',', array_keys($eventTypes));
@@ -198,42 +192,34 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
   /**
    * retrieve and reconstruct extension settings
    */
-  public function _eventCalendar_getSettings() {
-    $settings = [];
-    try {
-      $calendarId = CRM_Utils_Request::retrieve('id', 'Positive', NULL, TRUE);
-      $this->id = $calendarId;
-    }
-    catch (\CRM_Core_Exception $e) {
-      CRM_Utils_System::sendResponse(new \GuzzleHttp\Psr7\Response(
-        400, [], E::ts('Invalid Calendar Id')
-      ));
-    }
+   public function _eventCalendar_getSettings() {
+     $settings = array();
+     $calendarId = isset($_GET['id']) ? $_GET['id'] : '';
 
-    if ($calendarId) {
-      $sql = "SELECT * FROM civicrm_event_calendar WHERE `id` = {$calendarId};";
-      $dao = CRM_Core_DAO::executeQuery($sql);
-      while ($dao->fetch()) {
-        $settings['calendar_title'] = E::ts($dao->calendar_title);
-        $settings['event_past'] = $dao->show_past_events;
-        $settings['event_end_date'] = $dao->show_end_date;
-        $settings['event_is_public'] = $dao->show_public_events;
-        $settings['event_month'] = $dao->events_by_month;
-        $settings['event_from_month'] = $dao->events_from_month;
-        $settings['event_time'] = $dao->event_timings;
-        $settings['event_event_type_filter'] = $dao->event_type_filters;
-        $settings['week_begins_from_day'] = $dao->week_begins_from_day;
-        $settings['recurring_event'] = $dao->recurring_event;
-        $settings['enrollment_status'] = $dao->enrollment_status;
-        $settings['saved_search_id'] = $dao->saved_search_id;
-      }
+     if ($calendarId) {
+       $sql = "SELECT * FROM civicrm_event_calendar WHERE `id` = {$calendarId};";
+       $dao = CRM_Core_DAO::executeQuery($sql);
+       while ($dao->fetch()) {
+         $settings['calendar_title'] = E::ts($dao->calendar_title);
+         $settings['event_past'] = $dao->show_past_events;
+         $settings['event_end_date'] = $dao->show_end_date;
+         $settings['event_is_public'] = $dao->show_public_events;
+         $settings['event_month'] = $dao->events_by_month;
+         $settings['event_from_month'] = $dao->events_from_month;
+         $settings['event_time'] = $dao->event_timings;
+         $settings['event_event_type_filter'] = $dao->event_type_filters;
+         $settings['week_begins_from_day'] = $dao->week_begins_from_day;
+         $settings['recurring_event'] = $dao->recurring_event;
+         $settings['enrollment_status'] = $dao->enrollment_status;
+         $settings['saved_search_id'] = $dao->saved_search_id;
+       }
 
-      $sql = "SELECT * FROM civicrm_event_calendar_event_type WHERE `event_calendar_id` = {$calendarId};";
-      $dao = CRM_Core_DAO::executeQuery($sql);
-      $eventTypes = array();
-      while ($dao->fetch()) {
-        $eventTypes[] = $dao->toArray();
-      }
+       $sql = "SELECT * FROM civicrm_event_calendar_event_type WHERE `event_calendar_id` = {$calendarId};";
+       $dao = CRM_Core_DAO::executeQuery($sql);
+       $eventTypes = array();
+       while ($dao->fetch()) {
+         $eventTypes[] = $dao->toArray();
+       }
     }
     elseif ($calendarId == '' || $calendarId == 0) {
       $settings['calendar_title'] = E::ts('Event Calendar');
