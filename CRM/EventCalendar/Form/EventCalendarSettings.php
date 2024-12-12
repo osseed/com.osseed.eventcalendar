@@ -9,6 +9,21 @@ use CRM_EventCalendar_ExtensionUtil as E;
  * @see http://wiki.civicrm.org/confluence/display/CRMDOC43/QuickForm+Reference
  */
 class CRM_EventCalendar_Form_EventCalendarSettings extends CRM_Core_Form {
+
+  /**
+   * Get Action.
+   *
+   * @var mixed
+   */
+  public $action;
+
+  /**
+   * Get Calendar ID.
+   *
+   * @var int
+   */
+  public $calendar_id;
+
   private $_submittedValues = array();
   private $_settings = array();
 
