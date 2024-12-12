@@ -26,7 +26,7 @@
               <th></th>
             </tr>
           </thead>
-          {foreach $rows as $row}
+          {foreach from=$rows item=row}
             <tr id="calendar-{$row.id}" class="crm-entity {cycle values='odd-row,even-row'} {$row.class}{if !empty($row.is_active) AND NOT $row.is_active} disabled{/if}">
               <td class="crm-calendar-title" data-field="calendar_title">{$row.calendar_title}</td>
               <td class="crm-calendar-id" data-field="id">{$row.id}</td>
