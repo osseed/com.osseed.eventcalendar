@@ -194,7 +194,7 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
    */
    public function _eventCalendar_getSettings() {
      $settings = array();
-     $calendarId = isset($_GET['id']) ? $_GET['id'] : '';
+     $calendarId = isset($_GET['id']) ? $_GET['id'] : $this->_getDefaultCalendarId();
 
      if ($calendarId) {
        $sql = "SELECT * FROM civicrm_event_calendar WHERE `id` = {$calendarId};";
@@ -212,6 +212,7 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
          $settings['recurring_event'] = $dao->recurring_event;
          $settings['enrollment_status'] = $dao->enrollment_status;
          $settings['saved_search_id'] = $dao->saved_search_id;
+         $settings['is_default'] = $dao->is_default;
        }
 
        $sql = "SELECT * FROM civicrm_event_calendar_event_type WHERE `event_calendar_id` = {$calendarId};";
@@ -296,6 +297,23 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
     }
     catch (\Exception $e) {
       return [];
+    }
+  }
+
+  /**
+   * Get the calendar ID of the default event calendar.
+   *
+   * @return int|null The ID of the default calendar, or null if none is set.
+   */
+  private function _getDefaultCalendarId() {
+    $sql = "SELECT id FROM civicrm_event_calendar WHERE is_default = 1 LIMIT 1";
+    try {
+      $calendar_id = CRM_Core_DAO::singleValueQuery($sql);
+      return $calendar_id ?? null;
+    } catch (Exception $e) {
+      // Log any exceptions that occur during the query
+      Civi::log()->error('[com.osseed.eventcalendar] Error fetching default event calendar: ' . $e->getMessage());
+      return null;
     }
   }
 
