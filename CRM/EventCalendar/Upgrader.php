@@ -92,6 +92,29 @@ class CRM_EventCalendar_Upgrader extends CRM_Extension_Upgrader_Base {
   }
 
   /**
+   * Adds the `is_default` column to the `civicrm_event_calendar` table if it does not already exist.
+   * Logs information about the process.
+   *
+   * @return bool Returns true after checking and possibly altering the table.
+   */
+  public function upgrade_1004() {
+    $this->ctx->log->info('Checking for existence of `is_default` column in the `civicrm_event_calendar` table.');
+
+    // Check if the `is_default` column exists
+    if (!CRM_Core_BAO_SchemaHandler::checkIfFieldExists('civicrm_event_calendar', 'is_default')) {
+        // If it doesn't exist, add the column
+        $sql = "ALTER TABLE `civicrm_event_calendar`
+                ADD `is_default` BOOLEAN NOT NULL DEFAULT FALSE COMMENT 'Indicates whether this is the default event calendar';";
+        CRM_Core_DAO::executeQuery($sql);
+        $this->ctx->log->info('`is_default` column added to the `civicrm_event_calendar` table.');
+    } else {
+        // Log that the column already exists
+        $this->ctx->log->info('The `is_default` column already exists in the `civicrm_event_calendar` table. Skipping update.');
+    }
+    return TRUE;
+  }
+
+  /**
    * Example: Run an external SQL script when the module is installed.
    *
    * Note that if a file is present sql\auto_install that will run regardless of this hook.

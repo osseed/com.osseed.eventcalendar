@@ -248,7 +248,17 @@ class CRM_EventCalendar_DAO_EventCalendar extends CRM_Core_DAO {
           'entity' => 'EventCalendar',
           'bao' => 'CRM_EventCalendar_DAO_EventCalendar',
           'localizable' => 0,
-        ]
+        ],
+        'is_default' => [
+          'name' => 'is_default',
+          'type' => CRM_Utils_Type::T_BOOLEAN,
+          'title' => E::ts('Default'),
+          'description' => E::ts('Indicates whether this is the default event calendar'),
+          'table_name' => 'civicrm_event_calendar',
+          'entity' => 'EventCalendar',
+          'bao' => 'CRM_EventCalendar_DAO_EventCalendar',
+          'localizable' => 0,
+        ],
       ];
       CRM_Core_DAO_AllCoreTables::invoke(__CLASS__, 'fields_callback', Civi::$statics[__CLASS__]['fields']);
     }

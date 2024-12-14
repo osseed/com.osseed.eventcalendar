@@ -23,6 +23,7 @@
             <tr>
               <th id="sortable">{ts}Calendar Title{/ts}</th>
               <th id="sortable">{ts}ID{/ts}</th>
+              <th id="sortable">{ts}Default{/ts}</th>
               <th></th>
             </tr>
           </thead>
@@ -30,6 +31,7 @@
             <tr id="calendar-{$row.id}" class="crm-entity {cycle values='odd-row,even-row'} {$row.class}{if !empty($row.is_active) AND NOT $row.is_active} disabled{/if}">
               <td class="crm-calendar-title" data-field="calendar_title">{$row.calendar_title}</td>
               <td class="crm-calendar-id" data-field="id">{$row.id}</td>
+              <td class="crm-is-default" data-field="is_default">{if isset($row.is_default) && $row.is_default}Yes{else}No{/if}</td>
               <td>{$row.action|replace:'xx':$row.id}</td>
             </tr>
           {/foreach}
