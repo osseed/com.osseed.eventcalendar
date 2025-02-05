@@ -136,7 +136,7 @@ function event_calendar_shortcode_handler( $atts ) {
 
 		$args = array(
 			'reset' => 1,
-			'id'    => $atts['id'],
+			'id'    => $atts['id'] ?? null,
 		);
 		civicrm_initialize();
 		$args['q'] = 'civicrm/showevents';
