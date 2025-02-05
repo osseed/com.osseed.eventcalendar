@@ -13,7 +13,7 @@
     <url desc="Documentation">https://raw.github.com/osseed/com.osseed.eventcalendar/master/README.md</url>
   </urls>
   <releaseDate>2023-12-14</releaseDate>
-  <version>4.4</version>
+  <version>4.5</version>
   <develStage>alpha</develStage>
   <compatibility>
     <ver>5.68</ver>

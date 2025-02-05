@@ -51,6 +51,19 @@ Extension required <https://www.drupal.org/project/jquery_update> module for ins
 2. Now you can add multiple calendar with specific settings & preview event data as per settings on calendar.
 3. Click `Events->Show Events (civicrm/showevents)` menu to view global `Event Calendar` with Events as per default settings.
 
+## New Feature: Default Event Calendar
+
+### Description
+
+Users can now designate one event calendar as the default for event calendar view (`/civicrm/showevents`).
+
+### Changes
+
+* **Database:** Added `is_default` column to `civicrm_event_calendar`, ensuring only one calendar is marked as default.
+* **Forms & UI:** Added a checkbox in the settings form to set a default calendar. The calendar list now displays the default status.
+* **Upgrade Script:** Ensures `is_default` column is added if missing.
+* **Usability:** Simplifies event creation by linking events to the default calendar automatically.
+
 ## Note
 
 1. If you are using `Joomla` CMS then copy the folder `yourextensiondirectory/com.osseed.eventcalendar/joomla/EventCalendar` to `joomlarootdirectory/components/com_civicrm/views/` which will add menu item type for Event Calendar.

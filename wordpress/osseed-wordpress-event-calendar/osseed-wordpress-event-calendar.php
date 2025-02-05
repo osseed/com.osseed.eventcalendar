@@ -6,7 +6,7 @@
  * Plugin Name: OSSeed WordPress Event Calendar
  * Description: CiviCRM Event Calendar Plugin
  * Author: OSSeed
- * Version: 4.4
+ * Version: 4.5
  * License: AGPL3
  * */
 
