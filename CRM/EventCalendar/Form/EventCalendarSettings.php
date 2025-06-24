@@ -42,7 +42,8 @@ class CRM_EventCalendar_Form_EventCalendarSettings extends CRM_Core_Form {
       $this->assign('descriptions', $descriptions);
     }
     else {
-      CRM_Core_Resources::singleton()->addScriptFile('com.osseed.eventcalendar', 'js/jscolor.js');
+      CRM_Core_Resources::singleton()->addStyleFile('com.osseed.eventcalendar', 'css/coloris.min.css');
+      CRM_Core_Resources::singleton()->addScriptFile('com.osseed.eventcalendar', 'js/coloris.min.js');
       CRM_Core_Resources::singleton()->addScriptFile('com.osseed.eventcalendar', 'js/eventcalendar.js');
 
       $settings = $this->getFormSettings();
@@ -97,7 +98,7 @@ class CRM_EventCalendar_Form_EventCalendarSettings extends CRM_Core_Form {
           array('onclick' => "showhidecolorbox('{$id}')", 'id' => "event_{$id}"));
         $this->addElement('text', "eventcolor_{$id}", E::ts("Color"),
           array(
-            'onchange' => "updatecolor('eventcolor_{$id}', this.value);",
+            'data-coloris' => '',
             'class' => 'color',
             'id' => "eventcolorid_{$id}",
           ));
@@ -141,8 +142,9 @@ class CRM_EventCalendar_Form_EventCalendarSettings extends CRM_Core_Form {
         if ("eventtype" == substr($key, 0, 9)) {
           if ($value == 1) {
             $id = explode("_", $key)[1];
+            $color = str_replace('#', '', $submitted['eventcolor_' . $id]);
             $sql = "INSERT INTO civicrm_event_calendar_event_type(event_calendar_id, event_type, event_color)
-             VALUES ({$cfId}, {$id}, '{$submitted['eventcolor_' . $id]}');";
+             VALUES ({$cfId}, {$id}, '{$color}');";
             $dao = CRM_Core_DAO::executeQuery($sql);
           }
         }
@@ -165,8 +167,9 @@ class CRM_EventCalendar_Form_EventCalendarSettings extends CRM_Core_Form {
         if ("eventtype" == substr($key, 0, 9)) {
           if ($value == 1) {
             $id = explode("_", $key)[1];
+            $color = str_replace('#', '', $submitted['eventcolor_' . $id]);
             $sql = "INSERT INTO civicrm_event_calendar_event_type(event_calendar_id, event_type, event_color)
-             VALUES ({$submitted['calendar_id']}, {$id}, '{$submitted['eventcolor_' . $id]}');";
+             VALUES ({$submitted['calendar_id']}, {$id}, '{$color}');";
              $dao = CRM_Core_DAO::executeQuery($sql);
           }
         }

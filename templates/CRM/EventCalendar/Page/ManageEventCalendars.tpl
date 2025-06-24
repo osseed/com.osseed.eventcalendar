@@ -1,4 +1,3 @@
-{crmScript ext='com.osseed.eventcalendar' file='js/jscolor.js'}
 {crmScript ext='com.osseed.eventcalendar' file='js/eventcalendar.js'}
 
 <div class="help">
