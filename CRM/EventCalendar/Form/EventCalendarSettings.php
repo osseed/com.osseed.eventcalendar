@@ -196,6 +196,19 @@ class CRM_EventCalendar_Form_EventCalendarSettings extends CRM_Core_Form {
       return;
     }
 
+    // Get current is_default value for this calendar
+    $current = CRM_Core_DAO::singleValueQuery("
+      SELECT is_default FROM civicrm_event_calendar WHERE id = %1
+    ", [
+      1 => [$calendar_id, 'Integer'],
+    ]);
+
+    // Prevent unsetting all defaults unintentionally:
+    // If current is 0 and we are setting it to 0 again, skip update
+    if ((int) $current === 0 && $is_default === 0) {
+      return;
+    }
+
     // Prepare the SQL query to update the default calendar
     $sql = "UPDATE civicrm_event_calendar SET is_default = CASE WHEN id = %1 THEN %2 ELSE 0 END";
     try {
