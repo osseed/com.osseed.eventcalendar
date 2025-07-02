@@ -201,12 +201,25 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
   public function _eventCalendar_getSettings() {
     $settings = [];
     try {
-      $calendarId = CRM_Utils_Request::retrieve('id', 'Positive', NULL, TRUE);
+      // Attempt to retrieve calendar ID (optional, not required)
+      $calendarId = CRM_Utils_Request::retrieve('id', 'Positive');
+
+      // If no ID was provided, fallback to default
+      if (empty($calendarId)) {
+        $calendarId = $this->_getDefaultCalendarId();
+      }
+
+      // Still check if calendarId is resolved at this point
+      if (empty($calendarId)) {
+        throw new \CRM_Core_Exception('Missing calendar ID');
+      }
+
       $this->id = $calendarId;
     }
     catch (\CRM_Core_Exception $e) {
       CRM_Utils_System::sendResponse(new \GuzzleHttp\Psr7\Response(
-        400, [], E::ts('Invalid Calendar Id')
+        400, [],
+        E::ts('Invalid or missing Calendar ID.')
       ));
     }
 
