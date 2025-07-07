@@ -12,11 +12,13 @@
     <url desc="Main Extension Page">https://github.com/osseed/com.osseed.eventcalendar</url>
     <url desc="Documentation">https://raw.github.com/osseed/com.osseed.eventcalendar/master/README.md</url>
   </urls>
-  <releaseDate>2023-12-14</releaseDate>
-  <version>4.5</version>
+  <releaseDate>2025-07-07</releaseDate>
+  <version>4.6</version>
   <develStage>alpha</develStage>
   <compatibility>
-    <ver>5.68</ver>
+    <ver>6.0</ver>
+    <ver>5.82</ver>
+    <ver>5.74</ver>
   </compatibility>
   <comments>Show CiviCRM Event in Calendar</comments>
   <civix>
