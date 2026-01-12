@@ -66,6 +66,7 @@ CREATE TABLE `civicrm_event_calendar` (
         `recurring_event` tinyint COMMENT 'Show recurring events',
         `enrollment_status` tinyint COMMENT 'Show enrollment status',
         `saved_search_id` int(11) COMMENT 'Filter results by this saved search',
+        `is_default` BOOLEAN NOT NULL DEFAULT FALSE COMMENT 'Indicates whether this is the default event calendar',
         PRIMARY KEY (`id`)
 );
 
