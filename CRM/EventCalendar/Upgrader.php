@@ -97,7 +97,7 @@ class CRM_EventCalendar_Upgrader extends CRM_Extension_Upgrader_Base {
    *
    * @return bool Returns true after checking and possibly altering the table.
    */
-  public function upgrade_1004() {
+  public function upgrade_1005() {
     $this->ctx->log->info('Checking for existence of `is_default` column in the `civicrm_event_calendar` table.');
 
     // Check if the `is_default` column exists
