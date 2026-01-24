@@ -45,6 +45,7 @@ class CRM_EventCalendar_Form_EventCalendarSettings extends CRM_Core_Form {
       CRM_Core_Resources::singleton()->addStyleFile('com.osseed.eventcalendar', 'css/coloris.min.css');
       CRM_Core_Resources::singleton()->addScriptFile('com.osseed.eventcalendar', 'js/coloris.min.js');
       CRM_Core_Resources::singleton()->addScriptFile('com.osseed.eventcalendar', 'js/eventcalendar.js');
+      CRM_Core_Resources::singleton()->addStyleFile('com.osseed.eventcalendar', 'css/calender_settings.css');
 
       $settings = $this->getFormSettings();
       CRM_Utils_System::setTitle(E::ts('Event Calendar Settings'));
