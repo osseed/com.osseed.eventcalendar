@@ -1,0 +1,12 @@
+.crm-section .clr-field:has(input.color)>button {
+    height: 100% !important;
+    color: inherit !important;
+    width: 30px;
+    border-radius: 0 0.25rem 0.25rem 0 !important;
+    margin: 0;
+    border: 0 !important;
+}
+
+.crm-section .clr-field input.color {
+    margin: 0 !important;
+}
