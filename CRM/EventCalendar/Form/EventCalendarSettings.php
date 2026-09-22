@@ -24,8 +24,8 @@ class CRM_EventCalendar_Form_EventCalendarSettings extends CRM_Core_Form {
    */
   public $calendar_id;
 
-  private $_submittedValues = array();
-  private $_settings = array();
+  private $_submittedValues = [];
+  private $_settings = [];
 
   public function buildQuickForm() {
     $this->controller->_destination = CRM_Utils_System::url('civicrm/admin/event-calendar', 'reset=1');
@@ -49,7 +49,7 @@ class CRM_EventCalendar_Form_EventCalendarSettings extends CRM_Core_Form {
 
       $settings = $this->getFormSettings();
       CRM_Utils_System::setTitle(E::ts('Event Calendar Settings'));
-      $descriptions = array();
+      $descriptions = [];
 
       $this->add('hidden', 'action', $this->action);
       $this->add('hidden', 'calendar_id', $this->calendar_id);
@@ -96,26 +96,26 @@ class CRM_EventCalendar_Form_EventCalendarSettings extends CRM_Core_Form {
       $eventTypes = CRM_Event_PseudoConstant::eventType();
       foreach ($eventTypes as $id => $type) {
         $this->addElement('checkbox', "eventtype_{$id}", E::ts($type), NULL,
-          array('onclick' => "showhidecolorbox('{$id}')", 'id' => "event_{$id}"));
+          ['onclick' => "showhidecolorbox('{$id}')", 'id' => "event_{$id}"]);
         $this->addElement('text', "eventcolor_{$id}", E::ts("Color"),
-          array(
+          [
             'data-coloris' => '',
             'class' => 'color',
             'id' => "eventcolorid_{$id}",
-          ));
+          ]);
       }
 
       $this->assign('eventTypes', $eventTypes);
       $this->assign('descriptions', $descriptions);
     }
 
-    $this->addButtons(array(
-      array(
+    $this->addButtons([
+      [
         'type' => 'submit',
         'name' => E::ts('Submit'),
         'isDefault' => TRUE,
-      ),
-    ));
+      ],
+    ]);
     // export form elements
     $this->assign('elementNames', $this->getRenderableElementNames());
     parent::buildQuickForm();
@@ -235,7 +235,7 @@ class CRM_EventCalendar_Form_EventCalendarSettings extends CRM_Core_Form {
     // auto-rendered in the loop -- such as "qfKey" and "buttons". These
     // items don't have labels. We'll identify renderable by filtering on
     // the 'label'.
-    $elementNames = array();
+    $elementNames = [];
     foreach ($this->_elements as $element) {
       $label = $element->getLabel();
       if (!empty($label)) {
@@ -268,19 +268,19 @@ class CRM_EventCalendar_Form_EventCalendarSettings extends CRM_Core_Form {
    */
   public function setDefaultValues() {
     if ($this->calendar_id && ($this->action != 'delete')) {
-      $existing = array();
+      $existing = [];
       $sql = "SELECT * FROM civicrm_event_calendar WHERE id = {$this->calendar_id};";
       $dao = CRM_Core_DAO::executeQuery($sql);
       while ($dao->fetch()) {
         $existing[] = $dao->toArray();
       }
-      $defaults = array();
+      $defaults = [];
       foreach ($existing as $name => $value) {
         $defaults[$name] = $value;
       }
       $sql = "SELECT * FROM civicrm_event_calendar_event_type WHERE event_calendar_id = {$this->calendar_id};";
       $dao = CRM_Core_DAO::executeQuery($sql);
-      $existing = array();
+      $existing = [];
       while ($dao->fetch()) {
         $existing[] = $dao->toArray();
       }
