@@ -32,8 +32,6 @@
  * $Id$
  *
  */
-
-require_once 'CRM/Core/Page.php';
 use CRM_EventCalendar_ExtensionUtil as E;
 
 class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
