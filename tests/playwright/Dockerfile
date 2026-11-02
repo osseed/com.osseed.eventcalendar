@@ -8,6 +8,11 @@ RUN apt-get update && apt-get install -y \
     libgbm1 libglib2.0-0 libasound2 \
     libpango-1.0-0 libcairo2 libatspi2.0-0 \
     libxshmfence1 libxkbcommon0 fonts-liberation \
+    libxcursor1 \
+    libgtk-3-0 \
+    libgdk-pixbuf-2.0-0 \
+    libpangocairo-1.0-0 \
+    libcairo-gobject2 \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=node:22-bookworm-slim /usr/local/ /usr/local/
