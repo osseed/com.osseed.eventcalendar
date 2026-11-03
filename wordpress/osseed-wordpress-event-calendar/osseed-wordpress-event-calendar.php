@@ -121,7 +121,7 @@ function event_calendar_shortcode_handler( $atts ) {
 	if ( $component === 'event-calendar' ) {
 		extract(
 			shortcode_atts(
-				array(
+				[
 					'component' => 'event-calendar',
 					'action'    => null,
 					'mode'      => null,
@@ -129,15 +129,15 @@ function event_calendar_shortcode_handler( $atts ) {
 					'cid'       => null,
 					'gid'       => null,
 					'cs'        => null,
-				),
+				],
 				$atts
 			)
 		);
 
-		$args = array(
+		$args = [
 			'reset' => 1,
 			'id'    => $atts['id'] ?? null,
-		);
+		];
 		civicrm_initialize();
 		$args['q'] = 'civicrm/showevents';
 
@@ -181,7 +181,7 @@ function event_calendar_shortcode_includes() {
 		$civi = civi_wp();
 		if ( method_exists( $civi, 'front_end_page_load' ) ) {
 			// add core resources for front end.
-			add_action( 'wp', array( $civi, 'front_end_page_load' ), 100 );
+			add_action( 'wp', [ $civi, 'front_end_page_load' ], 100 );
 		} else {
 			// add CiviCRM core resources.
 			CRM_Core_Resources::singleton()->addCoreResources();

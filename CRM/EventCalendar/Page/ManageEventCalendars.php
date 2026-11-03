@@ -14,26 +14,26 @@ class CRM_EventCalendar_Page_ManageEventCalendars extends CRM_Core_Page_Basic {
   public function &links() {
   CRM_Utils_System::setTitle(E::ts('Manage Event Calendars'));
     if (!(self::$_links)) {
-      self::$_links = array(
-        CRM_Core_Action::UPDATE => array(
+      self::$_links = [
+        CRM_Core_Action::UPDATE => [
           'name' => E::ts('View/Edit'),
           'url' => 'civicrm/eventcalendarsettings',
           'qs' => 'action=update&id=%%id%%&reset=1',
           'title' => E::ts('Edit Event Calendar'),
-        ),
-        CRM_Core_Action::DELETE => array(
+        ],
+        CRM_Core_Action::DELETE => [
           'name' => E::ts('Delete'),
           'url' => 'civicrm/eventcalendarsettings',
           'qs' => 'action=delete&id=%%id%%',
           'title' => E::ts('Delete Event Calendar'),
-        ),
-        CRM_Core_Action::VIEW => array(
+        ],
+        CRM_Core_Action::VIEW => [
         'name' => E::ts('Preview'),
         'url' => 'civicrm/showevents',
         'qs' => 'id=%%id%%',
         'title' => E::ts('Preview Event Calendar'),
-        ),
-      );
+        ],
+      ];
     }
     return self::$_links;
   }
