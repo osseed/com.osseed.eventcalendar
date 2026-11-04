@@ -1,6 +1,4 @@
 <?php
-
-require_once 'CRM/Core/Form.php';
 use CRM_EventCalendar_ExtensionUtil as E;
 
 /**
