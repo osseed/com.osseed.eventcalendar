@@ -32,8 +32,6 @@
  * $Id$
  *
  */
-
-require_once 'CRM/Core/Page.php';
 use CRM_EventCalendar_ExtensionUtil as E;
 
 class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
@@ -55,7 +53,7 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
     CRM_Core_Resources::singleton()->addStyleFile('com.osseed.eventcalendar', 'css/civicrm_events.css');
     CRM_Core_Resources::singleton()->addStyleFile('com.osseed.eventcalendar', 'css/fullcalendar.css');
 
-    $eventTypesFilter = array();
+    $eventTypesFilter = [];
     $civieventTypesList = CRM_Event_PseudoConstant::eventType();
 
     $config = CRM_Core_Config::singleton();
@@ -129,17 +127,17 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
     }
 
     $query .= $whereCondition;
-    $events['events'] = array();
+    $events['events'] = [];
 
     $dao = CRM_Core_DAO::executeQuery($query);
-    $eventCalendarParams = array('title' => 'title', 'start' => 'start', 'url' => 'url');
+    $eventCalendarParams = ['title' => 'title', 'start' => 'start', 'url' => 'url'];
 
     if (!empty($settings['event_end_date'])) {
       $eventCalendarParams['end'] = 'end';
     }
 
     while ($dao->fetch()) {
-      $eventData = array();
+      $eventData = [];
       $dao->url = html_entity_decode(CRM_Utils_System::url('civicrm/event/info', 'id=' . $dao->id ?:NULL));
       foreach ($eventCalendarParams as $k) {
         $eventData[$k] = $dao->$k;
@@ -244,7 +242,7 @@ class CRM_EventCalendar_Page_ShowEvents extends CRM_Core_Page {
 
       $sql = "SELECT * FROM civicrm_event_calendar_event_type WHERE `event_calendar_id` = {$calendarId};";
       $dao = CRM_Core_DAO::executeQuery($sql);
-      $eventTypes = array();
+      $eventTypes = [];
       while ($dao->fetch()) {
         $eventTypes[] = $dao->toArray();
       }
