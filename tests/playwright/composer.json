@@ -1,0 +1,5 @@
+{
+    "require-dev": {
+        "playwright-php/playwright": "^1.5"
+    }
+}
